@@ -1,0 +1,15 @@
+#wordGuessDiv {
+    display: grid;
+    flex-flow: column nowrap;
+    justify-content: center;
+
+    text-align: center;
+}
+
+#wordGuessDiv > * {
+    margin-top: 10px;
+}
+
+#wordGuessDiv > button {
+    width: 4rem;
+}

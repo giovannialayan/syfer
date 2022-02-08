@@ -1,0 +1,26 @@
+{
+  "name": "syfer",
+  "version": "1.0.0",
+  "description": "word game about solving cyphers",
+  "main": "./src/server.js",
+  "scripts": {
+    "start": "node ./src/server.js",
+    "pretest": "eslint ./src --fix",
+    "test": "echo \"tests complete\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/giovannialayan/syfer.git"
+  },
+  "author": "Giovanni Alayan",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/giovannialayan/syfer/issues"
+  },
+  "homepage": "https://github.com/giovannialayan/syfer#readme",
+  "devDependencies": {
+    "eslint": "^8.8.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.25.4"
+  }
+}
