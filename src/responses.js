@@ -10,7 +10,7 @@ const respond = (request, response, content, status, type) => {
 
 const getWords = (request, response) => {
   respond(request, response, wordJson, 200, 'application/json');
-}
+};
 
 const notFound = (request, response) => {
   const object = {

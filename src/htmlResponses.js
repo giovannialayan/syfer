@@ -2,7 +2,8 @@ const fs = require('fs');
 
 const index = fs.readFileSync(`${__dirname}/../client/index.html`);
 const style = fs.readFileSync(`${__dirname}/../client/style.css`);
-const script = fs.readFileSync(`${__dirname}/../client/main.js`);
+const mainScript = fs.readFileSync(`${__dirname}/../client/main.js`);
+const tileComponent = fs.readFileSync(`${__dirname}/../client/numberTile.js`);
 
 const getIndex = (request, response) => {
   response.writeHead(200, { 'Content-Type': 'text/html' });
@@ -16,14 +17,21 @@ const getStyle = (request, response) => {
   response.end();
 };
 
-const getScript = (request, response) => {
+const getMainScript = (request, response) => {
   response.writeHead(200, { 'Content-Type': 'text/javascript' });
-  response.write(script);
+  response.write(mainScript);
+  response.end();
+};
+
+const getTileComponent = (request, response) => {
+  response.writeHead(200, { 'Content-Type': 'text/javascript' });
+  response.write(tileComponent);
   response.end();
 };
 
 module.exports = {
   getIndex,
   getStyle,
-  getScript,
+  getMainScript,
+  getTileComponent,
 };

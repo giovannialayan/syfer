@@ -12,6 +12,8 @@ let guessWord;
 
 let lastGuess;
 
+import './tile.js';
+
 window.onload = () => {
     wordDisplay = document.querySelector("#targetWord");
     const submitButton = document.querySelector("#submit");
@@ -59,9 +61,9 @@ const guessNumber = (guess) => {
         for(let i = 0; i < guessWord.length; i++) {
             if(targetWord[i] == lastGuess) {
                 guessWord[i] = lastGuess;
+                guessWordDisplay.children[i].dataset.text = lastGuess;
             }
         }
-        guessWordDisplay.textContent = guessWord.join('-');
         letterGuessOutput.textContent = `correct, ${lastGuess} is ${guess}`;
     }
     else {
@@ -93,18 +95,27 @@ const setUpTargetWord = async () => {
         targetWordNums.set(sortedLetters[i], letterNum);
     }
 
-    let numDisplay = '';
-    for(let i = 0; i < targetWord.length; i++) {
-        numDisplay += targetWordNums.get(targetWord[i]) + '-';
+    while(wordDisplay.lastChild) {
+        wordDisplay.removeChild(wordDisplay.lastChild);
     }
-    
-    wordDisplay.textContent = numDisplay.substring(0, numDisplay.length - 1);
+
+    for(let i = 0; i < targetWord.length; i++) {
+        const tile = document.createElement('number-tile');
+        tile.dataset.text = targetWordNums.get(targetWord[i]);
+        wordDisplay.appendChild(tile);
+    }
+
+    while(guessWordDisplay.lastChild) {
+        guessWordDisplay.removeChild(guessWordDisplay.lastChild);
+    }
 
     guessWord = new Array();
 
     for(let i = 0; i < targetWord.length; i++) {
         guessWord.push('_');
-    }
 
-    guessWordDisplay.textContent = guessWord.join('-');
+        const tile = document.createElement('number-tile');
+        tile.dataset.text = guessWord[i];
+        guessWordDisplay.appendChild(tile);
+    }
 };

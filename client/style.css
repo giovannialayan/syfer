@@ -1,5 +1,5 @@
 #wordGuessDiv {
-    display: grid;
+    display: flex;
     flex-flow: column nowrap;
     justify-content: center;
 
@@ -12,4 +12,24 @@
 
 #wordGuessDiv > button {
     width: 4rem;
+    margin: 10px auto 0px auto;
+}
+
+#wordGuessDiv > input {
+    width: 2em;
+    margin: 10px auto 0px auto;
+}
+
+#wordGuessDiv > #targetWord, #guessWord {
+    display: inline-flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+}
+
+#wordGuessDiv > #targetWord > * {
+    margin: 10px 10px 0px 10px;
+}
+
+#wordGuessDiv > #guessWord > * {
+    margin: 10px 10px 0px 10px;
 }
