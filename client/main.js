@@ -62,6 +62,7 @@ const guessNumber = (guess) => {
             if(targetWord[i] == lastGuess) {
                 guessWord[i] = lastGuess;
                 guessWordDisplay.children[i].dataset.text = lastGuess;
+                guessWordDisplay.children[i].dataset.color = '#0a0';
             }
         }
         letterGuessOutput.textContent = `correct, ${lastGuess} is ${guess}`;

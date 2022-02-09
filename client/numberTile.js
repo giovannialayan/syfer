@@ -38,6 +38,7 @@ class NumberTile extends HTMLElement {
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
         this.text = this.shadowRoot.querySelector("p");
+        this.container = this.shadowRoot.querySelector('div');
     }
 
     connectedCallback() {
@@ -53,11 +54,12 @@ class NumberTile extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ["data-text"];
+        return ["data-text", 'data-color'];
     }
 
     render() {
-        this.text.textContent = this.getAttribute("data-text") || "x";
+        this.text.textContent = this.getAttribute("data-text") || 'x';
+        this.container.style.backgroundColor = this.getAttribute('data-color') || '#333';
     }
 }
 
