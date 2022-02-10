@@ -55,9 +55,11 @@ const checkGuess = (guess) => {
 };
 
 const guessNumber = (guess) => {
+    //guess was not a number
     if(!Array.from(targetWordNums.values()).includes(guess - 0)) {
         letterGuessOutput.textContent = `${guess} is not a number`;
     }
+    //guess was correct
     else if(targetWordNums.get(lastGuess) == guess) {
         for(let i = 0; i < guessWord.length; i++) {
             if(targetWord[i] == lastGuess) {
@@ -68,6 +70,7 @@ const guessNumber = (guess) => {
         }
         letterGuessOutput.textContent = `correct, ${lastGuess} is ${guess}`;
     }
+    //guess was not correct
     else {
         letterGuessOutput.textContent = `wrong, ${lastGuess} is not ${guess}`;
         for(let i = 0; i < targetWordAsNumbers.length; i++) {

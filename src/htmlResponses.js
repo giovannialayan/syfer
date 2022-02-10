@@ -4,29 +4,32 @@ const index = fs.readFileSync(`${__dirname}/../client/index.html`);
 const style = fs.readFileSync(`${__dirname}/../client/style.css`);
 const mainScript = fs.readFileSync(`${__dirname}/../client/main.js`);
 const tileComponent = fs.readFileSync(`${__dirname}/../client/numberTile.js`);
+const numPadComponent = fs.readFileSync(`${__dirname}/../client/numpad.js`);
+
+const serveFile = (request, response, file, type) => {
+  response.writeHead(200, { 'Content-Type': type });
+  response.write(file);
+  response.end();
+};
 
 const getIndex = (request, response) => {
-  response.writeHead(200, { 'Content-Type': 'text/html' });
-  response.write(index);
-  response.end();
+  serveFile(request, response, index, 'text/html');
 };
 
 const getStyle = (request, response) => {
-  response.writeHead(200, { 'Content-Type': 'text/css' });
-  response.write(style);
-  response.end();
+  serveFile(request, response, style, 'text/css');
 };
 
 const getMainScript = (request, response) => {
-  response.writeHead(200, { 'Content-Type': 'text/javascript' });
-  response.write(mainScript);
-  response.end();
+  serveFile(request, response, mainScript, 'application/javascript');
 };
 
 const getTileComponent = (request, response) => {
-  response.writeHead(200, { 'Content-Type': 'text/javascript' });
-  response.write(tileComponent);
-  response.end();
+  serveFile(request, response, tileComponent, 'application/javascript');
+};
+
+const getNumPadComponent = (request, response) => {
+  serveFile(request, response, numPadComponent, 'application/javascript');
 };
 
 module.exports = {
@@ -34,4 +37,5 @@ module.exports = {
   getStyle,
   getMainScript,
   getTileComponent,
+  getNumPadComponent,
 };

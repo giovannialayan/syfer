@@ -10,6 +10,7 @@ const urlStruct = {
   '/style.css': htmlHandler.getStyle,
   '/main.js': htmlHandler.getMainScript,
   '/tile.js': htmlHandler.getTileComponent,
+  '/numpad.js': htmlHandler.getNumPadComponent,
   '/words': responses.getWords,
   notFound: responses.notFound,
 };
