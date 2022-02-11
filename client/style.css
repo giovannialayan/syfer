@@ -1,4 +1,4 @@
-#wordGuessDiv {
+#wordGuessDiv, #numberGuessDiv {
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
@@ -6,16 +6,16 @@
     text-align: center;
 }
 
-#wordGuessDiv > * {
-    margin-top: 10px;
+#wordGuessDiv > *, #numberGuessDiv > * {
+    margin: 10px auto 0px auto;
 }
 
-#wordGuessDiv > button {
+#wordGuessDiv > button, #numberGuessDiv > button {
     width: 4rem;
     margin: 10px auto 0px auto;
 }
 
-#wordGuessDiv > input {
+#wordGuessDiv > input, #numberGuessDiv > input {
     width: 2em;
     margin: 10px auto 0px auto;
 }

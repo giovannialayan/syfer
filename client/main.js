@@ -1,6 +1,5 @@
 let wordDisplay;
 let guessOutput;
-let numberGuessSubmit;
 let guessWordDisplay;
 let letterGuessOutput;
 
@@ -28,10 +27,8 @@ window.onload = () => {
     guessWordDisplay = document.querySelector('#guessWord');
     letterGuessOutput = document.querySelector('#letterGuessOutput');
 
-    const numberSubmitButton = document.querySelector('#numberSubmit');
-    const numberGuessInput = document.querySelector('#numberGuess');
-
-    numberSubmitButton.onclick = () => {guessNumber(numberGuessInput.value);};
+    const numberPad = document.querySelector('number-pad');
+    numberPad.addEventListener('numberSubmitted', (e) => {guessNumber(e.detail.output);});
 
     const newWordButton = document.querySelector('#newWord');
     newWordButton.onclick = setUpTargetWord;
@@ -55,6 +52,7 @@ const checkGuess = (guess) => {
 };
 
 const guessNumber = (guess) => {
+    console.log(guess);
     //guess was not a number
     if(!Array.from(targetWordNums.values()).includes(guess - 0)) {
         letterGuessOutput.textContent = `${guess} is not a number`;

@@ -7,7 +7,7 @@
     "start": "node ./src/server.js",
     "pretest": "eslint ./src --fix",
     "test": "echo \"tests complete\"",
-    "nodemon": "nodemon -e js,html,css,json --watch ./src -- watch ./client ./src/server.js"
+    "nodemon": "nodemon -e js,html,css,json --watch ./src --watch ./client ./src/server.js"
   },
   "repository": {
     "type": "git",
@@ -22,9 +22,8 @@
   "devDependencies": {
     "eslint": "^8.8.0",
     "eslint-config-airbnb": "^19.0.4",
-    "eslint-plugin-import": "^2.25.4"
-  },
-  "dependencies": {
+    "eslint-plugin-import": "^2.25.4",
     "nodemon": "^2.0.15"
-  }
+  },
+  "dependencies": {}
 }
