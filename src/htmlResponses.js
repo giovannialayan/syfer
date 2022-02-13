@@ -5,6 +5,7 @@ const style = fs.readFileSync(`${__dirname}/../client/style.css`);
 const mainScript = fs.readFileSync(`${__dirname}/../client/main.js`);
 const tileComponent = fs.readFileSync(`${__dirname}/../client/numberTile.js`);
 const numPadComponent = fs.readFileSync(`${__dirname}/../client/numpad.js`);
+const keyboardComponent = fs.readFileSync(`${__dirname}/../client/keyboard.js`);
 
 const serveFile = (request, response, file, type) => {
   response.writeHead(200, { 'Content-Type': type });
@@ -32,10 +33,15 @@ const getNumPadComponent = (request, response) => {
   serveFile(request, response, numPadComponent, 'application/javascript');
 };
 
+const getKeyboardComponent = (request, response) => {
+  serveFile(request, response, keyboardComponent, 'application/javascript');
+};
+
 module.exports = {
   getIndex,
   getStyle,
   getMainScript,
   getTileComponent,
   getNumPadComponent,
+  getKeyboardComponent,
 };

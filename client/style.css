@@ -1,4 +1,4 @@
-#wordGuessDiv, #numberGuessDiv {
+#wordGuessDiv, #keyboardsDiv, body {
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
@@ -6,17 +6,7 @@
     text-align: center;
 }
 
-#wordGuessDiv > *, #numberGuessDiv > * {
-    margin: 10px auto 0px auto;
-}
-
-#wordGuessDiv > button, #numberGuessDiv > button {
-    width: 4rem;
-    margin: 10px auto 0px auto;
-}
-
-#wordGuessDiv > input, #numberGuessDiv > input {
-    width: 2em;
+#wordGuessDiv > *, #keyboardsDiv > * {
     margin: 10px auto 0px auto;
 }
 
@@ -32,4 +22,12 @@
 
 #wordGuessDiv > #guessWord > * {
     margin: 10px 10px 0px 10px;
+}
+
+#newWord {
+    margin: 17em auto 0px auto;
+}
+
+number-pad {
+    display: none;
 }

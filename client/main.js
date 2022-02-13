@@ -2,6 +2,8 @@ let wordDisplay;
 let guessOutput;
 let guessWordDisplay;
 let letterGuessOutput;
+let keyboard;
+let numberPad;
 
 const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
@@ -16,18 +18,17 @@ import './tile.js';
 
 window.onload = () => {
     wordDisplay = document.querySelector("#targetWord");
-    const submitButton = document.querySelector("#submit");
-    const guessInput = document.querySelector('#guess');
-
-    submitButton.onclick = () => {checkGuess(guessInput.value);};
 
     setUpTargetWord();
+
+    keyboard = document.querySelector('letter-keyboard');
+    keyboard.addEventListener('letterSubmitted', (e) => {checkGuess(e.detail.output);})
 
     guessOutput = document.querySelector('#letterGuessOutput');
     guessWordDisplay = document.querySelector('#guessWord');
     letterGuessOutput = document.querySelector('#letterGuessOutput');
 
-    const numberPad = document.querySelector('number-pad');
+    numberPad = document.querySelector('number-pad');
     numberPad.addEventListener('numberSubmitted', (e) => {guessNumber(e.detail.output);});
 
     const newWordButton = document.querySelector('#newWord');
@@ -43,16 +44,18 @@ const checkGuess = (guess) => {
     }
 
     if(targetWord.includes(guess)) {
-        letterGuessOutput.textContent = `${guess} is in the word, guess what number it is below`;
+        letterGuessOutput.textContent = `${guess} is in the word, guess what number it is`;
         lastGuess = guess;
+        keyboard.style.display = 'none';
+        numberPad.style.display = 'block';
     }
     else {
         letterGuessOutput.textContent = `that letter is not in the word`;
+        keyboard.dataset.wrong = guess;
     }
 };
 
 const guessNumber = (guess) => {
-    console.log(guess);
     //guess was not a number
     if(!Array.from(targetWordNums.values()).includes(guess - 0)) {
         letterGuessOutput.textContent = `${guess} is not a number`;
@@ -60,6 +63,13 @@ const guessNumber = (guess) => {
     //guess was correct
     else if(targetWordNums.get(lastGuess) == guess) {
         for(let i = 0; i < guessWord.length; i++) {
+            //if the correct guess is already there as an almost guess, remove it
+            if(guessWordDisplay.children[i].dataset.text == lastGuess) {
+                guessWordDisplay.children[i].dataset.text = '_';
+                guessWordDisplay.children[i].dataset.color = '#333';
+            }
+
+            //add letter to guess word and display it
             if(targetWord[i] == lastGuess) {
                 guessWord[i] = lastGuess;
                 guessWordDisplay.children[i].dataset.text = lastGuess;
@@ -67,6 +77,10 @@ const guessNumber = (guess) => {
             }
         }
         letterGuessOutput.textContent = `correct, ${lastGuess} is ${guess}`;
+        keyboard.dataset.correct = lastGuess;
+
+        keyboard.style.display = 'block';
+        numberPad.style.display = 'none';
     }
     //guess was not correct
     else {
@@ -74,9 +88,13 @@ const guessNumber = (guess) => {
         for(let i = 0; i < targetWordAsNumbers.length; i++) {
             if(targetWordAsNumbers[i] == guess) {
                 guessWordDisplay.children[i].dataset.text = lastGuess;
-                guessWordDisplay.children[i].dataset.color = '#0aa';
+                guessWordDisplay.children[i].dataset.color = '#aa0';
+                keyboard.dataset.almost = lastGuess;
             }
         }
+
+        keyboard.style.display = 'block';
+        numberPad.style.display = 'none';
     }
 };
 
@@ -104,6 +122,7 @@ const setUpTargetWord = async () => {
         for(let j = 0; j < addTimes; j++) {
             letterNum += Math.floor(Math.random() * 3) + 1;
         }
+        //letterNum++;
 
         targetWordNums.set(sortedLetters[i], letterNum);
     }
@@ -141,4 +160,10 @@ const setUpTargetWord = async () => {
         tile.dataset.text = guessWord[i];
         guessWordDisplay.appendChild(tile);
     }
+
+    //reset keyboard
+    keyboard.dataset.reset = true;
+    
+    //remove output text
+    letterGuessOutput.textContent = '';
 };

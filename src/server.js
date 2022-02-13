@@ -11,6 +11,7 @@ const urlStruct = {
   '/main.js': htmlHandler.getMainScript,
   '/tile.js': htmlHandler.getTileComponent,
   '/numpad.js': htmlHandler.getNumPadComponent,
+  '/keyboard.js': htmlHandler.getKeyboardComponent,
   '/words': responses.getWords,
   notFound: responses.notFound,
 };
