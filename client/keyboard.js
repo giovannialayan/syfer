@@ -16,15 +16,15 @@ template.innerHTML = `
 }
 
 #topRow {
-    width: 50rem;
-}
-
-#midRow {
     width: 45rem;
 }
 
-#botRow {
+#midRow {
     width: 40rem;
+}
+
+#botRow {
+    width: 35rem;
 }
 
 .key {

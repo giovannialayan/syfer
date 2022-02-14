@@ -6,7 +6,7 @@ template.innerHTML = `
     flex-flow: row wrap;
     justify-content: center;
     align-items: center;
-    width: 26rem;
+    width: 15rem;
 }
 
 .number {
@@ -26,7 +26,7 @@ template.innerHTML = `
 }
 
 .numberDiv {
-    width: 6rem;
+    width: 4rem;
     margin: 5px 5px 5px 5px;
 }
 
