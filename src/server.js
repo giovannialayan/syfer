@@ -12,6 +12,8 @@ const urlStruct = {
   '/tile.js': htmlHandler.getTileComponent,
   '/numpad.js': htmlHandler.getNumPadComponent,
   '/keyboard.js': htmlHandler.getKeyboardComponent,
+  '/addWord.html': htmlHandler.getAddWord,
+  '/wordAdder.js': htmlHandler.getWordAdderScript,
   '/words': responses.getWords,
   notFound: responses.notFound,
 };
