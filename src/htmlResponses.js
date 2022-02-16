@@ -8,6 +8,7 @@ const numPadComponent = fs.readFileSync(`${__dirname}/../client/numpad.js`);
 const keyboardComponent = fs.readFileSync(`${__dirname}/../client/keyboard.js`);
 const addWord = fs.readFileSync(`${__dirname}/../client/addWord.html`);
 const wordAdder = fs.readFileSync(`${__dirname}/../client/wordAdder.js`);
+const wordAdderStyle = fs.readFileSync(`${__dirname}/../client/addWordStyle.css`);
 
 const serveFile = (request, response, file, type) => {
   response.writeHead(200, { 'Content-Type': type });
@@ -47,6 +48,10 @@ const getWordAdderScript = (request, response) => {
   serveFile(request, response, wordAdder, 'application/javascript');
 };
 
+const getWordAdderStyle = (request, response) => {
+  serveFile(request, response, wordAdderStyle, 'text/css');
+};
+
 module.exports = {
   getIndex,
   getStyle,
@@ -56,4 +61,5 @@ module.exports = {
   getKeyboardComponent,
   getAddWord,
   getWordAdderScript,
+  getWordAdderStyle,
 };

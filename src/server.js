@@ -15,6 +15,7 @@ const urlStruct = {
   '/keyboard.js': htmlHandler.getKeyboardComponent,
   '/addWord.html': htmlHandler.getAddWord,
   '/wordAdder.js': htmlHandler.getWordAdderScript,
+  '/addWordStyle.css': htmlHandler.getWordAdderStyle,
   '/words': responses.getWords,
   '/addWord': responses.addWord,
   notFound: responses.notFound,

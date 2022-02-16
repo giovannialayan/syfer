@@ -1,0 +1,11 @@
+#wordList {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+
+    text-align: center;
+}
+
+#wordList > p {
+    width: 5em;
+}

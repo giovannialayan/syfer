@@ -10,6 +10,7 @@
     "blue",
     "book",
     "brain",
+    "brown",
     "bubble",
     "bus",
     "car",
@@ -24,12 +25,15 @@
     "flower",
     "garage",
     "glass",
+    "green",
     "hair",
     "hornet",
     "lemon",
+    "orange",
     "peach",
     "pen",
     "pencil",
+    "pink",
     "police",
     "purple",
     "red",
@@ -39,6 +43,7 @@
     "train",
     "tree",
     "wasp",
+    "white",
     "yellow"
   ]
 }
