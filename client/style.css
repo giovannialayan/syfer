@@ -1,3 +1,8 @@
+body {
+    background-color: #000;
+    color: #eee;
+}
+
 #wordGuessDiv, #keyboardsDiv, body {
     display: flex;
     flex-flow: column nowrap;
@@ -6,7 +11,7 @@
     text-align: center;
 }
 
-#wordGuessDiv > *, #keyboardsDiv > * {
+#wordGuessDiv > *, #keyboardsDiv > *, #gotoAddWord {
     margin: 10px auto 0px auto;
 }
 
@@ -30,4 +35,9 @@
 
 number-pad {
     display: none;
+}
+
+button, a > input {
+    background-color: #333;
+    color: #eee;
 }

@@ -6,3 +6,6 @@ https://stackoverflow.com/questions/10685998/how-to-update-a-value-in-a-json-fil
 https://stackoverflow.com/questions/2648733/make-a-div-square-when-there-is-a-dynamically-changing-width-based-on-percenta
 https://stackoverflow.com/questions/5369954/why-is-the-parent-div-height-zero-when-it-has-floated-children/46195190
 https://stackoverflow.com/questions/30684759/flexbox-how-to-get-divs-to-fill-up-100-of-the-container-width-without-wrapping
+
+//note to future self, if you feel like going through with styling the caret, use this
+https://stackoverflow.com/questions/7339333/styling-text-input-caret
