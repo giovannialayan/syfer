@@ -1,0 +1,8 @@
+https://stackoverflow.com/questions/756567/regular-expression-for-excluding-special-characters/756612
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+https://stackoverflow.com/questions/8865458/how-do-i-vertically-center-text-with-css
+https://stackoverflow.com/questions/10685998/how-to-update-a-value-in-a-json-file-and-save-it-through-node-js
+https://stackoverflow.com/questions/2648733/make-a-div-square-when-there-is-a-dynamically-changing-width-based-on-percenta
+https://stackoverflow.com/questions/5369954/why-is-the-parent-div-height-zero-when-it-has-floated-children/46195190
+https://stackoverflow.com/questions/30684759/flexbox-how-to-get-divs-to-fill-up-100-of-the-container-width-without-wrapping

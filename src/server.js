@@ -1,5 +1,6 @@
 const http = require('http');
 const url = require('url');
+const query = require('querystring');
 const htmlHandler = require('./htmlResponses.js');
 const responses = require('./responses.js');
 
@@ -15,16 +16,54 @@ const urlStruct = {
   '/addWord.html': htmlHandler.getAddWord,
   '/wordAdder.js': htmlHandler.getWordAdderScript,
   '/words': responses.getWords,
+  '/addWord': responses.addWord,
   notFound: responses.notFound,
+};
+
+const handleGet = (request, response, parsedUrl) => {
+  if (urlStruct[parsedUrl.pathname]) {
+    urlStruct[parsedUrl.pathname](request, response);
+  } else {
+    urlStruct.notFound(request, response);
+  }
+};
+
+const parseBody = (request, response, handler) => {
+  const body = [];
+
+  request.on('error', (err) => {
+    console.dir(err);
+    response.statusCode = 400;
+    response.end();
+  });
+
+  request.on('data', (chunk) => {
+    body.push(chunk);
+  });
+
+  request.on('end', () => {
+    const bodyString = Buffer.concat(body).toString();
+    const bodyParams = query.parse(bodyString);
+    handler(request, response, bodyParams);
+  });
+};
+
+const handlePost = (request, response, parsedUrl) => {
+  if (urlStruct[parsedUrl.pathname]) {
+    parseBody(request, response, urlStruct[parsedUrl.pathname]);
+  } else {
+    urlStruct.notFound(request, response);
+  }
 };
 
 const onRequest = (request, response) => {
   const parsedUrl = url.parse(request.url);
 
-  if (urlStruct[parsedUrl.pathname]) {
-    urlStruct[parsedUrl.pathname](request, response);
-  } else {
-    urlStruct.notFound(request, response);
+  if(request.method === 'POST') {
+    handlePost(request, response, parsedUrl);
+  }
+  else {
+    handleGet(request, response, parsedUrl);
   }
 };
 
