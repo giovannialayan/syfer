@@ -8,7 +8,6 @@ div {
     height: 0;
     padding: .1rem;
     padding-bottom: 100%;
-    background-color: #333;
 
     display: flex;
     flex-flow: column nowrap;
@@ -18,14 +17,23 @@ div {
 }
 
 p {
-    color: #eee;
     font-family: Arial, sans-serif;
     font-size: 2rem;
     margin: 100% 0 0 0;
     text-align: center;
 }
+
+.darkTheme {
+    background-color: #333;
+    color: #eee;
+}
+
+.lightTheme {
+    background-color: #ddd;
+    color: #222;
+}
 </style>
-<div>
+<div class='darkTheme'>
 <p>x</p>
 </div>
 `;
@@ -50,16 +58,26 @@ class NumberTile extends HTMLElement {
 
     attributeChangedCallback(attributeName, oldVal, newVal) {
         //console.log(attributeName, oldVal, newVal);
+
+        if(attributeName === 'data-theme') {
+            //change class of this.container
+        }
         this.render();
     }
 
     static get observedAttributes() {
-        return ["data-text", 'data-color'];
+        return ["data-text", 'data-color', 'data-theme'];
     }
 
     render() {
         this.text.textContent = this.getAttribute("data-text") || 'x';
-        this.container.style.backgroundColor = this.getAttribute('data-color') || '#333';
+
+        if(this.getAttribute('data-theme') === 'light') {
+            this.container.style.backgroundColor = this.getAttribute('data-color') || '#ddd';
+        }
+        else {
+            this.container.style.backgroundColor = this.getAttribute('data-color') || '#333';
+        }
     }
 }
 

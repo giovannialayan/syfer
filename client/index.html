@@ -6,7 +6,8 @@
     <script src='numpad.js' type='module'></script>
     <script src='keyboard.js' type='module'></script>
 </head>
-<body>
+<body class='darkThemeBody'>
+    <button id='toggleThemeButton' class='darkThemeButton'>dark theme</button>
     <div id='wordGuessDiv'>
         <div id='targetWord'></div>
         <div id='guessWord'></div>
@@ -18,7 +19,7 @@
         <number-pad></number-pad>
     </div>
 
-    <button id='newWord'>get a new word</button>
-    <a href='addWord.html' id='gotoAddWord' ><input type='button' value='add a word to the word list'></input></a>
+    <button id='newWord' class='darkThemeButton'>get a new word</button>
+    <a href='addWord.html' id='gotoAddWord'><input class='darkThemeButton' type='button' value='add a word to the word list'></input></a>
 </body>
 </html>

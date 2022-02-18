@@ -1,9 +1,12 @@
 let wordDisplay;
-let guessOutput;
+let guessOutput
 let guessWordDisplay;
 let letterGuessOutput;
 let keyboard;
 let numberPad;
+let newWordButton;
+let toggleThemeButton;
+let addWordPageButton;
 
 const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
@@ -13,6 +16,8 @@ let targetWordAsNumbers;
 let guessWord;
 
 let lastGuess;
+
+let darkThemeOn;
 
 import './tile.js';
 
@@ -31,8 +36,16 @@ window.onload = () => {
     numberPad = document.querySelector('number-pad');
     numberPad.addEventListener('numberSubmitted', (e) => {guessNumber(e.detail.output);});
 
-    const newWordButton = document.querySelector('#newWord');
+    newWordButton = document.querySelector('#newWord');
     newWordButton.onclick = setUpTargetWord;
+
+    addWordPageButton = document.querySelector('input');
+
+    darkThemeOn = true;
+    toggleThemeButton = document.querySelector('#toggleThemeButton');
+    toggleThemeButton.addEventListener('click', (e) => {
+        toggleTheme([toggleThemeButton, addWordPageButton, newWordButton], [keyboard, numberPad], [wordDisplay, guessWordDisplay]);
+    });
 };
 
 const checkGuess = (guess) => {
@@ -66,7 +79,7 @@ const guessNumber = (guess) => {
             //if the correct guess is already there as an almost guess, remove it
             if(guessWordDisplay.children[i].dataset.text == lastGuess) {
                 guessWordDisplay.children[i].dataset.text = '_';
-                guessWordDisplay.children[i].dataset.color = '#333';
+                guessWordDisplay.children[i].dataset.color = darkThemeOn ? '#333' : '#ddd';
             }
 
             //add letter to guess word and display it
@@ -166,4 +179,46 @@ const setUpTargetWord = async () => {
     
     //remove output text
     letterGuessOutput.textContent = '';
+};
+
+//toggle dark theme and light theme
+const toggleTheme = (buttons, keyboards, tileContainers) => {
+    if(darkThemeOn) {
+        document.body.classList.replace('darkThemeBody', 'lightThemeBody');
+
+        for(const b of buttons) {
+            b.classList.replace('darkThemeButton', 'lightThemeButton');
+        }
+
+        for(const k of keyboards) {
+            k.dataset.theme = 'light';
+        }
+
+        for(const div of tileContainers) {
+            const tiles = div.children;
+            for(const tile of tiles) {
+                tile.dataset.theme = 'light;'
+            }
+        }
+    }
+    else {
+        document.body.classList.replace('lightThemeBody', 'darkThemeBody');
+
+        for(const b of buttons) {
+            b.classList.replace('lightThemeButton', 'darkThemeButton');
+        }
+
+        for(const k of keyboards) {
+            k.dataset.theme = 'dark';
+        }
+
+        for(const div of tileContainers) {
+            const tiles = div.children;
+            for(const tile of tiles) {
+                tile.dataset.theme = 'dark;'
+            }
+        }
+    }
+
+    darkThemeOn = !darkThemeOn;
 };

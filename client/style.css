@@ -1,8 +1,3 @@
-body {
-    background-color: #000;
-    color: #eee;
-}
-
 #wordGuessDiv, #keyboardsDiv, body {
     display: flex;
     flex-flow: column nowrap;
@@ -37,7 +32,46 @@ number-pad {
     display: none;
 }
 
-button, a > input {
+#toggleThemeButton {
+    position: absolute;
+    right: 2px;
+    top: 2px;
+}
+
+.darkThemeElement {
     background-color: #333;
     color: #eee;
+}
+
+.darkThemeButton {
+    background-color: #333;
+    color: #eee;
+
+    border-width: 2px;
+    border-style: outset;
+    border-color: #555;
+}
+
+.darkThemeBody {
+    background-color: #000;
+    color: #eee;
+}
+
+.lightThemeElement {
+    background-color: #ddd;
+    color: #222;
+}
+
+.lightThemeButton {
+    background-color: #ddd;
+    color: #222;
+
+    border-width: 2px;
+    border-style: outset;
+    border-color: #ccc;
+}
+
+.lightThemeBody {
+    background-color: #fff;
+    color: #000;
 }

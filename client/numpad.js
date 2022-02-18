@@ -16,7 +16,7 @@ template.innerHTML = `
     height: 0;
     padding: .1rem;
     padding-bottom: 100%;
-    background-color: #333;
+    /*background-color: #333;*/
 
     display: flex;
     flex-flow: column nowrap;
@@ -31,7 +31,7 @@ template.innerHTML = `
 }
 
 .numberDiv > button > p {
-    color: #eee;
+    /*color: #eee;*/
     font-family: Arial, sans-serif;
     font-size: 2rem;
     margin: 100% 0 0 0;
@@ -44,10 +44,19 @@ template.innerHTML = `
     font-size: 1rem;
     min-height: 1.2em;
 }
+
+.darkTheme {
+    background-color: #333;
+    color: #eee;
+}
+
+.lightTheme {
+
+}
 </style>
 <p id='output'></p>
 <div id='container'>
-<div class='numberDiv'><button class='number' id='oneButton'><p>1</p></button></div>
+<div class='numberDiv'><button class='number darkTheme' id='oneButton'><p>1</p></button></div>
 <div class='numberDiv'><button class='number' id='twoButton'><p>2</p></button></div>
 <div class='numberDiv'><button class='number' id='threeButton'><p>3</p></button></div>
 <div class='numberDiv'><button class='number' id='fourButton'><p>4</p></button></div>
