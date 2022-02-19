@@ -16,8 +16,12 @@ const urlStruct = {
   '/addWord.html': htmlHandler.getAddWord,
   '/wordAdder.js': htmlHandler.getWordAdderScript,
   '/addWordStyle.css': htmlHandler.getWordAdderStyle,
+  '/images/lightBulbDarkTheme.png': htmlHandler.getLightBulbDark,
+  '/images/lightBulbLightTheme.png': htmlHandler.getLightBulbLight,
   '/words': responses.getWords,
   '/addWord': responses.addWord,
+  '/getUserPrefs': responses.getUserPrefs,
+  '/setUserPrefs': responses.setUserPrefs,
   notFound: responses.notFound,
 };
 

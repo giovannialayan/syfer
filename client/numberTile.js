@@ -61,6 +61,12 @@ class NumberTile extends HTMLElement {
 
         if(attributeName === 'data-theme') {
             //change class of this.container
+            if(newVal === 'light') {
+                this.container.classList.replace('darkTheme', 'lightTheme');
+            }
+            else {
+                this.container.classList.replace('lightTheme', 'darkTheme');
+            }
         }
         this.render();
     }
@@ -72,11 +78,18 @@ class NumberTile extends HTMLElement {
     render() {
         this.text.textContent = this.getAttribute("data-text") || 'x';
 
-        if(this.getAttribute('data-theme') === 'light') {
-            this.container.style.backgroundColor = this.getAttribute('data-color') || '#ddd';
-        }
-        else {
-            this.container.style.backgroundColor = this.getAttribute('data-color') || '#333';
+        switch(this.getAttribute('data-color')) {
+            case 'correct':
+                this.container.style.backgroundColor = this.getAttribute('data-theme') === 'light' ? '#0f0' : '#0a0';
+                break;
+
+            case 'almost':
+                this.container.style.backgroundColor = this.getAttribute('data-theme') === 'light' ? '#ff0' : '#aa0';
+                break;
+
+            default:
+                this.container.style.backgroundColor = this.getAttribute('data-theme') === 'light' ? '#ddd' : '#333';
+                break;
         }
     }
 }

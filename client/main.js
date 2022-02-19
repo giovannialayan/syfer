@@ -20,11 +20,15 @@ let lastGuess;
 let darkThemeOn;
 
 import './tile.js';
+import './keyboard.js';
+import './numpad.js';
 
 window.onload = () => {
     wordDisplay = document.querySelector("#targetWord");
 
     setUpTargetWord();
+
+    getUserPrefs();
 
     keyboard = document.querySelector('letter-keyboard');
     keyboard.addEventListener('letterSubmitted', (e) => {checkGuess(e.detail.output);})
@@ -39,12 +43,12 @@ window.onload = () => {
     newWordButton = document.querySelector('#newWord');
     newWordButton.onclick = setUpTargetWord;
 
-    addWordPageButton = document.querySelector('input');
+    addWordPageButton = document.querySelector('#gotoAddWordInput');
 
     darkThemeOn = true;
     toggleThemeButton = document.querySelector('#toggleThemeButton');
-    toggleThemeButton.addEventListener('click', (e) => {
-        toggleTheme([toggleThemeButton, addWordPageButton, newWordButton], [keyboard, numberPad], [wordDisplay, guessWordDisplay]);
+    toggleThemeButton.addEventListener('click', () => {
+        toggleTheme([addWordPageButton, newWordButton], [keyboard, numberPad], [wordDisplay, guessWordDisplay], true);
     });
 };
 
@@ -79,14 +83,14 @@ const guessNumber = (guess) => {
             //if the correct guess is already there as an almost guess, remove it
             if(guessWordDisplay.children[i].dataset.text == lastGuess) {
                 guessWordDisplay.children[i].dataset.text = '_';
-                guessWordDisplay.children[i].dataset.color = darkThemeOn ? '#333' : '#ddd';
+                guessWordDisplay.children[i].dataset.color = 'default';
             }
 
             //add letter to guess word and display it
             if(targetWord[i] == lastGuess) {
                 guessWord[i] = lastGuess;
                 guessWordDisplay.children[i].dataset.text = lastGuess;
-                guessWordDisplay.children[i].dataset.color = '#0a0';
+                guessWordDisplay.children[i].dataset.color = 'correct';
             }
         }
         letterGuessOutput.textContent = `correct, ${lastGuess} is ${guess}`;
@@ -101,7 +105,7 @@ const guessNumber = (guess) => {
         for(let i = 0; i < targetWordAsNumbers.length; i++) {
             if(targetWordAsNumbers[i] == guess) {
                 guessWordDisplay.children[i].dataset.text = lastGuess;
-                guessWordDisplay.children[i].dataset.color = '#aa0';
+                guessWordDisplay.children[i].dataset.color = 'almost';
                 keyboard.dataset.almost = lastGuess;
             }
         }
@@ -155,6 +159,7 @@ const setUpTargetWord = async () => {
     for(let i = 0; i < targetWord.length; i++) {
         const tile = document.createElement('number-tile');
         tile.dataset.text = targetWordNums.get(targetWord[i]);
+        tile.dataset.theme = darkThemeOn ? 'dark' : 'light';
         wordDisplay.appendChild(tile);
     }
 
@@ -171,6 +176,7 @@ const setUpTargetWord = async () => {
 
         const tile = document.createElement('number-tile');
         tile.dataset.text = guessWord[i];
+        tile.dataset.theme = darkThemeOn ? 'dark' : 'light';
         guessWordDisplay.appendChild(tile);
     }
 
@@ -182,7 +188,7 @@ const setUpTargetWord = async () => {
 };
 
 //toggle dark theme and light theme
-const toggleTheme = (buttons, keyboards, tileContainers) => {
+const toggleTheme = (buttons, keyboards, tileContainers, setPref) => {
     if(darkThemeOn) {
         document.body.classList.replace('darkThemeBody', 'lightThemeBody');
 
@@ -197,9 +203,13 @@ const toggleTheme = (buttons, keyboards, tileContainers) => {
         for(const div of tileContainers) {
             const tiles = div.children;
             for(const tile of tiles) {
-                tile.dataset.theme = 'light;'
+                tile.dataset.theme = 'light';
             }
         }
+
+        //toggleThemeButton.textContent = 'light theme';
+        toggleThemeButton.classList.replace('darkThemeIconButton', 'lightThemeIconButton');
+        toggleThemeButton.src = 'images/lightBulbLightTheme.png';
     }
     else {
         document.body.classList.replace('lightThemeBody', 'darkThemeBody');
@@ -215,10 +225,81 @@ const toggleTheme = (buttons, keyboards, tileContainers) => {
         for(const div of tileContainers) {
             const tiles = div.children;
             for(const tile of tiles) {
-                tile.dataset.theme = 'dark;'
+                tile.dataset.theme = 'dark';
             }
         }
+
+        //toggleThemeButton.textContent = 'dark theme';
+        toggleThemeButton.classList.replace('lightThemeIconButton', 'darkThemeIconButton');
+        toggleThemeButton.src = 'images/lightBulbDarkTheme.png';
     }
 
     darkThemeOn = !darkThemeOn;
+
+    if(setPref) {
+        setUserPrefs(darkThemeOn ? 'dark' : 'light');
+    }
+};
+
+const getUserPrefs = async () => {
+    const response = await fetch('getUserPrefs');
+    const json = await response.json();
+
+    if(json.theme === 'light') {
+        toggleTheme([toggleThemeButton, addWordPageButton, newWordButton], [keyboard, numberPad], [wordDisplay, guessWordDisplay], false);
+    }
+};
+
+const setUserPrefs = async (theme) => {
+    const formData = `theme=${theme}`;
+
+    const response = await fetch('/setUserPrefs', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-ww-form-urlencoded',
+        'Accept': 'application/json',
+      },
+      body: formData,
+    });
+  
+    handleResponse(response);
+};
+
+const handleResponse = async (response) => {
+    let statusText = '';
+    switch(response.status){
+        case 200:
+            statusText += 'success';
+            break;
+        
+        case 201:
+            statusText += 'user added';
+            break;
+        
+        case 204:
+            statusText += 'user updated';
+            break;
+        
+        case 400:
+            statusText += 'bad request';
+            break;
+        
+        case 404:
+            statusText += 'not found';
+            break;
+        
+        default:
+            statusText += 'response cot not implemented by the server';
+            break;
+    }
+
+    const resText = await response.text();
+
+    if(resText) {
+        const parsedJson = JSON.parse(resText);
+        statusText += parsedJson.message ? `/n${parsedJson.message}` : '';
+        statusText += parsedJson.id ? `/n${parsedJson.id}` : '';
+    }
+    
+    console.log(statusText);
 };

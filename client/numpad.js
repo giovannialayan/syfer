@@ -51,23 +51,34 @@ template.innerHTML = `
 }
 
 .lightTheme {
+    background-color: #ddd;
+    color: #222;
+}
 
+.darkThemeText {
+    background-color: #000;
+    color: #eee;
+}
+
+.lightThemeText {
+    background-color: #fff;
+    color: #222;
 }
 </style>
-<p id='output'></p>
+<p id='output' class='darkThemeText'></p>
 <div id='container'>
 <div class='numberDiv'><button class='number darkTheme' id='oneButton'><p>1</p></button></div>
-<div class='numberDiv'><button class='number' id='twoButton'><p>2</p></button></div>
-<div class='numberDiv'><button class='number' id='threeButton'><p>3</p></button></div>
-<div class='numberDiv'><button class='number' id='fourButton'><p>4</p></button></div>
-<div class='numberDiv'><button class='number' id='fiveButton'><p>5</p></button></div>
-<div class='numberDiv'><button class='number' id='sixButton'><p>6</p></button></div>
-<div class='numberDiv'><button class='number' id='sevenButton'><p>7</p></button></div>
-<div class='numberDiv'><button class='number' id='eightButton'><p>8</p></button></div>
-<div class='numberDiv'><button class='number' id='nineButton'><p>9</p></button></div>
-<div class='numberDiv'><button class='number' id='xbutton'><p>x</p></button></div>
-<div class='numberDiv'><button class='number' id='zeroButton'><p>0</p></button></div>
-<div class='numberDiv'><button class='number' id='enterButton'><p>-></p></button></div>
+<div class='numberDiv'><button class='number darkTheme' id='twoButton'><p>2</p></button></div>
+<div class='numberDiv'><button class='number darkTheme' id='threeButton'><p>3</p></button></div>
+<div class='numberDiv'><button class='number darkTheme' id='fourButton'><p>4</p></button></div>
+<div class='numberDiv'><button class='number darkTheme' id='fiveButton'><p>5</p></button></div>
+<div class='numberDiv'><button class='number darkTheme' id='sixButton'><p>6</p></button></div>
+<div class='numberDiv'><button class='number darkTheme' id='sevenButton'><p>7</p></button></div>
+<div class='numberDiv'><button class='number darkTheme' id='eightButton'><p>8</p></button></div>
+<div class='numberDiv'><button class='number darkTheme' id='nineButton'><p>9</p></button></div>
+<div class='numberDiv'><button class='number darkTheme' id='xbutton'><p>x</p></button></div>
+<div class='numberDiv'><button class='number darkTheme' id='zeroButton'><p>0</p></button></div>
+<div class='numberDiv'><button class='number darkTheme' id='enterButton'><p>-></p></button></div>
 </div>
 `;
 
@@ -93,6 +104,8 @@ class NumberPad extends HTMLElement {
 
         this.outputDisplay = this.shadowRoot.querySelector('#output');
         this.output = '';
+
+        this.buttons = this.shadowRoot.querySelectorAll('.number');
     }
 
     connectedCallback() {
@@ -113,28 +126,34 @@ class NumberPad extends HTMLElement {
     }
 
     disconnectedCallback() {
-        this.oneButton.onclick = null;
-        this.twoButton.onclick = null;
-        this.threeButton.onclick = null;
-        this.fourButton.onclick = null;
-        this.fiveButton.onclick = null;
-        this.sixButton.onclick = null;
-        this.sevenButton.onclick = null;
-        this.eightButton.onclick = null;
-        this.nineButton.onclick = null;
-        this.zeroButton.onclick = null;
-        this.backButton.onclick = null;
-
-        this.enterButton.onclick = null;
+        for(const button of this.buttons) {
+            button.onclick = null;
+        }
     }
 
     attributeChangedCallback(attributeName, oldVal, newVal) {
         //console.log(attributeName, oldVal, newVal);
+        if(attributeName === 'data-theme') {
+            if(newVal === 'light') {
+                for(const button of this.buttons) {
+                    button.classList.replace('darkTheme', 'lightTheme');
+                }
+
+                this.outputDisplay.classList.replace('darkThemeText', 'lightThemeText');
+            }
+            else {
+                for(const button of this.buttons) {
+                    button.classList.replace('lightTheme', 'darkTheme');
+                }
+
+                this.outputDisplay.classList.replace('lightThemeText', 'darkThemeText');
+            }
+        }
         this.render();
     }
 
     static get observedAttributes() {
-        return [];
+        return ['data-theme'];
     }
 
     render() {

@@ -3,11 +3,10 @@
 <head>
     <link rel='stylesheet' href='style.css'>
     <script src='main.js' type='module'></script>
-    <script src='numpad.js' type='module'></script>
-    <script src='keyboard.js' type='module'></script>
 </head>
 <body class='darkThemeBody'>
-    <button id='toggleThemeButton' class='darkThemeButton'>dark theme</button>
+    <!-- <button id='toggleThemeButton' class='darkThemeButton'>dark theme</button> -->
+    <input id='toggleThemeButton' class='darkThemeIconButton' type='image' src='images/lightBulbDarkTheme.png'>
     <div id='wordGuessDiv'>
         <div id='targetWord'></div>
         <div id='guessWord'></div>
@@ -20,6 +19,6 @@
     </div>
 
     <button id='newWord' class='darkThemeButton'>get a new word</button>
-    <a href='addWord.html' id='gotoAddWord'><input class='darkThemeButton' type='button' value='add a word to the word list'></input></a>
+    <a href='addWord.html' id='gotoAddWord'><input id='gotoAddWordInput' class='darkThemeButton' type='button' value='add a word to the word list'></input></a>
 </body>
 </html>

@@ -1,4 +1,5 @@
 const fs = require('fs');
+const os = require('os');
 
 const wordListFileName = `${__dirname}/../data/words.json`;
 let wordJson = fs.readFileSync(`${__dirname}/../data/words.json`);
@@ -6,11 +7,18 @@ wordJson = JSON.parse(wordJson);
 
 const letterWhitelist = new RegExp('^[a-z]*$');
 
+const users = {};
+
 const respond = (request, response, content, status, type) => {
   response.writeHead(status, { 'content-type': type });
   response.write(content);
   response.end();
 };
+
+const respondMeta = (request, response, status, type) => {
+  response.writeHead(status, { 'content-type': type });
+  response.end();
+}
 
 const getWords = (request, response) => {
   respond(request, response, JSON.stringify(wordJson), 200, 'application/json');
@@ -58,6 +66,40 @@ const addWord = (request, response, body) => {
   return respond(request, response, JSON.stringify(responseJson), responseCode, 'application/json');
 };
 
+const setUserPrefs = (request, response, body) => {
+  const responseJson = {
+    message: 'theme required'
+  };
+
+  if(!body.theme) {
+    responseJson.id = 'setUserPrefsMissingParams';
+    return respond(request, response, responseJson, 400, 'application/json');
+  }
+
+  let responseCode = 204;
+
+  if(!users[request.socket.remoteAddress]) {
+    responseCode = 201;
+    users[request.socket.remoteAddress] = {};
+  }
+
+  users[request.socket.remoteAddress].theme = body.theme;
+
+  if(responseCode === 201) {
+    responseJson.message = 'user added successfully';
+    return respond(request, response, JSON.stringify(responseJson), responseCode, 'application/json');
+  }
+
+  return respondMeta(request, response, responseCode, 'application/json');
+}
+
+const getUserPrefs = (request, response) => {
+  if(!users[request.socket.remoteAddress]) {
+    users[request.socket.remoteAddress] = {};
+  }
+  respond(request, response, JSON.stringify(users[request.socket.remoteAddress]), 200, 'application/json');
+};
+
 const notFound = (request, response) => {
   const object = {
     message: 'the page you were looking for was not found',
@@ -82,5 +124,7 @@ const saveToFile = (fileName, content) => {
 module.exports = {
   getWords,
   addWord,
+  setUserPrefs,
+  getUserPrefs,
   notFound,
 };

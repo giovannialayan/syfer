@@ -9,6 +9,8 @@ const keyboardComponent = fs.readFileSync(`${__dirname}/../client/keyboard.js`);
 const addWord = fs.readFileSync(`${__dirname}/../client/addWord.html`);
 const wordAdder = fs.readFileSync(`${__dirname}/../client/wordAdder.js`);
 const wordAdderStyle = fs.readFileSync(`${__dirname}/../client/addWordStyle.css`);
+const lightBlulbDark = fs.readFileSync(`${__dirname}/../client/images/light_bulb_dark_theme.png`);
+const lightBlulbLight = fs.readFileSync(`${__dirname}/../client/images/light_bulb_light_theme.png`);
 
 const serveFile = (request, response, file, type) => {
   response.writeHead(200, { 'Content-Type': type });
@@ -52,6 +54,14 @@ const getWordAdderStyle = (request, response) => {
   serveFile(request, response, wordAdderStyle, 'text/css');
 };
 
+const getLightBulbDark = (request, response) => {
+  serveFile(request, response, lightBlulbDark, 'image/jpg');
+};
+
+const getLightBulbLight = (request, response) => {
+  serveFile(request, response, lightBlulbLight, 'image/jpg');
+};
+
 module.exports = {
   getIndex,
   getStyle,
@@ -62,4 +72,6 @@ module.exports = {
   getAddWord,
   getWordAdderScript,
   getWordAdderStyle,
+  getLightBulbDark,
+  getLightBulbLight,
 };

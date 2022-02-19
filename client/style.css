@@ -36,6 +36,7 @@ number-pad {
     position: absolute;
     right: 2px;
     top: 2px;
+    width: 3em;
 }
 
 .darkThemeElement {
@@ -50,6 +51,10 @@ number-pad {
     border-width: 2px;
     border-style: outset;
     border-color: #555;
+}
+
+.darkThemeIconButton {
+    background-color: #000;
 }
 
 .darkThemeBody {
@@ -69,6 +74,10 @@ number-pad {
     border-width: 2px;
     border-style: outset;
     border-color: #ccc;
+}
+
+.lightThemeIconButton {
+    background-color: #fff;
 }
 
 .lightThemeBody {

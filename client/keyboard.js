@@ -34,7 +34,6 @@ template.innerHTML = `
     height: 0;
     padding: .1rem;
     padding-bottom: 100%;
-    background-color: #333;
 
     display: flex;
     flex-flow: column nowrap;
@@ -49,7 +48,6 @@ template.innerHTML = `
 }
 
 .keyDiv > button > p {
-    color: #eee;
     font-family: Arial, sans-serif;
     font-size: 2rem;
     margin: 100% 0 0 0;
@@ -62,41 +60,61 @@ template.innerHTML = `
     font-size: 1rem;
     min-height: 1.2em;
 }
+
+.darkTheme {
+    background-color: #333;
+    color: #eee;
+}
+
+.lightTheme {
+    background-color: #ddd;
+    color: #222;
+}
+
+.darkThemeText {
+    background-color: #000;
+    color: #eee;
+}
+
+.lightThemeText {
+    background-color: #fff;
+    color: #222;
+}
 </style>
-<p id='output'></p>
+<p id='output' class='darkThemeText'></p>
 <div class='container'>
 <div id='topRow'>
-    <div class='keyDiv' id='q'><button class='key'><p>q</p></button></div>
-    <div class='keyDiv' id='w'><button class='key'><p>w</p></button></div>
-    <div class='keyDiv' id='e'><button class='key'><p>e</p></button></div>
-    <div class='keyDiv' id='r'><button class='key'><p>r</p></button></div>
-    <div class='keyDiv' id='t'><button class='key'><p>t</p></button></div>
-    <div class='keyDiv' id='y'><button class='key'><p>y</p></button></div>
-    <div class='keyDiv' id='u'><button class='key'><p>u</p></button></div>
-    <div class='keyDiv' id='i'><button class='key'><p>i</p></button></div>
-    <div class='keyDiv' id='o'><button class='key'><p>o</p></button></div>
-    <div class='keyDiv' id='p'><button class='key'><p>p</p></button></div>
+    <div class='keyDiv' id='q'><button class='key darkTheme'><p>q</p></button></div>
+    <div class='keyDiv' id='w'><button class='key darkTheme'><p>w</p></button></div>
+    <div class='keyDiv' id='e'><button class='key darkTheme'><p>e</p></button></div>
+    <div class='keyDiv' id='r'><button class='key darkTheme'><p>r</p></button></div>
+    <div class='keyDiv' id='t'><button class='key darkTheme'><p>t</p></button></div>
+    <div class='keyDiv' id='y'><button class='key darkTheme'><p>y</p></button></div>
+    <div class='keyDiv' id='u'><button class='key darkTheme'><p>u</p></button></div>
+    <div class='keyDiv' id='i'><button class='key darkTheme'><p>i</p></button></div>
+    <div class='keyDiv' id='o'><button class='key darkTheme'><p>o</p></button></div>
+    <div class='keyDiv' id='p'><button class='key darkTheme'><p>p</p></button></div>
 </div>
 <div id='midRow'>
-    <div class='keyDiv' id='a'><button class='key'><p>a</p></button></div>
-    <div class='keyDiv' id='s'><button class='key'><p>s</p></button></div>
-    <div class='keyDiv' id='d'><button class='key'><p>d</p></button></div>
-    <div class='keyDiv' id='f'><button class='key'><p>f</p></button></div>
-    <div class='keyDiv' id='g'><button class='key'><p>g</p></button></div>
-    <div class='keyDiv' id='h'><button class='key'><p>h</p></button></div>
-    <div class='keyDiv' id='j'><button class='key'><p>j</p></button></div>
-    <div class='keyDiv' id='k'><button class='key'><p>k</p></button></div>
-    <div class='keyDiv' id='l'><button class='key'><p>l</p></button></div>
+    <div class='keyDiv' id='a'><button class='key darkTheme'><p>a</p></button></div>
+    <div class='keyDiv' id='s'><button class='key darkTheme'><p>s</p></button></div>
+    <div class='keyDiv' id='d'><button class='key darkTheme'><p>d</p></button></div>
+    <div class='keyDiv' id='f'><button class='key darkTheme'><p>f</p></button></div>
+    <div class='keyDiv' id='g'><button class='key darkTheme'><p>g</p></button></div>
+    <div class='keyDiv' id='h'><button class='key darkTheme'><p>h</p></button></div>
+    <div class='keyDiv' id='j'><button class='key darkTheme'><p>j</p></button></div>
+    <div class='keyDiv' id='k'><button class='key darkTheme'><p>k</p></button></div>
+    <div class='keyDiv' id='l'><button class='key darkTheme'><p>l</p></button></div>
 </div>
 <div id='botRow'>
-    <div class='keyDiv' id='z'><button class='key'><p>z</p></button></div>
-    <div class='keyDiv' id='x'><button class='key'><p>x</p></button></div>
-    <div class='keyDiv' id='c'><button class='key'><p>c</p></button></div>
-    <div class='keyDiv' id='v'><button class='key'><p>v</p></button></div>
-    <div class='keyDiv' id='b'><button class='key'><p>b</p></button></div>
-    <div class='keyDiv' id='n'><button class='key'><p>n</p></button></div>
-    <div class='keyDiv' id='m'><button class='key'><p>m</p></button></div>
-    <div class='keyDiv'><button class='key' id='enterButton'><p>-></p></button></div>
+    <div class='keyDiv' id='z'><button class='key darkTheme'><p>z</p></button></div>
+    <div class='keyDiv' id='x'><button class='key darkTheme'><p>x</p></button></div>
+    <div class='keyDiv' id='c'><button class='key darkTheme'><p>c</p></button></div>
+    <div class='keyDiv' id='v'><button class='key darkTheme'><p>v</p></button></div>
+    <div class='keyDiv' id='b'><button class='key darkTheme'><p>b</p></button></div>
+    <div class='keyDiv' id='n'><button class='key darkTheme'><p>n</p></button></div>
+    <div class='keyDiv' id='m'><button class='key darkTheme'><p>m</p></button></div>
+    <div class='keyDiv'><button class='key darkTheme' id='enterButton'><p>-></p></button></div>
 </div>
 </div>
 `;
@@ -112,6 +130,8 @@ class Keyboard extends HTMLElement {
 
         this.outputDisplay = this.shadowRoot.querySelector('#output');
         this.output = '';
+
+        this.keys = this.shadowRoot.querySelectorAll('.keyDiv');
 
         this.correctLetters = new Array();
         this.almostLetters = new Array();
@@ -160,10 +180,27 @@ class Keyboard extends HTMLElement {
                 this.almostLetters = new Array();
                 this.wrongLetters = new Array();
 
-                const keys = this.shadowRoot.querySelectorAll('.keyDiv');
-                for(let i = 0; i < keys.length; i++) {
-                    keys[i].style.backgroundColor = '#333';
-                    keys[i].lastChild.style.backgroundColor = '#333';
+                for(const key of this.keys) {
+                    key.lastChild.style.backgroundColor = this.getAttribute('data-theme') === 'light' ? '#ddd' : '#333';
+                }
+                break;
+
+            case 'data-theme':
+                if(newVal === 'light') {
+                    for(const key of this.keys) {
+                        key.lastChild.classList.replace('darkTheme', 'lightTheme');
+                        key.lastChild.style.backgroundColor = this.getAttribute('data-theme') === 'light' ? '#ddd' : '#333';
+                    }
+
+                    this.outputDisplay.classList.replace('darkThemeText', 'lightThemeText');
+                }
+                else {
+                    for(const key of this.keys) {
+                        key.lastChild.classList.replace('lightTheme', 'darkTheme');
+                        key.lastChild.style.backgroundColor = this.getAttribute('data-theme') === 'light' ? '#ddd' : '#333';
+                    }
+
+                    this.outputDisplay.classList.replace('lightThemeText', 'darkThemeText');
                 }
                 break;
         }
@@ -171,25 +208,22 @@ class Keyboard extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['data-correct', 'data-almost', 'data-wrong', 'data-reset'];
+        return ['data-correct', 'data-almost', 'data-wrong', 'data-reset', 'data-theme'];
     }
 
     render() {
         this.outputDisplay.textContent = this.output;
 
         for(const letter of this.correctLetters) {
-            this.shadowRoot.querySelector(`#${letter}`).style.backgroundColor = '#0a0';
-            this.shadowRoot.querySelector(`#${letter}`).lastChild.style.backgroundColor = '#0a0';
+            this.shadowRoot.querySelector(`#${letter}`).lastChild.style.backgroundColor = this.getAttribute('data-theme') === 'light' ? '#0f0' : '#0a0';
         }
 
         for(const letter of this.almostLetters) {
-            this.shadowRoot.querySelector(`#${letter}`).style.backgroundColor = '#aa0';
-            this.shadowRoot.querySelector(`#${letter}`).lastChild.style.backgroundColor = '#aa0';
+            this.shadowRoot.querySelector(`#${letter}`).lastChild.style.backgroundColor = this.getAttribute('data-theme') === 'light' ? '#ff0' : '#aa0';
         }
 
         for(const letter of this.wrongLetters) {
-            this.shadowRoot.querySelector(`#${letter}`).style.backgroundColor = '#a00';
-            this.shadowRoot.querySelector(`#${letter}`).lastChild.style.backgroundColor = '#a00';
+            this.shadowRoot.querySelector(`#${letter}`).lastChild.style.backgroundColor = this.getAttribute('data-theme') === 'light' ? '#f00' : '#a00';
         }
     }
 
