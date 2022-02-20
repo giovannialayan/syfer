@@ -26,11 +26,19 @@ p {
 .darkTheme {
     background-color: #333;
     color: #eee;
+
+    border-width: 2px;
+    border-style: solid;
+    border-color: #bbb;
 }
 
 .lightTheme {
     background-color: #ddd;
     color: #222;
+
+    border-width: 2px;
+    border-style: solid;
+    border-color: #555;
 }
 </style>
 <div class='darkTheme'>

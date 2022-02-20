@@ -207,7 +207,6 @@ const toggleTheme = (buttons, keyboards, tileContainers, setPref) => {
             }
         }
 
-        //toggleThemeButton.textContent = 'light theme';
         toggleThemeButton.classList.replace('darkThemeIconButton', 'lightThemeIconButton');
         toggleThemeButton.src = 'images/lightBulbLightTheme.png';
     }
@@ -229,7 +228,6 @@ const toggleTheme = (buttons, keyboards, tileContainers, setPref) => {
             }
         }
 
-        //toggleThemeButton.textContent = 'dark theme';
         toggleThemeButton.classList.replace('lightThemeIconButton', 'darkThemeIconButton');
         toggleThemeButton.src = 'images/lightBulbDarkTheme.png';
     }

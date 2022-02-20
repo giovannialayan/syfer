@@ -49,8 +49,8 @@ number-pad {
     color: #eee;
 
     border-width: 2px;
-    border-style: outset;
-    border-color: #555;
+    border-style: solid;
+    border-color: #bbb;
 }
 
 .darkThemeIconButton {
@@ -72,8 +72,8 @@ number-pad {
     color: #222;
 
     border-width: 2px;
-    border-style: outset;
-    border-color: #ccc;
+    border-style: solid;
+    border-color: #555;
 }
 
 .lightThemeIconButton {

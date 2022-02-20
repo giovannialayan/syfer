@@ -4,12 +4,13 @@
     <link rel='stylesheet' href='addWordStyle.css'>
     <script src='wordAdder.js' type='module'></script>
 </head>
-<body>
-    <a href='/' id='gotoHome' ><input type='button' value='back to the game'></input></a>
+<body class='darkThemeBody'>
+    <input id='toggleThemeButton' class='darkThemeIconButton' type='image' src='images/lightBulbDarkTheme.png'>
+    <a href='/' id='gotoHome'><input id='gotoHomeInput' class='darkThemeButton' type='button' value='back to the game'></input></a>
     <div id='wordInputDiv'>
-        <input id='wordInput' type='text'></input>
-        <button id='submitWord'>submit</button>
-        <p id='statusOutput'></p>
+        <input id='wordInput' class='darkThemeTextInput' type='text'></input>
+        <button id='submitWord' class='darkThemeButton'>submit</button>
+        <p id='statusOutput' class='darkThemeText'></p>
     </div>
 
     <div id='wordList'></div>
