@@ -92,12 +92,12 @@ const setUserPrefs = (request, response, body) => {
 
   let responseCode = 204;
 
-  if (!users[request.socket.remoteAddress]) {
+  if (!users[request.headers['x-forwarded-for']]) {
     responseCode = 201;
-    users[request.socket.remoteAddress] = {};
+    users[request.headers['x-forwarded-for']] = {};
   }
 
-  users[request.socket.remoteAddress].theme = body.theme;
+  users[request.headers['x-forwarded-for']].theme = body.theme;
 
   if (responseCode === 201) {
     responseJson.message = 'user added successfully';
@@ -109,10 +109,10 @@ const setUserPrefs = (request, response, body) => {
 
 // respond with user's preferences
 const getUserPrefs = (request, response) => {
-  if (!users[request.socket.remoteAddress]) {
-    users[request.socket.remoteAddress] = {};
+  if (!users[request.headers['x-forwarded-for']]) {
+    users[request.headers['x-forwarded-for']] = {};
   }
-  respond(request, response, JSON.stringify(users[request.socket.remoteAddress]), 200, 'application/json');
+  respond(request, response, JSON.stringify(users[request.headers['x-forwarded-for']]), 200, 'application/json');
 };
 
 // respond with not found message and status code
