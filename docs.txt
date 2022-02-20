@@ -8,6 +8,7 @@ https://stackoverflow.com/questions/5369954/why-is-the-parent-div-height-zero-wh
 https://stackoverflow.com/questions/30684759/flexbox-how-to-get-divs-to-fill-up-100-of-the-container-width-without-wrapping
 https://stackoverflow.com/questions/3653065/get-local-ip-address-in-node-js
 https://stackoverflow.com/questions/8683528/embed-image-in-a-button-element
+https://www.w3schools.com/html/html_favicon.asp
 
-//note to future self, if you feel like going through with styling the caret, use this
+//note to future self, if you feel like going through with styling the caret, use this, but you probably shouldnt
 https://stackoverflow.com/questions/7339333/styling-text-input-caret

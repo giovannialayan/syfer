@@ -16,7 +16,7 @@ window.onload = () => {
 
   wordInput = document.querySelector('#wordInput');
   submitWordButton = document.querySelector('#submitWord');
-  submitWordButton.addEventListener('click', () => {sendPost(wordInput.value)});
+  submitWordButton.addEventListener('click', () => {addWord(wordInput.value)});
 
   homeButton = document.querySelector('#gotoHomeInput');
 
@@ -28,7 +28,8 @@ window.onload = () => {
 
 }
 
-const sendPost = async (word) => {
+//send post request to add inpput word to the word list
+const addWord = async (word) => {
   const formData = `word=${word}`;
 
   const response = await fetch('/addWord', {
@@ -40,10 +41,11 @@ const sendPost = async (word) => {
     body: formData,
   });
 
-  handleResponse(response);
+  handleAddWordResponse(response);
 };
 
-const handleResponse = async (response) => {    
+//handle response from add word request
+const handleAddWordResponse = async (response) => {    
   switch(response.status){
     case 200:
       statusOutput.textContent = `success`;
@@ -79,6 +81,7 @@ const handleResponse = async (response) => {
   }
 };
 
+//display all words in the word list on the page
 const displayWordList = (wordList) => {
   wordListDiv.innerHTML = '';
 
@@ -147,6 +150,7 @@ const toggleTheme = (buttons, wordListContainer, textInput, textElements, setPre
   }
 };
 
+//get user preferences from the server and change the page to match them
 const getUserPrefs = async () => {
   const response = await fetch('getUserPrefs');
   const json = await response.json();
@@ -156,6 +160,7 @@ const getUserPrefs = async () => {
   }
 };
 
+//send user preferences to the server
 const setUserPrefs = async (theme) => {
   const formData = `theme=${theme}`;
 
@@ -171,6 +176,7 @@ const setUserPrefs = async (theme) => {
   handleUserPrefResponse(response);
 };
 
+//handle response from setting user preferences
 const handleUserPrefResponse = async (response) => {
   let statusText = '';
   switch(response.status){

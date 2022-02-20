@@ -65,10 +65,8 @@ class NumberTile extends HTMLElement {
     }
 
     attributeChangedCallback(attributeName, oldVal, newVal) {
-        //console.log(attributeName, oldVal, newVal);
-
+        //change theme of tile to light or dark
         if(attributeName === 'data-theme') {
-            //change class of this.container
             if(newVal === 'light') {
                 this.container.classList.replace('darkTheme', 'lightTheme');
             }
@@ -83,6 +81,7 @@ class NumberTile extends HTMLElement {
         return ["data-text", 'data-color', 'data-theme'];
     }
 
+    //render tile, change color based on correct almost or default
     render() {
         this.text.textContent = this.getAttribute("data-text") || 'x';
 

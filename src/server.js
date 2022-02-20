@@ -18,6 +18,7 @@ const urlStruct = {
   '/addWordStyle.css': htmlHandler.getWordAdderStyle,
   '/images/lightBulbDarkTheme.png': htmlHandler.getLightBulbDark,
   '/images/lightBulbLightTheme.png': htmlHandler.getLightBulbLight,
+  '/images/favicon.ico': htmlHandler.getFavicon,
   '/words': responses.getWords,
   '/addWord': responses.addWord,
   '/getUserPrefs': responses.getUserPrefs,
@@ -25,6 +26,7 @@ const urlStruct = {
   notFound: responses.notFound,
 };
 
+// handle get requests
 const handleGet = (request, response, parsedUrl) => {
   if (urlStruct[parsedUrl.pathname]) {
     urlStruct[parsedUrl.pathname](request, response);
@@ -33,6 +35,7 @@ const handleGet = (request, response, parsedUrl) => {
   }
 };
 
+// parse body to get params
 const parseBody = (request, response, handler) => {
   const body = [];
 
@@ -53,6 +56,7 @@ const parseBody = (request, response, handler) => {
   });
 };
 
+// handle post requests
 const handlePost = (request, response, parsedUrl) => {
   if (urlStruct[parsedUrl.pathname]) {
     parseBody(request, response, urlStruct[parsedUrl.pathname]);
@@ -61,13 +65,13 @@ const handlePost = (request, response, parsedUrl) => {
   }
 };
 
+// get parsed url and use the correct method based on request method
 const onRequest = (request, response) => {
   const parsedUrl = url.parse(request.url);
 
-  if(request.method === 'POST') {
+  if (request.method === 'POST') {
     handlePost(request, response, parsedUrl);
-  }
-  else {
+  } else {
     handleGet(request, response, parsedUrl);
   }
 };

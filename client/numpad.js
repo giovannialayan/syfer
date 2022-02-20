@@ -116,6 +116,7 @@ class NumberPad extends HTMLElement {
         this.buttons = this.shadowRoot.querySelectorAll('.number');
     }
 
+    //add onclick to buttons
     connectedCallback() {
         this.oneButton.onclick = () => {this.modifyOutput('1')};
         this.twoButton.onclick = () => {this.modifyOutput('2')};
@@ -133,6 +134,7 @@ class NumberPad extends HTMLElement {
         this.render();
     }
 
+    //remove onclick from all buttons
     disconnectedCallback() {
         for(const button of this.buttons) {
             button.onclick = null;
@@ -140,7 +142,7 @@ class NumberPad extends HTMLElement {
     }
 
     attributeChangedCallback(attributeName, oldVal, newVal) {
-        //console.log(attributeName, oldVal, newVal);
+        //change numpad to light or dark theme
         if(attributeName === 'data-theme') {
             if(newVal === 'light') {
                 for(const button of this.buttons) {
@@ -168,6 +170,7 @@ class NumberPad extends HTMLElement {
         this.outputDisplay.textContent = this.output;
     }
 
+    //change output to input number or remove last number if x was pressed
     modifyOutput(input) {
         if(input == 'x') {
             this.output = this.output.substring(0, this.output.length - 1);
@@ -179,6 +182,7 @@ class NumberPad extends HTMLElement {
         this.render();
     }
 
+    //dispatch event for enter pressed with number as output
     submit() {
         if(this.output != '') {
             this.dispatchEvent(new CustomEvent('numberSubmitted', {

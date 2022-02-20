@@ -146,6 +146,7 @@ class Keyboard extends HTMLElement {
         this.wrongLetters = new Array();
     }
 
+    //add onclick to all buttons
     connectedCallback() {
         const buttons = this.shadowRoot.querySelectorAll('button');
         for(let i = 0; i < buttons.length; i++) {
@@ -158,6 +159,7 @@ class Keyboard extends HTMLElement {
         this.render();
     }
 
+    //remove onclick from all buttons
     disconnectedCallback() {
         const buttons = this.shadowRoot.querySelectorAll('button');
         for(let i = 0; i < buttons.length; i++) {
@@ -166,8 +168,8 @@ class Keyboard extends HTMLElement {
     }
 
     attributeChangedCallback(attributeName, oldVal, newVal) {
-        //console.log(attributeName, oldVal, newVal);
         switch(attributeName) {
+            //add letter to correct and if it was almost remove it from almost
             case 'data-correct':
                 this.correctLetters.push(newVal);
                 if(this.almostLetters.includes(newVal)) {
@@ -183,6 +185,7 @@ class Keyboard extends HTMLElement {
                 this.wrongLetters.push(newVal);
                 break;
 
+            //reset keyboard to inital state
             case 'data-reset':
                 this.correctLetters = new Array();
                 this.almostLetters = new Array();
@@ -193,6 +196,7 @@ class Keyboard extends HTMLElement {
                 }
                 break;
 
+            //change theme of keyboard to light or dark theme
             case 'data-theme':
                 if(newVal === 'light') {
                     for(const key of this.keys) {
@@ -219,6 +223,7 @@ class Keyboard extends HTMLElement {
         return ['data-correct', 'data-almost', 'data-wrong', 'data-reset', 'data-theme'];
     }
 
+    //render keyboard, change color of keys that are incorrect, correct, or almost correct
     render() {
         this.outputDisplay.textContent = this.output;
 
@@ -235,6 +240,7 @@ class Keyboard extends HTMLElement {
         }
     }
 
+    //change output letter if it wasnt correctly or incorrectly guessed already
     modifyOutput(input) {
         if(!this.correctLetters.includes(input) && !this.wrongLetters.includes(input)) {
             this.output = input;
@@ -243,6 +249,7 @@ class Keyboard extends HTMLElement {
         }
     }
 
+    //dispatch event for enter button pressed with chosen letter
     submit() {
         if(this.output != '') {
             this.dispatchEvent(new CustomEvent('letterSubmitted', {

@@ -23,6 +23,7 @@ import './tile.js';
 import './keyboard.js';
 import './numpad.js';
 
+//set up page and buttons
 window.onload = () => {
     wordDisplay = document.querySelector("#targetWord");
 
@@ -41,7 +42,7 @@ window.onload = () => {
     numberPad.addEventListener('numberSubmitted', (e) => {guessNumber(e.detail.output);});
 
     newWordButton = document.querySelector('#newWord');
-    newWordButton.onclick = setUpTargetWord;
+    newWordButton.addEventListener('click', setUpTargetWord);
 
     addWordPageButton = document.querySelector('#gotoAddWordInput');
 
@@ -52,6 +53,7 @@ window.onload = () => {
     });
 };
 
+//check if letter guess is in the word
 const checkGuess = (guess) => {
     if(guess.length > 1) {
         letterGuessOutput.textContent = `guess was longer than 1 letter`;
@@ -72,6 +74,7 @@ const checkGuess = (guess) => {
     }
 };
 
+//check if number guess correlates correctly to letter guess
 const guessNumber = (guess) => {
     //guess was not a number
     if(!Array.from(targetWordNums.values()).includes(guess - 0)) {
@@ -115,6 +118,7 @@ const guessNumber = (guess) => {
     }
 };
 
+//set up the target word to guess and display it
 const setUpTargetWord = async () => {
     //get word list from server
     const response = await fetch('words');
@@ -239,6 +243,7 @@ const toggleTheme = (buttons, keyboards, tileContainers, setPref) => {
     }
 };
 
+//get user preferences from the server and change the page to match them
 const getUserPrefs = async () => {
     const response = await fetch('getUserPrefs');
     const json = await response.json();
@@ -248,6 +253,7 @@ const getUserPrefs = async () => {
     }
 };
 
+//send user preferences to the server
 const setUserPrefs = async (theme) => {
     const formData = `theme=${theme}`;
 
@@ -263,6 +269,7 @@ const setUserPrefs = async (theme) => {
     handleResponse(response);
 };
 
+//handle response from set user prefs post request
 const handleResponse = async (response) => {
     let statusText = '';
     switch(response.status){
