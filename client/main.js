@@ -7,6 +7,8 @@ let numberPad;
 let newWordButton;
 let toggleThemeButton;
 let addWordPageButton;
+let howtoButton;
+let howtoDiv;
 
 const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
@@ -45,6 +47,11 @@ window.onload = () => {
     newWordButton.addEventListener('click', setUpTargetWord);
 
     addWordPageButton = document.querySelector('#gotoAddWordInput');
+
+    howtoDiv = document.querySelector('#howtoDiv');
+    howtoDiv.style.display = 'none';
+    howtoButton = document.querySelector('#howtoButton');
+    howtoButton.addEventListener('click', toggleHowToPlay);
 
     darkThemeOn = true;
     toggleThemeButton = document.querySelector('#toggleThemeButton');
@@ -307,4 +314,14 @@ const handleResponse = async (response) => {
     }
     
     console.log(statusText);
+};
+
+const toggleHowToPlay = () => {
+    console.log(howtoDiv.style.display);
+    if(howtoDiv.style.display === 'none') {
+        howtoDiv.style.display = 'block';
+    }
+    else {
+        howtoDiv.style.display = 'none';
+    }
 };

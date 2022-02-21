@@ -39,6 +39,26 @@ number-pad {
     width: 3em;
 }
 
+#howtoButton {
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    width: 3em;
+}
+
+#howtoDiv {
+    display: none;
+    position: absolute;
+    background-color: #333;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#howtoDiv > p {
+    text-align: center;
+}
+
 .darkThemeElement {
     background-color: #333;
     color: #eee;
