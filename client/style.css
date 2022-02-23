@@ -47,12 +47,15 @@ number-pad {
 }
 
 #howtoDiv {
-    display: none;
+    display: block;
     position: absolute;
     background-color: #333;
     top: 35%;
     left: 50%;
     transform: translate(-50%, -50%);
+
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 10px;
 }
 
 #howtoDiv > p {

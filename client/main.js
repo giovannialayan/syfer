@@ -49,7 +49,6 @@ window.onload = () => {
     addWordPageButton = document.querySelector('#gotoAddWordInput');
 
     howtoDiv = document.querySelector('#howtoDiv');
-    howtoDiv.style.display = 'none';
     howtoButton = document.querySelector('#howtoButton');
     howtoButton.addEventListener('click', toggleHowToPlay);
 
@@ -317,7 +316,6 @@ const handleResponse = async (response) => {
 };
 
 const toggleHowToPlay = () => {
-    console.log(howtoDiv.style.display);
     if(howtoDiv.style.display === 'none') {
         howtoDiv.style.display = 'block';
     }
