@@ -22,7 +22,15 @@ const respondMeta = (request, response, status, type) => {
 };
 
 const getWords = (request, response) => {
-  respond(request, response, JSON.stringify(wordJson), 200, 'application/json');
+  if (!users[request.headers['x-forwarded-for']]) {
+    users[request.headers['x-forwarded-for']] = {};
+    users[request.headers['x-forwarded-for']].wins = new Array();
+  }
+
+  let userWordJson = JSON.parse(JSON.stringify(wordJson));
+  userWordJson.wins = users[request.headers['x-forwarded-for']].wins;
+
+  respond(request, response, JSON.stringify(userWordJson), 200, 'application/json');
 };
 
 // code i stole from https://stackoverflow.com/questions/10685998/how-to-update-a-value-in-a-json-file-and-save-it-through-node-js
@@ -85,7 +93,7 @@ const setUserPrefs = (request, response, body) => {
     message: 'theme required',
   };
 
-  if (!body.theme) {
+  if (!body.theme || !body.howto) {
     responseJson.id = 'setUserPrefsMissingParams';
     return respond(request, response, responseJson, 400, 'application/json');
   }
@@ -98,6 +106,7 @@ const setUserPrefs = (request, response, body) => {
   }
 
   users[request.headers['x-forwarded-for']].theme = body.theme;
+  users[request.headers['x-forwarded-for']].howto = body.howto;
 
   if (responseCode === 201) {
     responseJson.message = 'user added successfully';
@@ -108,12 +117,45 @@ const setUserPrefs = (request, response, body) => {
 };
 
 // respond with user's preferences
-const getUserPrefs = (request, response) => {
+const getUser = (request, response) => {
   if (!users[request.headers['x-forwarded-for']]) {
     users[request.headers['x-forwarded-for']] = {};
   }
   respond(request, response, JSON.stringify(users[request.headers['x-forwarded-for']]), 200, 'application/json');
 };
+
+const addUserWin = (request, response, body) => {
+  const responseJson = {
+    message: 'theme required',
+  };
+
+  if (!body.word) {
+    responseJson.id = 'addUserWinMissingParams';
+    return respond(request, response, responseJson, 400, 'application/json');
+  }
+
+  let responseCode = 204;
+
+  if (!users[request.headers['x-forwarded-for']]) {
+    responseCode = 201;
+    users[request.headers['x-forwarded-for']] = {};
+    users[request.headers['x-forwarded-for']].wins = new Array();
+  }
+
+  users[request.headers['x-forwarded-for']].wins.push(body.word);
+
+  //reset their word wins if they win all of the words
+  if(users[request.headers['x-forward-for']].wins.length === wordJson.words.length) {
+    users[request.headers['x-forward-for']].wins = new Array();
+  }
+
+  if (responseCode === 201) {
+    responseJson.message = 'user added successfully';
+    return respond(request, response, JSON.stringify(responseJson), responseCode, 'application/json');
+  }
+
+  return respondMeta(request, response, responseCode, 'application/json');
+}
 
 // respond with not found message and status code
 const notFound = (request, response) => {
@@ -131,6 +173,7 @@ module.exports = {
   getWords,
   addWord,
   setUserPrefs,
-  getUserPrefs,
+  getUser,
+  addUserWin,
   notFound,
 };

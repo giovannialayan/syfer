@@ -36,7 +36,8 @@ number-pad {
     position: absolute;
     right: 2px;
     top: 2px;
-    width: 3em;
+    width: 4em;
+    z-index: 3;
 }
 
 #howtoButton {
@@ -44,22 +45,33 @@ number-pad {
     left: 2px;
     top: 2px;
     width: 3em;
+    z-index: 3;
 }
 
 #howtoDiv {
     display: block;
     position: absolute;
-    background-color: #333;
     top: 35%;
     left: 50%;
     transform: translate(-50%, -50%);
 
     font-family: Arial, Helvetica, sans-serif;
     padding: 10px;
+    z-index: 3;
 }
 
 #howtoDiv > p {
     text-align: center;
+}
+
+.cover {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 2;
 }
 
 .darkThemeElement {
@@ -74,10 +86,6 @@ number-pad {
     border-width: 2px;
     border-style: solid;
     border-color: #bbb;
-}
-
-.darkThemeIconButton {
-    background-color: #000;
 }
 
 .darkThemeBody {
@@ -97,10 +105,6 @@ number-pad {
     border-width: 2px;
     border-style: solid;
     border-color: #555;
-}
-
-.lightThemeIconButton {
-    background-color: #fff;
 }
 
 .lightThemeBody {

@@ -9,6 +9,7 @@ let toggleThemeButton;
 let addWordPageButton;
 let howtoButton;
 let howtoDiv;
+let howtoCover;
 
 const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
@@ -20,6 +21,7 @@ let guessWord;
 let lastGuess;
 
 let darkThemeOn;
+let howtoOn;
 
 import './tile.js';
 import './keyboard.js';
@@ -48,14 +50,16 @@ window.onload = () => {
 
     addWordPageButton = document.querySelector('#gotoAddWordInput');
 
+    howtoOn = true;
     howtoDiv = document.querySelector('#howtoDiv');
+    howtoCover = document.querySelector('.cover');
     howtoButton = document.querySelector('#howtoButton');
-    howtoButton.addEventListener('click', toggleHowToPlay);
+    howtoButton.addEventListener('click', () => {toggleHowToPlay(true)});
 
     darkThemeOn = true;
     toggleThemeButton = document.querySelector('#toggleThemeButton');
     toggleThemeButton.addEventListener('click', () => {
-        toggleTheme([addWordPageButton, newWordButton], [keyboard, numberPad], [wordDisplay, guessWordDisplay], true);
+        toggleTheme([howtoDiv], [addWordPageButton, newWordButton], [keyboard, numberPad], [wordDisplay, guessWordDisplay], true);
     });
 };
 
@@ -107,6 +111,12 @@ const guessNumber = (guess) => {
 
         keyboard.style.display = 'block';
         numberPad.style.display = 'none';
+
+        console.log(targetWord, guessWord.join(''));
+        if(targetWord === guessWord.join('')) {
+            letterGuessOutput.textContent = `congrats, you win`;
+            addUserWinWord(targetWord);
+        }
     }
     //guess was not correct
     else {
@@ -129,8 +139,11 @@ const setUpTargetWord = async () => {
     //get word list from server
     const response = await fetch('words');
     const json = await response.json();
-    const words = json.words;
-    
+    let words = json.words;
+    const wonWords = json.wins;
+    words = words.filter((e) => !wonWords.includes(e));
+    console.log(words, wonWords);
+
     //choose random word
     targetWord = words[Math.floor(Math.random() * words.length)];
 
@@ -198,9 +211,13 @@ const setUpTargetWord = async () => {
 };
 
 //toggle dark theme and light theme
-const toggleTheme = (buttons, keyboards, tileContainers, setPref) => {
+const toggleTheme = (elements, buttons, keyboards, tileContainers, setPref) => {
     if(darkThemeOn) {
         document.body.classList.replace('darkThemeBody', 'lightThemeBody');
+
+        for(const e of elements) {
+            e.classList.replace('darkThemeElement', 'lightThemeElement');
+        }
 
         for(const b of buttons) {
             b.classList.replace('darkThemeButton', 'lightThemeButton');
@@ -217,11 +234,15 @@ const toggleTheme = (buttons, keyboards, tileContainers, setPref) => {
             }
         }
 
-        toggleThemeButton.classList.replace('darkThemeIconButton', 'lightThemeIconButton');
         toggleThemeButton.src = 'images/lightBulbLightTheme.png';
+        howtoButton.src = 'images/questionLightTheme.png';
     }
     else {
         document.body.classList.replace('lightThemeBody', 'darkThemeBody');
+
+        for(const e of elements) {
+            e.classList.replace('lightThemeButton', 'darkThemeButton');
+        }
 
         for(const b of buttons) {
             b.classList.replace('lightThemeButton', 'darkThemeButton');
@@ -238,30 +259,34 @@ const toggleTheme = (buttons, keyboards, tileContainers, setPref) => {
             }
         }
 
-        toggleThemeButton.classList.replace('lightThemeIconButton', 'darkThemeIconButton');
         toggleThemeButton.src = 'images/lightBulbDarkTheme.png';
+        howtoButton.src = 'images/questionDarkTheme.png';
     }
 
     darkThemeOn = !darkThemeOn;
 
     if(setPref) {
-        setUserPrefs(darkThemeOn ? 'dark' : 'light');
+        setUserPrefs(darkThemeOn ? 'dark' : 'light', howtoOn);
     }
 };
 
 //get user preferences from the server and change the page to match them
 const getUserPrefs = async () => {
-    const response = await fetch('getUserPrefs');
+    const response = await fetch('getUser');
     const json = await response.json();
 
     if(json.theme === 'light') {
-        toggleTheme([toggleThemeButton, addWordPageButton, newWordButton], [keyboard, numberPad], [wordDisplay, guessWordDisplay], false);
+        toggleTheme([howtoDiv], [toggleThemeButton, addWordPageButton, newWordButton], [keyboard, numberPad], [wordDisplay, guessWordDisplay], false);
+    }
+
+    if(json.howto === 'false') {
+        toggleHowToPlay(false);
     }
 };
 
 //send user preferences to the server
-const setUserPrefs = async (theme) => {
-    const formData = `theme=${theme}`;
+const setUserPrefs = async (theme, howto) => {
+    const formData = `theme=${theme}&howto=${howto}`;
 
     const response = await fetch('/setUserPrefs', {
       method: 'POST',
@@ -300,7 +325,7 @@ const handleResponse = async (response) => {
             break;
         
         default:
-            statusText += 'response cot not implemented by the server';
+            statusText += 'response code not implemented by the server';
             break;
     }
 
@@ -315,11 +340,34 @@ const handleResponse = async (response) => {
     console.log(statusText);
 };
 
-const toggleHowToPlay = () => {
-    if(howtoDiv.style.display === 'none') {
-        howtoDiv.style.display = 'block';
+const toggleHowToPlay = (setPref) => {
+    if(howtoOn) {
+        howtoDiv.style.display = 'none';
+        howtoCover.style.display = 'none';
     }
     else {
-        howtoDiv.style.display = 'none';
+        howtoDiv.style.display = 'block';
+        howtoCover.style.display = 'block';
+    }
+
+    howtoOn = !howtoOn;
+
+    if(setPref) {
+        setUserPrefs(darkThemeOn ? 'dark' : 'light', howtoOn);
     }
 };
+
+const addUserWinWord = async (word) => {
+    const formData = `word=${word}`;
+
+    const response = await fetch('/addUserWin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-ww-form-urlencoded',
+        'Accept': 'application/json',
+      },
+      body: formData,
+    });
+  
+    handleResponse(response);
+}

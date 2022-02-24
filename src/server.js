@@ -19,10 +19,13 @@ const urlStruct = {
   '/images/lightBulbDarkTheme.png': htmlHandler.getLightBulbDark,
   '/images/lightBulbLightTheme.png': htmlHandler.getLightBulbLight,
   '/images/favicon.ico': htmlHandler.getFavicon,
+  '/images/questionDarkTheme.png': htmlHandler.getQuestionDark,
+  '/images/questionLightTheme.png': htmlHandler.getQuestionLight,
   '/words': responses.getWords,
   '/addWord': responses.addWord,
-  '/getUserPrefs': responses.getUserPrefs,
+  '/getUser': responses.getUser,
   '/setUserPrefs': responses.setUserPrefs,
+  '/addUserWin': responses.addUserWin,
   notFound: responses.notFound,
 };
 

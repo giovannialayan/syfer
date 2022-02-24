@@ -12,6 +12,8 @@ const wordAdderStyle = fs.readFileSync(`${__dirname}/../client/addWordStyle.css`
 const lightBlulbDark = fs.readFileSync(`${__dirname}/../client/images/light_bulb_dark_theme.png`);
 const lightBlulbLight = fs.readFileSync(`${__dirname}/../client/images/light_bulb_light_theme.png`);
 const favicon = fs.readFileSync(`${__dirname}/../client/images/favicon.ico`);
+const questionDark = fs.readFileSync(`${__dirname}/../client/images/question_dark_theme.png`);
+const questionLight = fs.readFileSync(`${__dirname}/../client/images/question_light_theme.png`);
 
 // respond with a file
 const serveFile = (request, response, file, type) => {
@@ -80,6 +82,16 @@ const getFavicon = (request, response) => {
   serveFile(request, response, favicon, 'image/x-icon');
 };
 
+// get question mark image for dark theme
+const getQuestionDark = (request, response) => {
+  serveFile(request, response, questionDark, 'image/jpg');
+};
+
+// get question mark image for light theme
+const getQuestionLight = (request, response) => {
+  serveFile(request, response, questionLight, 'image/jpg');
+};
+
 module.exports = {
   getIndex,
   getStyle,
@@ -93,4 +105,6 @@ module.exports = {
   getLightBulbDark,
   getLightBulbLight,
   getFavicon,
+  getQuestionDark,
+  getQuestionLight,
 };

@@ -9,6 +9,5 @@ https://stackoverflow.com/questions/30684759/flexbox-how-to-get-divs-to-fill-up-
 https://stackoverflow.com/questions/3653065/get-local-ip-address-in-node-js
 https://stackoverflow.com/questions/8683528/embed-image-in-a-button-element
 https://www.w3schools.com/html/html_favicon.asp
-
-//note to future self, if you feel like going through with styling the caret, use this, but you probably shouldnt
-https://stackoverflow.com/questions/7339333/styling-text-input-caret
+https://stackoverflow.com/questions/8107856/how-to-determine-a-users-ip-address-in-node
+https://stackoverflow.com/questions/728360/how-do-i-correctly-clone-a-javascript-object
