@@ -24,10 +24,10 @@ const respondMeta = (request, response, status, type) => {
 const getWords = (request, response) => {
   if (!users[request.headers['x-forwarded-for']]) {
     users[request.headers['x-forwarded-for']] = {};
-    users[request.headers['x-forwarded-for']].wins = new Array();
+    users[request.headers['x-forwarded-for']].wins = [];
   }
 
-  let userWordJson = JSON.parse(JSON.stringify(wordJson));
+  const userWordJson = JSON.parse(JSON.stringify(wordJson));
   userWordJson.wins = users[request.headers['x-forwarded-for']].wins;
 
   respond(request, response, JSON.stringify(userWordJson), 200, 'application/json');
@@ -139,14 +139,14 @@ const addUserWin = (request, response, body) => {
   if (!users[request.headers['x-forwarded-for']]) {
     responseCode = 201;
     users[request.headers['x-forwarded-for']] = {};
-    users[request.headers['x-forwarded-for']].wins = new Array();
+    users[request.headers['x-forwarded-for']].wins = [];
   }
 
   users[request.headers['x-forwarded-for']].wins.push(body.word);
 
-  //reset their word wins if they win all of the words
-  if(users[request.headers['x-forward-for']].wins.length === wordJson.words.length) {
-    users[request.headers['x-forward-for']].wins = new Array();
+  // reset their word wins if they win all of the words
+  if (users[request.headers['x-forward-for']].wins.length === wordJson.words.length) {
+    users[request.headers['x-forward-for']].wins = [];
   }
 
   if (responseCode === 201) {
@@ -155,7 +155,7 @@ const addUserWin = (request, response, body) => {
   }
 
   return respondMeta(request, response, responseCode, 'application/json');
-}
+};
 
 // respond with not found message and status code
 const notFound = (request, response) => {

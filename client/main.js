@@ -141,7 +141,7 @@ const setUpTargetWord = async () => {
     const json = await response.json();
     let words = json.words;
     const wonWords = json.wins;
-    words = words.filter((e) => !wonWords.includes(e));
+    words = words.filter((w) => !wonWords.includes(w));
     console.log(words, wonWords);
 
     //choose random word
