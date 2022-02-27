@@ -152,7 +152,7 @@ const toggleTheme = (buttons, wordListContainer, textInput, textElements, setPre
 
 //get user preferences from the server and change the page to match them
 const getUserPrefs = async () => {
-  const response = await fetch('getUserPrefs');
+  const response = await fetch('getUser');
   const json = await response.json();
 
   if(json.theme === 'light') {

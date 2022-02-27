@@ -20,6 +20,8 @@ let guessWord;
 
 let lastGuess;
 
+let userWonWords;
+
 let darkThemeOn;
 let howtoOn;
 
@@ -31,9 +33,7 @@ import './numpad.js';
 window.onload = () => {
     wordDisplay = document.querySelector("#targetWord");
 
-    setUpTargetWord();
-
-    getUserPrefs();
+    getUser(setUpTargetWord);
 
     keyboard = document.querySelector('letter-keyboard');
     keyboard.addEventListener('letterSubmitted', (e) => {checkGuess(e.detail.output);})
@@ -55,6 +55,7 @@ window.onload = () => {
     howtoCover = document.querySelector('.cover');
     howtoButton = document.querySelector('#howtoButton');
     howtoButton.addEventListener('click', () => {toggleHowToPlay(true)});
+    howtoCover.addEventListener('click', () => {toggleHowToPlay(true)});
 
     darkThemeOn = true;
     toggleThemeButton = document.querySelector('#toggleThemeButton');
@@ -140,9 +141,7 @@ const setUpTargetWord = async () => {
     const response = await fetch('words');
     const json = await response.json();
     let words = json.words;
-    const wonWords = json.wins;
-    words = words.filter((w) => !wonWords.includes(w));
-    console.log(words, wonWords);
+    words = words.filter((w) => !userWonWords.includes(w));
 
     //choose random word
     targetWord = words[Math.floor(Math.random() * words.length)];
@@ -208,6 +207,13 @@ const setUpTargetWord = async () => {
     
     //remove output text
     letterGuessOutput.textContent = '';
+
+    //remove last guess
+    lastGuess = '';
+
+    //reset keyboard and numpad display
+    keyboard.style.display = 'block';
+    numberPad.style.display = 'none';
 };
 
 //toggle dark theme and light theme
@@ -241,7 +247,7 @@ const toggleTheme = (elements, buttons, keyboards, tileContainers, setPref) => {
         document.body.classList.replace('lightThemeBody', 'darkThemeBody');
 
         for(const e of elements) {
-            e.classList.replace('lightThemeButton', 'darkThemeButton');
+            e.classList.replace('lightThemeElement', 'darkThemeElement');
         }
 
         for(const b of buttons) {
@@ -271,7 +277,7 @@ const toggleTheme = (elements, buttons, keyboards, tileContainers, setPref) => {
 };
 
 //get user preferences from the server and change the page to match them
-const getUserPrefs = async () => {
+const getUser = async (callback) => {
     const response = await fetch('getUser');
     const json = await response.json();
 
@@ -282,6 +288,9 @@ const getUserPrefs = async () => {
     if(json.howto === 'false') {
         toggleHowToPlay(false);
     }
+
+    userWonWords = json.wonWords;
+    callback();
 };
 
 //send user preferences to the server
@@ -358,6 +367,7 @@ const toggleHowToPlay = (setPref) => {
 };
 
 const addUserWinWord = async (word) => {
+    userWonWords.push(word);
     const formData = `word=${word}`;
 
     const response = await fetch('/addUserWin', {

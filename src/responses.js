@@ -1,12 +1,34 @@
 const fs = require('fs');
 
-const wordListFileName = `${__dirname}/../data/words.json`;
-let wordJson = fs.readFileSync(`${__dirname}/../data/words.json`);
-wordJson = JSON.parse(wordJson);
+let wordJson = {};
 
 const letterWhitelist = /^[a-z]*$/;
 
-const users = {};
+const defaultUser = { theme: 'dark', howto: 'true', wonWords: '' };
+
+// Import the functions you need from the SDKs you need
+const { initializeApp } = require('firebase/app');
+const {
+  getDatabase, ref, set, get, update,
+} = require('firebase/database');
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: 'AIzaSyD3j_RF_jyViDwxRIFaaCl53ukoKOOKhvs',
+  authDomain: 'syfer-48ed9.firebaseapp.com',
+  projectId: 'syfer-48ed9',
+  storageBucket: 'syfer-48ed9.appspot.com',
+  messagingSenderId: '812087050558',
+  appId: '1:812087050558:web:e9b63893a26875b90dec6f',
+  measurementId: 'G-5KBCRQCQFM',
+};
+
+// Initialize Firebase
+const firebase = initializeApp(firebaseConfig);
+const database = getDatabase(firebase);
 
 // send response with content
 const respond = (request, response, content, status, type) => {
@@ -21,27 +43,32 @@ const respondMeta = (request, response, status, type) => {
   response.end();
 };
 
-const getWords = (request, response) => {
-  if (!users[request.headers['x-forwarded-for']]) {
-    users[request.headers['x-forwarded-for']] = {};
-    users[request.headers['x-forwarded-for']].wins = [];
-  }
-
-  const userWordJson = JSON.parse(JSON.stringify(wordJson));
-  userWordJson.wins = users[request.headers['x-forwarded-for']].wins;
-
-  respond(request, response, JSON.stringify(userWordJson), 200, 'application/json');
+const saveUserToDatabase = (userId, theme, howto, wonWords) => {
+  set(ref(database, `users/${userId}`), {
+    theme,
+    howto,
+    wonWords,
+  });
 };
 
-// code i stole from https://stackoverflow.com/questions/10685998/how-to-update-a-value-in-a-json-file-and-save-it-through-node-js
-// before i use firebase to do this instead
-// save data to file
-const saveToFile = (fileName, content) => {
-  fs.writeFile(fileName, JSON.stringify(content, null, 2), (err) => {
-    if (err) {
-      return console.log(err);
+const getWords = (request, response) => {
+  const wordRef = ref(database, '/words');
+  get(wordRef).then((snapshot) => {
+    wordJson.words = snapshot.val().words.split(',');
+    respond(request, response, JSON.stringify(wordJson), 200, 'application/json');
+  });
+};
+
+// read word list from database, add word to list then save word list to database
+const addWordToDatabase = (word) => {
+  const wordsRef = ref(database, '/words');
+  get(wordsRef).then((snapshot) => {
+    const wordList = snapshot.val().words.split(',');
+    if (!wordList.includes(word)) {
+      wordList.push(word);
+      wordList.sort();
     }
-    return console.log(`saved to ${fileName}`);
+    update(wordsRef, { words: wordList.join(',') });
   });
 };
 
@@ -69,6 +96,7 @@ const addWord = (request, response, body) => {
     responseJson.id = 'addWordNotOnlyLetters';
     return respond(request, response, JSON.stringify(responseJson), 400, 'application/json');
   }
+
   // check if character is already in the word
   if (wordJson.words.includes(newWord)) {
     responseJson.message = 'that word is already in the list';
@@ -78,9 +106,7 @@ const addWord = (request, response, body) => {
 
   const responseCode = 201;
 
-  wordJson.words.push(newWord);
-  wordJson.words.sort();
-  saveToFile(wordListFileName, wordJson);
+  addWordToDatabase(newWord);
 
   responseJson.message = `${newWord} was added to the word list`;
   responseJson.words = wordJson.words;
@@ -100,33 +126,41 @@ const setUserPrefs = (request, response, body) => {
 
   let responseCode = 204;
 
-  if (!users[request.headers['x-forwarded-for']]) {
+  const user = request.headers['x-forwarded-for'];
+  const userRef = ref(database, `users/${user}`);
+  get(userRef).then((snapshot) => {
+    if (snapshot.exists()) {
+      saveUserToDatabase(user, body.theme, body.howto, snapshot.val().wonWords);
+
+      return respondMeta(request, response, responseCode, 'application/json');
+    }
+    saveUserToDatabase(user, defaultUser.theme, defaultUser.howto, defaultUser.wonWords);
+
     responseCode = 201;
-    users[request.headers['x-forwarded-for']] = {};
-  }
-
-  users[request.headers['x-forwarded-for']].theme = body.theme;
-  users[request.headers['x-forwarded-for']].howto = body.howto;
-
-  if (responseCode === 201) {
     responseJson.message = 'user added successfully';
     return respond(request, response, JSON.stringify(responseJson), responseCode, 'application/json');
-  }
+  });
 
-  return respondMeta(request, response, responseCode, 'application/json');
+  return null;
 };
 
 // respond with user's preferences
 const getUser = (request, response) => {
-  if (!users[request.headers['x-forwarded-for']]) {
-    users[request.headers['x-forwarded-for']] = {};
-  }
-  respond(request, response, JSON.stringify(users[request.headers['x-forwarded-for']]), 200, 'application/json');
+  const user = request.headers['x-forwarded-for'];
+  const userRef = ref(database, `users/${user}`);
+  get(userRef).then((snapshot) => {
+    if (!snapshot.exists()) {
+      saveUserToDatabase(user, defaultUser.theme, defaultUser.howto, defaultUser.wonWords);
+      respond(request, response, 200, 'application/json');
+    }
+
+    respond(request, response, JSON.stringify(snapshot.val()), 200, 'application/json');
+  });
 };
 
 const addUserWin = (request, response, body) => {
   const responseJson = {
-    message: 'theme required',
+    message: 'word required',
   };
 
   if (!body.word) {
@@ -136,25 +170,28 @@ const addUserWin = (request, response, body) => {
 
   let responseCode = 204;
 
-  if (!users[request.headers['x-forwarded-for']]) {
+  const user = request.headers['x-forwarded-for'];
+  const userRef = ref(database, `users/${user}`);
+  get(userRef).then((snapshot) => {
+    if (snapshot.exists()) {
+      let userWords = snapshot.val().wonWords.split(',');
+      userWords.push(body.word);
+
+      if (userWords.length === wordJson.words.length) {
+        userWords = [];
+      }
+
+      saveUserToDatabase(user, body.theme, body.howto, userWords.join(','));
+
+      return respondMeta(request, response, responseCode, 'application/json');
+    }
+    saveUserToDatabase(user, defaultUser.theme, defaultUser.howto, defaultUser.wonWords);
     responseCode = 201;
-    users[request.headers['x-forwarded-for']] = {};
-    users[request.headers['x-forwarded-for']].wins = [];
-  }
-
-  users[request.headers['x-forwarded-for']].wins.push(body.word);
-
-  // reset their word wins if they win all of the words
-  if (users[request.headers['x-forward-for']].wins.length === wordJson.words.length) {
-    users[request.headers['x-forward-for']].wins = [];
-  }
-
-  if (responseCode === 201) {
     responseJson.message = 'user added successfully';
     return respond(request, response, JSON.stringify(responseJson), responseCode, 'application/json');
-  }
+  });
 
-  return respondMeta(request, response, responseCode, 'application/json');
+  return null;
 };
 
 // respond with not found message and status code
