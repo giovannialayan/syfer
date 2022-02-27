@@ -42,7 +42,7 @@ const respondMeta = (request, response, status, type) => {
 };
 
 const saveUserToDatabase = (userId, theme, howto, wonWords) => {
-  set(ref(database, `users/${userId}`), {
+  set(ref(database, `users/${userId.replace(/./g, '&')}`), {
     theme,
     howto,
     wonWords,
@@ -124,7 +124,8 @@ const setUserPrefs = (request, response, body) => {
 
   let responseCode = 204;
 
-  const user = request.headers['x-forwarded-for'];
+  let user = request.headers['x-forwarded-for'] + '';
+  user = user.replace(/./g, '&');
   const userRef = ref(database, `users/${user}`);
   get(userRef).then((snapshot) => {
     if (snapshot.exists()) {
@@ -144,12 +145,13 @@ const setUserPrefs = (request, response, body) => {
 
 // respond with user's preferences
 const getUser = (request, response) => {
-  const user = request.headers['x-forwarded-for'];
+  let user = request.headers['x-forwarded-for'] + '';
+  user = user.replace(/./g, '&');
   const userRef = ref(database, `users/${user}`);
   get(userRef).then((snapshot) => {
     if (!snapshot.exists()) {
       saveUserToDatabase(user, defaultUser.theme, defaultUser.howto, defaultUser.wonWords);
-      respond(request, response, 200, 'application/json');
+      respondMeta(request, response, 200, 'application/json');
     }
 
     respond(request, response, JSON.stringify(snapshot.val()), 200, 'application/json');
@@ -168,7 +170,8 @@ const addUserWin = (request, response, body) => {
 
   let responseCode = 204;
 
-  const user = request.headers['x-forwarded-for'];
+  let user = request.headers['x-forwarded-for'] + '';
+  user = user.replace(/./g, '&');
   const userRef = ref(database, `users/${user}`);
   get(userRef).then((snapshot) => {
     if (snapshot.exists()) {
