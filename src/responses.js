@@ -1,6 +1,4 @@
-const fs = require('fs');
-
-let wordJson = {};
+const wordJson = {};
 
 const letterWhitelist = /^[a-z]*$/;
 
