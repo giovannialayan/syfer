@@ -67,12 +67,26 @@ window.onload = () => {
     window.addEventListener('keydown', (e) => {
         const key = e.key.toLowerCase();
         //add if keyboard is displayed or numpad is displayed do that one
-        if(letters.includes(key)) {
-            keyboard.modifyOutput(key);
+        if(keyboard.style.display !== 'none') {
+            if(letters.includes(key)) {
+                keyboard.modifyOutput(key);
+            }
+            else if(key === 'enter') {
+                keyboard.submit();
+            }
         }
-        else if(key === 'enter') {
-            keyboard.submit();
+        else if(numberPad.style.display !== 'none') {
+            if(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(key)) {
+                numberPad.modifyOutput(key);
+            }
+            else if(key === 'enter') {
+                numberPad.submit();
+            }
+            else if(key === 'backspace') {
+                numberPad.modifyOutput('x');
+            }
         }
+        console.log(key);
     });
 };
 

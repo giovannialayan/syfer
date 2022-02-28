@@ -11,3 +11,59 @@ https://stackoverflow.com/questions/8683528/embed-image-in-a-button-element
 https://www.w3schools.com/html/html_favicon.asp
 https://stackoverflow.com/questions/8107856/how-to-determine-a-users-ip-address-in-node
 https://stackoverflow.com/questions/728360/how-do-i-correctly-clone-a-javascript-object
+
+what is the purpose of your application
+- it is a casual game where you have to guess a word and the only information you are given at the start is the alphabetical order of each letter in the word.
+
+what data is being stored and delivered by the api
+- the list of words used by the game and each user's settings and words they have won with
+
+what went right in the development of this project
+- 
+
+what went wrong in the development of this project
+- 
+
+what did you learn while developing this project
+-
+
+If you were to continue, what would you do to improve your application?
+- i would add some sort of score so a player can see how well they did. i would also add a way to share how you did with a word similar to how wordle uses emojis
+
+If you went above and beyond, how did you do so?
+- i used firebase to store the word list and user data
+
+If you used any borrowed code or code fragments, where did you get them from?
+What do the code fragments do? Where are they in your code?
+- 
+
+endpoints
+url: /words
+supported methods: GET, HEAD
+query params: none
+description: gets the word list
+return types: JSON
+
+url: /addWord
+supported methods: POST
+query params: word
+description: adds a word to the word list
+return types: JSON
+
+url: /getUser
+supported methods: GET, HEAD
+query params: none
+description: gets the theme, howto, and won words of the user of the ip address that made the request
+return types: JSON
+
+url: /setUserPrefs
+supported methods: POST
+query params: theme, howto
+description: set user's theme and how to preferences
+return types: JSON
+
+url: /addUserWin
+supported methods: POST
+query params: word
+description: add a word to the user's list of words that they have won with
+return types: JSON
