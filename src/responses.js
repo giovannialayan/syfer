@@ -41,11 +41,11 @@ const respondMeta = (request, response, status, type) => {
   response.end();
 };
 
-const saveUserToDatabase = (userId, theme, howto, wonWords) => {
-  set(ref(database, `users/${userId.replace(/./g, '&')}`), {
-    theme,
-    howto,
-    wonWords,
+const saveUserToDatabase = (userId, themeInput, howtoInput, wonWordsInput) => {
+  set(ref(database, `users/${userId.replace(/\./g, '&')}`), {
+    theme: themeInput,
+    howto: howtoInput,
+    wonWords: wonWordsInput,
   });
 };
 
@@ -124,8 +124,8 @@ const setUserPrefs = (request, response, body) => {
 
   let responseCode = 204;
 
-  let user = request.headers['x-forwarded-for'] + '';
-  user = user.replace(/./g, '&');
+  let user = `${request.headers['x-forwarded-for']}`;
+  user = user.replace(/\./g, '&');
   const userRef = ref(database, `users/${user}`);
   get(userRef).then((snapshot) => {
     if (snapshot.exists()) {
@@ -145,8 +145,8 @@ const setUserPrefs = (request, response, body) => {
 
 // respond with user's preferences
 const getUser = (request, response) => {
-  let user = request.headers['x-forwarded-for'] + '';
-  user = user.replace(/./g, '&');
+  let user = `${request.headers['x-forwarded-for']}`;
+  user = user.replace(/\./g, '&');
   const userRef = ref(database, `users/${user}`);
   get(userRef).then((snapshot) => {
     if (!snapshot.exists()) {
@@ -165,13 +165,13 @@ const addUserWin = (request, response, body) => {
 
   if (!body.word) {
     responseJson.id = 'addUserWinMissingParams';
-    return respond(request, response, responseJson, 400, 'application/json');
+    return respond(request, response, JSON.stringify(responseJson), 400, 'application/json');
   }
 
   let responseCode = 204;
 
-  let user = request.headers['x-forwarded-for'] + '';
-  user = user.replace(/./g, '&');
+  let user = `${request.headers['x-forwarded-for']}`;
+  user = user.replace(/\./g, '&');
   const userRef = ref(database, `users/${user}`);
   get(userRef).then((snapshot) => {
     if (snapshot.exists()) {
@@ -182,7 +182,7 @@ const addUserWin = (request, response, body) => {
         userWords = [];
       }
 
-      saveUserToDatabase(user, body.theme, body.howto, userWords.join(','));
+      saveUserToDatabase(user, snapshot.val().theme, snapshot.val().howto, userWords.join(','));
 
       return respondMeta(request, response, responseCode, 'application/json');
     }

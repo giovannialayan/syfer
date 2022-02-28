@@ -113,7 +113,6 @@ const guessNumber = (guess) => {
         keyboard.style.display = 'block';
         numberPad.style.display = 'none';
 
-        console.log(targetWord, guessWord.join(''));
         if(targetWord === guessWord.join('')) {
             letterGuessOutput.textContent = `congrats, you win`;
             addUserWinWord(targetWord);
@@ -289,7 +288,7 @@ const getUser = async (callback) => {
         toggleHowToPlay(false);
     }
 
-    userWonWords = json.wonWords;
+    userWonWords = json.wonWords.split(',');
     callback();
 };
 
