@@ -62,6 +62,18 @@ window.onload = () => {
     toggleThemeButton.addEventListener('click', () => {
         toggleTheme([howtoDiv], [addWordPageButton, newWordButton], [keyboard, numberPad], [wordDisplay, guessWordDisplay], true);
     });
+
+    //keypresses for keyboards
+    window.addEventListener('keydown', (e) => {
+        const key = e.key.toLowerCase();
+        //add if keyboard is displayed or numpad is displayed do that one
+        if(letters.includes(key)) {
+            keyboard.modifyOutput(key);
+        }
+        else if(key === 'enter') {
+            keyboard.submit();
+        }
+    });
 };
 
 //check if letter guess is in the word

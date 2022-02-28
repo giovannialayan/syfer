@@ -162,7 +162,7 @@ const getUser = (request, response) => {
     else {
       if (!snapshot.exists()) {
         saveUserToDatabase(user, defaultUser.theme, defaultUser.howto, defaultUser.wonWords);
-        respondMeta(request, response, 200, 'application/json');
+        respond(request, response, JSON.stringify(defaultUser), 200, 'application/json');
       }
   
       respond(request, response, JSON.stringify(snapshot.val()), 200, 'application/json');
