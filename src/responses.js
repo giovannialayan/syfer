@@ -41,6 +41,7 @@ const respondMeta = (request, response, status, type) => {
   response.end();
 };
 
+//save specified user and their values to the database
 const saveUserToDatabase = (userId, themeInput, howtoInput, wonWordsInput) => {
   set(ref(database, `users/${userId.replace(/\./g, '&')}`), {
     theme: themeInput,
@@ -49,11 +50,17 @@ const saveUserToDatabase = (userId, themeInput, howtoInput, wonWordsInput) => {
   });
 };
 
+//get word list from database, respond with the word list if a get request
 const getWords = (request, response) => {
   const wordRef = ref(database, '/words');
   get(wordRef).then((snapshot) => {
-    wordJson.words = snapshot.val().words.split(',');
-    respond(request, response, JSON.stringify(wordJson), 200, 'application/json');
+    if(request.method === 'HEAD') {
+      respondMeta(request, response, 200, 'application/json');
+    }
+    else {
+      wordJson.words = snapshot.val().words.split(',');
+      respond(request, response, JSON.stringify(wordJson), 200, 'application/json');
+    }
   });
 };
 
@@ -149,15 +156,21 @@ const getUser = (request, response) => {
   user = user.replace(/\./g, '&');
   const userRef = ref(database, `users/${user}`);
   get(userRef).then((snapshot) => {
-    if (!snapshot.exists()) {
-      saveUserToDatabase(user, defaultUser.theme, defaultUser.howto, defaultUser.wonWords);
+    if(request.method === 'HEAD') {
       respondMeta(request, response, 200, 'application/json');
     }
-
-    respond(request, response, JSON.stringify(snapshot.val()), 200, 'application/json');
+    else {
+      if (!snapshot.exists()) {
+        saveUserToDatabase(user, defaultUser.theme, defaultUser.howto, defaultUser.wonWords);
+        respondMeta(request, response, 200, 'application/json');
+      }
+  
+      respond(request, response, JSON.stringify(snapshot.val()), 200, 'application/json');
+    }
   });
 };
 
+//add a word a user won with to their user and update their entry in the database
 const addUserWin = (request, response, body) => {
   const responseJson = {
     message: 'word required',

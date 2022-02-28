@@ -74,7 +74,8 @@ const onRequest = (request, response) => {
 
   if (request.method === 'POST') {
     handlePost(request, response, parsedUrl);
-  } else {
+  }
+  else {
     handleGet(request, response, parsedUrl);
   }
 };
