@@ -28,7 +28,7 @@ what did you learn while developing this project
 -
 
 If you were to continue, what would you do to improve your application?
-- i would add some sort of score so a player can see how well they did. i would also add a way to share how you did with a word similar to how wordle uses emojis
+- i would add some sort of score so a player can see how well they did. i would add something to show the player that the data is loading from the server and make it so they cant interact with things that rely on the data before the client gets it. i would also add a way to share how you did with a word similar to how wordle uses emojis
 
 If you went above and beyond, how did you do so?
 - i used firebase to store the word list and user data

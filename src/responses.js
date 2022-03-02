@@ -41,7 +41,7 @@ const respondMeta = (request, response, status, type) => {
   response.end();
 };
 
-//save specified user and their values to the database
+// save specified user and their values to the database
 const saveUserToDatabase = (userId, themeInput, howtoInput, wonWordsInput) => {
   set(ref(database, `users/${userId.replace(/\./g, '&')}`), {
     theme: themeInput,
@@ -50,14 +50,13 @@ const saveUserToDatabase = (userId, themeInput, howtoInput, wonWordsInput) => {
   });
 };
 
-//get word list from database, respond with the word list if a get request
+// get word list from database, respond with the word list if a get request
 const getWords = (request, response) => {
   const wordRef = ref(database, '/words');
   get(wordRef).then((snapshot) => {
-    if(request.method === 'HEAD') {
+    if (request.method === 'HEAD') {
       respondMeta(request, response, 200, 'application/json');
-    }
-    else {
+    } else {
       wordJson.words = snapshot.val().words.split(',');
       respond(request, response, JSON.stringify(wordJson), 200, 'application/json');
     }
@@ -102,7 +101,7 @@ const addWord = (request, response, body) => {
     return respond(request, response, JSON.stringify(responseJson), 400, 'application/json');
   }
 
-  // check if character is already in the word
+  // check if character is already in the word list
   if (wordJson.words.includes(newWord)) {
     responseJson.message = 'that word is already in the list';
     responseJson.id = 'addWordNotNewWord';
@@ -115,6 +114,8 @@ const addWord = (request, response, body) => {
 
   responseJson.message = `${newWord} was added to the word list`;
   responseJson.words = wordJson.words;
+  responseJson.words.push(newWord);
+  responseJson.words.sort();
   return respond(request, response, JSON.stringify(responseJson), responseCode, 'application/json');
 };
 
@@ -156,21 +157,22 @@ const getUser = (request, response) => {
   user = user.replace(/\./g, '&');
   const userRef = ref(database, `users/${user}`);
   get(userRef).then((snapshot) => {
-    if(request.method === 'HEAD') {
-      respondMeta(request, response, 200, 'application/json');
+    if (request.method === 'HEAD') {
+      return respondMeta(request, response, 200, 'application/json');
     }
-    else {
-      if (!snapshot.exists()) {
-        saveUserToDatabase(user, defaultUser.theme, defaultUser.howto, defaultUser.wonWords);
-        respond(request, response, JSON.stringify(defaultUser), 200, 'application/json');
-      }
-  
-      respond(request, response, JSON.stringify(snapshot.val()), 200, 'application/json');
+
+    if (!snapshot.exists()) {
+      saveUserToDatabase(user, defaultUser.theme, defaultUser.howto, defaultUser.wonWords);
+      return respond(request, response, JSON.stringify(defaultUser), 200, 'application/json');
     }
+
+    return respond(request, response, JSON.stringify(snapshot.val()), 200, 'application/json');
   });
+
+  return null;
 };
 
-//add a word a user won with to their user and update their entry in the database
+// add a word a user won with to their user and update their entry in the database
 const addUserWin = (request, response, body) => {
   const responseJson = {
     message: 'word required',

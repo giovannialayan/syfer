@@ -86,7 +86,6 @@ window.onload = () => {
                 numberPad.modifyOutput('x');
             }
         }
-        console.log(key);
     });
 };
 
