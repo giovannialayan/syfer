@@ -1,69 +1,83 @@
-https://stackoverflow.com/questions/756567/regular-expression-for-excluding-special-characters/756612
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
-https://stackoverflow.com/questions/8865458/how-do-i-vertically-center-text-with-css
-https://stackoverflow.com/questions/10685998/how-to-update-a-value-in-a-json-file-and-save-it-through-node-js
-https://stackoverflow.com/questions/2648733/make-a-div-square-when-there-is-a-dynamically-changing-width-based-on-percenta
-https://stackoverflow.com/questions/5369954/why-is-the-parent-div-height-zero-when-it-has-floated-children/46195190
-https://stackoverflow.com/questions/30684759/flexbox-how-to-get-divs-to-fill-up-100-of-the-container-width-without-wrapping
-https://stackoverflow.com/questions/3653065/get-local-ip-address-in-node-js
-https://stackoverflow.com/questions/8683528/embed-image-in-a-button-element
-https://www.w3schools.com/html/html_favicon.asp
-https://stackoverflow.com/questions/8107856/how-to-determine-a-users-ip-address-in-node
-https://stackoverflow.com/questions/728360/how-do-i-correctly-clone-a-javascript-object
+What is the purpose of your application?
+- It is a casual game where you have to guess a word and the only information you are given at the start is the alphabetical order of each letter in the word.
 
-what is the purpose of your application
-- it is a casual game where you have to guess a word and the only information you are given at the start is the alphabetical order of each letter in the word.
+What data is being stored and delivered by the api?
+- The list of words used by the game and each user's settings and words they have won with.
 
-what data is being stored and delivered by the api
-- the list of words used by the game and each user's settings and words they have won with
+What went right in the development of this project?
+- Making the client went very well and making the get and post requests went well before I started using firebase. Also the game itself is fun, my mom likes it and started playing it in between work.
 
-what went right in the development of this project
-- 
+What went wrong in the development of this project?
+- Firebase was really difficult to work with because I was doing a lot more with it than what I had to do with it in rich media 1 and there were things about it I didn't know like you can't store certain characters in firebase like '.' which caused my app to crash when I tested it on heroku because the ip of localhost is read as undefined so I didnt know that would be a problem until I tried to use it on heroku.
 
-what went wrong in the development of this project
-- 
-
-what did you learn while developing this project
--
+What did you learn while developing this project?
+- I learned how to save a file in node, get a user's remote ip address, and a way to clone a json object. Not all of these are implemented in the final version but I learned how to do them.
 
 If you were to continue, what would you do to improve your application?
-- i would add some sort of score so a player can see how well they did. i would add something to show the player that the data is loading from the server and make it so they cant interact with things that rely on the data before the client gets it. i would also add a way to share how you did with a word similar to how wordle uses emojis
+- I would add some sort of score so a player can see how well they did. I would add something to show the player that the data is loading from the server and make it so they cant interact with things that rely on the data before the client gets it. I would also add a way to share how you did with a word similar to how wordle uses emojis.
 
 If you went above and beyond, how did you do so?
-- i used firebase to store the word list and user data
+- I used firebase to store the word list and user data.
 
 If you used any borrowed code or code fragments, where did you get them from?
 What do the code fragments do? Where are they in your code?
-- 
+- Get user ip address so i can save their preferences and words they have won with.
+    - In responses setUserPrefs, getUser, addUserWin.
+    - https://stackoverflow.com/questions/3653065/get-local-ip-address-in-node-js
+    - https://stackoverflow.com/questions/8107856/how-to-determine-a-users-ip-address-in-node
 
-endpoints
+- Regular expression for making sure that a word being added to the word list only contains letters.
+    - In responses at the top and in addWord.
+    - https://stackoverflow.com/questions/756567/regular-expression-for-excluding-special-characters/756612
+    - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
+
+- Filter array so that only certain values are in the final array.
+    - in main setUpTargetWord. in keyboard attributeChangedCallback.
+    - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+
+- Have a button with an image.
+    - In index for the howto button and theme button.
+    - https://stackoverflow.com/questions/8683528/embed-image-in-a-button-element
+
+- Display favicon.
+    - In index in the head.
+    - https://www.w3schools.com/html/html_favicon.asp
+
+- Make elements fill the container while staying a consistent size.
+    - In numberTile style div, numpad style .number, keyboard style .key.
+    - https://stackoverflow.com/questions/30684759/flexbox-how-to-get-divs-to-fill-up-100-of-the-container-width-without-wrapping
+
+- Make the elements in the tiles and keyboards squares.
+    - In numberTile style div, numpad style .number, keyboard style .key.
+    - https://stackoverflow.com/questions/2648733/make-a-div-square-when-there-is-a-dynamically-changing-width-based-on-percenta
+
+Endpoints
 url: /words
 supported methods: GET, HEAD
 query params: none
-description: gets the word list
+description: Gets the word list.
 return types: JSON
 
 url: /addWord
 supported methods: POST
 query params: word
-description: adds a word to the word list
+description: Adds a word to the word list.
 return types: JSON
 
 url: /getUser
 supported methods: GET, HEAD
 query params: none
-description: gets the theme, howto, and won words of the user of the ip address that made the request
+description: Gets the theme, howto, and won words of the user of the ip address that made the request.
 return types: JSON
 
 url: /setUserPrefs
 supported methods: POST
 query params: theme, howto
-description: set user's theme and how to preferences
+description: Set user's theme and how to preferences.
 return types: JSON
 
 url: /addUserWin
 supported methods: POST
 query params: word
-description: add a word to the user's list of words that they have won with
+description: Add a word to the user's list of words that they have won with.
 return types: JSON

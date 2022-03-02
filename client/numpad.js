@@ -16,7 +16,6 @@ template.innerHTML = `
     height: 0;
     padding: .1rem;
     padding-bottom: 100%;
-    /*background-color: #333;*/
 
     display: flex;
     flex-flow: column nowrap;
@@ -31,7 +30,6 @@ template.innerHTML = `
 }
 
 .numberDiv > button > p {
-    /*color: #eee;*/
     font-family: Arial, sans-serif;
     font-size: 2rem;
     margin: 100% 0 0 0;
