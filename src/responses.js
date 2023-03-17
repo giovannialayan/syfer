@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const wordJson = {};
 
 const letterWhitelist = /^[a-z]*$/;
@@ -78,6 +80,18 @@ const addWordToDatabase = (word) => {
 
 // add a word to the word list and save it
 const addWord = (request, response, body) => {
+  if(!body) {
+    return respond(request, response, JSON.stringify({message: 'no body'}), 400, 'application/json');
+  }
+
+  if(!body.password || !process.env.MAKEWORD_PASSWORD) {
+    return respond(request, response, JSON.stringify({message: 'wrong password'}), 400, 'application/json');
+  }
+
+  if(body.password != process.env.MAKEWORD_PASSWORD) {
+    return respond(request, response, JSON.stringify({message: 'wrong password'}), 400, 'application/json');
+  }
+  
   const responseJson = {
     message: 'no word entered',
   };

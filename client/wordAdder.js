@@ -4,6 +4,7 @@ let wordInput;
 let submitWordButton;
 let homeButton;
 let toggleThemeButton;
+let passwordInput;
 
 let darkThemeOn;
 
@@ -14,6 +15,8 @@ window.onload = () => {
   statusOutput = document.querySelector('#statusOutput');
   wordListDiv = document.querySelector('#wordList');
 
+  passwordInput = document.querySelector('#passwordInput');
+
   wordInput = document.querySelector('#wordInput');
   submitWordButton = document.querySelector('#submitWord');
   submitWordButton.addEventListener('click', () => {addWord(wordInput.value)});
@@ -23,14 +26,14 @@ window.onload = () => {
   darkThemeOn = true;
   toggleThemeButton = document.querySelector('#toggleThemeButton');
   toggleThemeButton.addEventListener('click', () => {
-      toggleTheme([homeButton, submitWordButton], wordListDiv, wordInput, [statusOutput], true);
+      toggleTheme([homeButton, submitWordButton], wordListDiv, [wordInput, passwordInput], [statusOutput], true);
   });
 
 }
 
 //send post request to add inpput word to the word list
 const addWord = async (word) => {
-  const formData = `word=${word}`;
+  const formData = `word=${word}&password=${passwordInput.value}`;
 
   const response = await fetch('/addWord', {
     method: 'POST',
@@ -101,7 +104,7 @@ const getWordList = async () => {
 }
 
 //toggle dark theme and light theme
-const toggleTheme = (buttons, wordListContainer, textInput, textElements, setPref) => {
+const toggleTheme = (buttons, wordListContainer, textInputs, textElements, setPref) => {
   if(darkThemeOn) {
       document.body.classList.replace('darkThemeBody', 'lightThemeBody');
 
@@ -117,7 +120,9 @@ const toggleTheme = (buttons, wordListContainer, textInput, textElements, setPre
         p.classList.replace('darkThemeText', 'lightThemeText');
       }
 
-      textInput.classList.replace('darkThemeTextInput', 'lightThemeTextInput');
+      for(const t of textInputs) {
+        t.classList.replace('darkThemeTextInput', 'lightThemeTextInput');
+      }
 
       toggleThemeButton.classList.replace('darkThemeIconButton', 'lightThemeIconButton');
       toggleThemeButton.src = 'images/lightBulbLightTheme.png';
@@ -137,7 +142,9 @@ const toggleTheme = (buttons, wordListContainer, textInput, textElements, setPre
         p.classList.replace('lightThemeText', 'darkThemeText');
       }
 
-      textInput.classList.replace('lightThemeTextInput', 'darkThemeTextInput');
+      for(const t of textInputs) {
+        t.classList.replace('lightThemeTextInput', 'darkThemeTextInput');
+      }
 
       toggleThemeButton.classList.replace('lightThemeIconButton', 'darkThemeIconButton');
       toggleThemeButton.src = 'images/lightBulbDarkTheme.png';

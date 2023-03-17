@@ -26,6 +26,7 @@
     "nodemon": "^2.0.21"
   },
   "dependencies": {
+    "dotenv": "^16.0.3",
     "firebase": "^9.18.0"
   }
 }

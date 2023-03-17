@@ -1,4 +1,5 @@
 const fs = require('fs');
+require('dotenv').config();
 
 const index = fs.readFileSync(`${__dirname}/../client/index.html`);
 const style = fs.readFileSync(`${__dirname}/../client/style.css`);
@@ -54,6 +55,10 @@ const getKeyboardComponent = (request, response) => {
 
 // get add word page
 const getAddWord = (request, response) => {
+  if(process.env.NODE_ENV == "production") {
+    return respond(request, response, jsonString, 404, 'application/json');
+  }
+
   serveFile(request, response, addWord, 'text/html');
 };
 
