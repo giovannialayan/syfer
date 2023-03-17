@@ -4,7 +4,7 @@ const query = require('querystring');
 const htmlHandler = require('./htmlResponses.js');
 const responses = require('./responses.js');
 
-const port = process.env.PORT || process.env.NODE_PORT || 3000;
+const port = process.env.PORT || process.env.NODE_PORT || 8080;
 
 const urlStruct = {
   '/': htmlHandler.getIndex,
