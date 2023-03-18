@@ -238,6 +238,9 @@ const setUpTargetWord = async () => {
     //reset keyboard and numpad display
     keyboard.style.display = 'block';
     numberPad.style.display = 'none';
+
+    //make it so enter doesnt give you a new word while you are trying to solve the word you just got
+    newWordButton.blur();
 };
 
 //toggle dark theme and light theme
