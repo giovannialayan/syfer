@@ -2,12 +2,14 @@
   "name": "syfer",
   "version": "1.0.0",
   "description": "word game about solving cyphers",
-  "main": "./src/server.js",
+  "main": "./server/app.js",
   "scripts": {
-    "start": "node ./src/server.js",
+    "webpack": "webpack",
+    "start": "node ./server/app.js",
     "pretest": "eslint ./src --fix",
     "test": "echo \"tests complete\"",
-    "nodemon": "nodemon -e js,html,css,json --watch ./src --watch ./client ./src/server.js"
+    "nodemon": "nodemon -e js,html,css,json --watch ./server --watch ./hosted ./server/app.js",
+    "wps": "npm run webpack && npm start"
   },
   "repository": {
     "type": "git",
@@ -23,10 +25,19 @@
     "eslint": "^8.36.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.27.5",
-    "nodemon": "^2.0.21"
+    "nodemon": "^2.0.21",
+    "webpack": "^5.76.2",
+    "webpack-cli": "^5.0.1"
   },
   "dependencies": {
+    "body-parser": "^1.20.2",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
-    "firebase": "^9.18.0"
+    "express": "^4.18.2",
+    "express-handlebars": "^7.0.7",
+    "firebase": "^9.18.0",
+    "helmet": "^7.0.0",
+    "serve-favicon": "^2.5.0"
   }
 }

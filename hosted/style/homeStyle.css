@@ -1,0 +1,67 @@
+body {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+}
+
+.darkThemeBody {
+    background-color: #000;
+    color: #eee;
+}
+
+.lightThemeBody {
+    background-color: #fff;
+    color: #333;
+}
+
+a {
+    text-decoration: none;
+    margin-bottom: 1em;
+}
+
+.darkThemeLink {
+    background-color: #333;
+    color: #eee;
+
+    border: 2px solid #bbb;
+    padding: .5em;
+}
+
+.darkThemeLink:hover {
+    background-color: #0a0;
+}
+
+.darkThemeLink:active {
+    background-color: #aa0;
+}
+
+.lightThemeLink {
+    background-color: #ddd;
+    color: #222;
+
+    border: 2px solid #555;
+    padding: .5em;
+}
+
+.lightThemeLink:hover {
+    background-color: #0f0;
+}
+
+.lightThemeLink:active {
+    background-color: #ff0;
+}
+
+#title {
+    font-size: 2em;
+}
+
+#toggleThemeButton {
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    width: 4em;
+    z-index: 3;
+}

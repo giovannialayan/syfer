@@ -88,6 +88,15 @@ number-pad {
     border-color: #bbb;
 }
 
+.darkThemeButton:hover {
+    background-color: #0b0;
+    cursor: pointer;
+}
+
+.darkThemeButton:active {
+    background-color: #bb0;
+}
+
 .darkThemeBody {
     background-color: #000;
     color: #eee;
@@ -105,6 +114,15 @@ number-pad {
     border-width: 2px;
     border-style: solid;
     border-color: #555;
+}
+
+.lightThemeButton:hover {
+    background-color: #0f0;
+    cursor: pointer;
+}
+
+.lightThemeButton:active {
+    background-color: #ff0;
 }
 
 .lightThemeBody {

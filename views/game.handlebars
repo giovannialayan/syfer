@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <title>syfer</title>
+    <link rel='icon' type='image/x-icon' href='/assets/images/favicon.ico'>
+    <link rel='stylesheet' href='/assets/style/gameStyle.css'>
+    <script src='/assets/gameBundle.js' type='module'></script>
+</head>
+<body class='darkThemeBody'>
+    <input id='howtoButton' type='image' src='/assets/images/questionDarkTheme.png'>
+    <input id='toggleThemeButton' type='image' src='/assets/images/lightBulbDarkTheme.png'>
+    <div id='wordGuessDiv'>
+        <div id='targetWord'></div>
+        <div id='guessWord'></div>
+        <p id='letterGuessOutput'></p>
+    </div>
+
+    <div id='keyboardsDiv'>
+        <letter-keyboard></letter-keyboard>
+        <number-pad></number-pad>
+    </div>
+
+    <button type='button' id='newWord' class='darkThemeButton'>get a new word</button>
+
+    <div id='howtoDiv' class='darkThemeElement'>
+        <p>how to play syfer</p>
+        <p>you are given an encrypted word</p>
+        <p>each number in the encrypted word corresponds to a letter</p>
+        <p>the numbers are random and don't correspond to a letter's position in the alphabet but they are always increasing in alphabetical order</p>
+        <p>guess letters you think are in the word, if you guess a letter that's in the word you then have to guess what number that letter is</p>
+    </div>
+    <div class='cover'></div>
+</body>
+</html>

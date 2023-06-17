@@ -6,7 +6,7 @@ let keyboard;
 let numberPad;
 let newWordButton;
 let toggleThemeButton;
-let addWordPageButton;
+// let addWordPageButton;
 let howtoButton;
 let howtoDiv;
 let howtoCover;
@@ -25,7 +25,7 @@ let userWonWords;
 let darkThemeOn;
 let howtoOn;
 
-import './tile.js';
+import './numberTile.js';
 import './keyboard.js';
 import './numpad.js';
 
@@ -48,7 +48,7 @@ window.onload = () => {
     newWordButton = document.querySelector('#newWord');
     newWordButton.addEventListener('click', setUpTargetWord);
 
-    addWordPageButton = document.querySelector('#gotoAddWordInput');
+    // addWordPageButton = document.querySelector('#gotoAddWordInput');
 
     howtoOn = true;
     howtoDiv = document.querySelector('#howtoDiv');
@@ -60,7 +60,7 @@ window.onload = () => {
     darkThemeOn = true;
     toggleThemeButton = document.querySelector('#toggleThemeButton');
     toggleThemeButton.addEventListener('click', () => {
-        toggleTheme([howtoDiv], [addWordPageButton, newWordButton], [keyboard, numberPad], [wordDisplay, guessWordDisplay], true);
+        toggleTheme([howtoDiv], [newWordButton], [keyboard, numberPad], [wordDisplay, guessWordDisplay], true);
     });
 
     //keypresses for keyboards
@@ -267,8 +267,8 @@ const toggleTheme = (elements, buttons, keyboards, tileContainers, setPref) => {
             }
         }
 
-        toggleThemeButton.src = 'images/lightBulbLightTheme.png';
-        howtoButton.src = 'images/questionLightTheme.png';
+        toggleThemeButton.src = '/assets/images/lightBulbLightTheme.png';
+        howtoButton.src = '/assets/images/questionLightTheme.png';
     }
     else {
         document.body.classList.replace('lightThemeBody', 'darkThemeBody');
@@ -292,8 +292,8 @@ const toggleTheme = (elements, buttons, keyboards, tileContainers, setPref) => {
             }
         }
 
-        toggleThemeButton.src = 'images/lightBulbDarkTheme.png';
-        howtoButton.src = 'images/questionDarkTheme.png';
+        toggleThemeButton.src = '/assets/images/lightBulbDarkTheme.png';
+        howtoButton.src = '/assets/images/questionDarkTheme.png';
     }
 
     darkThemeOn = !darkThemeOn;
@@ -309,7 +309,7 @@ const getUser = async (callback) => {
     const json = await response.json();
 
     if(json.theme === 'light') {
-        toggleTheme([howtoDiv], [toggleThemeButton, addWordPageButton, newWordButton], [keyboard, numberPad], [wordDisplay, guessWordDisplay], false);
+        toggleTheme([howtoDiv], [newWordButton], [keyboard, numberPad], [wordDisplay, guessWordDisplay], false);
     }
 
     if(json.howto === 'false') {
@@ -327,7 +327,7 @@ const setUserPrefs = async (theme, howto) => {
     const response = await fetch('/setUserPrefs', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-ww-form-urlencoded',
+        'Content-Type': 'application/x-www-form-urlencoded',
         'Accept': 'application/json',
       },
       body: formData,
@@ -400,7 +400,7 @@ const addUserWinWord = async (word) => {
     const response = await fetch('/addUserWin', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-ww-form-urlencoded',
+        'Content-Type': 'application/x-www-form-urlencoded',
         'Accept': 'application/json',
       },
       body: formData,
