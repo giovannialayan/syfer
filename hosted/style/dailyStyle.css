@@ -1,4 +1,4 @@
-#body {
+body {
     font-family: Arial, sans-serif;
 }
 
@@ -134,6 +134,105 @@ number-pad {
 .lightThemeBody {
     background-color: #fff;
     color: #000;
+}
+
+#shareDiv {
+    display: none;
+    flex-flow: column nowrap;
+
+    margin-top: 1em;
+
+    border-radius: 1em;
+    align-items: center;
+
+    width: fit-content;
+}
+
+.shareDivDarkTheme {
+    background-color: #111;
+    border: 2px solid #bbb;
+}
+
+.shareDivLightTheme {
+    background-color: #fff;
+    border: 2px solid #555;
+}
+
+.shareDivDarkTheme > .shareHeader {
+    background-color: #333;
+    border-bottom: 1px solid #bbb;
+}
+
+.shareDivLightTheme > .shareHeader {
+    background-color: #eee;
+    border-bottom: 1px solid #555;
+}
+
+#shareText {
+    text-align: left;
+    white-space: pre-wrap;
+
+    margin: 0em .5em .5em .5em;
+}
+
+.shareHeader {
+    width: 100%;
+    flex: 1;
+
+    border-top-left-radius: .9em;
+    border-top-right-radius: .9em;
+}
+
+.shareDivDarkTheme > .shareButtonContainer {
+    background-color: #333;
+}
+
+.shareDivDarkTheme > .shareButtonContainer {
+    background-color: #eee;
+}
+
+.shareButtonContainer {
+    display: flex;
+    flex-flow: row nowrap;
+
+    width: 100%;
+}
+
+.shareButtonContainer > * {
+    flex-grow: 1;
+}
+
+.shareDivDarkTheme > .shareButtonContainer > .selectedShareTab {
+    background-color: #111;
+}
+
+.shareDivLightTheme > .shareButtonContainer > .selectedShareTab {
+    background-color: #fff;
+}
+
+.shareDivDarkTheme > .shareButtonContainer > .unSelectedShareTab {
+    background-color: #333;
+}
+
+.shareDivLightTheme > .shareButtonContainer > .unSelectedShareTab {
+    background-color: #eee;
+}
+
+.shareButtonContainer > a {
+    padding: 10px;
+}
+
+.shareButtonContainer > a:hover {
+    cursor: pointer;
+}
+
+#shareStreak {
+    text-align: center;
+    margin: .5em;
+}
+
+#copyShare {
+    margin-top: .75em;
 }
 
 #letterGuessOutput {

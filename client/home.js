@@ -1,4 +1,5 @@
 let toggleThemeButton;
+let dailyLink;
 let playLink;
 let challengesLink;
 let title;
@@ -8,13 +9,14 @@ window.onload = () => {
     getUserPrefs();
 
     title = document.querySelector('#title')
+    dailyLink = document.querySelector('#dailyLink');
     playLink = document.querySelector('#playLink');
-    challengesLink = document.querySelector('#challengesLink');
+    // challengesLink = document.querySelector('#challengesLink');
 
     darkThemeOn = true;
     toggleThemeButton = document.querySelector('#toggleThemeButton');
     toggleThemeButton.addEventListener('click', () => {
-        toggleTheme([playLink, challengesLink], title, true);
+        toggleTheme([dailyLink, playLink], title, true);
     });
 }
 
@@ -45,7 +47,6 @@ const toggleTheme = (links, setPref) => {
 
         title.classList.replace('darkThemeTitle', 'lightThemeTitle');
   
-        toggleThemeButton.classList.replace('darkThemeIconButton', 'lightThemeIconButton');
         toggleThemeButton.src = '/assets/images/lightBulbLightTheme.png';
     }
     else {
@@ -73,7 +74,6 @@ const toggleTheme = (links, setPref) => {
 
         title.classList.replace('lightThemeTitle', 'darkThemeTitle');
   
-        toggleThemeButton.classList.replace('lightThemeIconButton', 'darkThemeIconButton');
         toggleThemeButton.src = '/assets/images/lightBulbDarkTheme.png';
     }
   
@@ -90,7 +90,7 @@ const toggleTheme = (links, setPref) => {
     const json = await response.json();
   
     if(json.theme === 'light') {
-      toggleTheme([playLink, challengesLink], title, false);
+      toggleTheme([dailyLink, playLink], title, false);
     }
   };
   

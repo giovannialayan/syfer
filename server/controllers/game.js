@@ -1,39 +1,44 @@
 require('dotenv').config();
 const wordJson = require('../../hosted/words.json');
+const dailyWordJson = require('../../hosted/dailyWords.json');
+
+let dayCounter = -1;
+let today;
 
 // const wordJson = {};
 
 // const letterWhitelist = /^[a-z]*$/;
 
-const defaultUser = { theme: 'dark', howto: 'true', wonWords: '' };
+const defaultUser = { theme: 'dark', howto: 'true', wonWords: '', dailyWin: {number: -1, longShare: '', shortShare: '', letters: '', streak: 0} };
 
 const homePage = (req, res) => res.render('home');
 const gamePage = (req, res) => res.render('game');
+const dailyPage = (req, res) => res.render('daily');
 // const addWordPage = (req, res) => res.render('addWord');
 
 // Import the functions you need from the SDKs you need
-// const { initializeApp } = require('firebase/app');
-// const {
-//   getDatabase, ref, set, get, update,
-// } = require('firebase/database');
+const { initializeApp } = require('firebase/app');
+const {
+  getDatabase, ref, set, get, update,
+} = require('firebase/database');
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-// const firebaseConfig = {
-//     apiKey: 'AIzaSyD3j_RF_jyViDwxRIFaaCl53ukoKOOKhvs',
-//     authDomain: 'syfer-48ed9.firebaseapp.com',
-//     projectId: 'syfer-48ed9',
-//     storageBucket: 'syfer-48ed9.appspot.com',
-//     messagingSenderId: '812087050558',
-//     appId: '1:812087050558:web:e9b63893a26875b90dec6f',
-//     measurementId: 'G-5KBCRQCQFM',
-// };
+const firebaseConfig = {
+    apiKey: process.env.API_KEY,
+    authDomain: 'syfer-48ed9.firebaseapp.com',
+    projectId: 'syfer-48ed9',
+    storageBucket: 'syfer-48ed9.appspot.com',
+    messagingSenderId: '812087050558',
+    appId: '1:812087050558:web:e9b63893a26875b90dec6f',
+    measurementId: 'G-5KBCRQCQFM',
+};
 
 // Initialize Firebase
-// const firebase = initializeApp(firebaseConfig);
-// const database = getDatabase(firebase);
+const firebase = initializeApp(firebaseConfig);
+const database = getDatabase(firebase);
 
 // save specified user and their values to the database
 // const saveUserToDatabase = (userId, themeInput, howtoInput, wonWordsInput) => {
@@ -43,6 +48,45 @@ const gamePage = (req, res) => res.render('game');
 //         wonWords: wonWordsInput,
 //     });
 // };
+
+//get daily
+const getDaily = async (req, res) => {
+    if(dayCounter == -1) {
+        const dailyRef = ref(database, '/daily');
+        await get(dailyRef).then((snapshot) => {
+            dayCounter = snapshot.val().dayNum;
+            today = snapshot.val().date;
+        });
+    }
+
+    let todayDate = dateToString(new Date());
+
+    if(todayDate != today) {
+        dayCounter++;
+        today = todayDate;
+
+        if(dayCounter >= wordJson.words.length) {
+            dayCounter = 0;
+        }
+
+        const dailyRef = ref(database, '/daily');
+        get(dailyRef).then((snapshot) => {
+            update(dailyRef, { dayNum: dayCounter, date: today });
+        });
+    }
+
+    if(req.method === 'HEAD') {
+        return res.status(200);
+    }
+    else {
+        return res.status(200).json({word: dailyWordJson.words[dayCounter], number: dayCounter});
+    }
+    
+};
+
+const dateToString = (date) => {
+    return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+};
 
 // get word list from database, respond with the word list if a get request
 const getWords = (req, res) => {
@@ -156,6 +200,7 @@ const getUser = (req, res) => {
         theme: defaultUser.theme,
         howto: defaultUser.howto,
         wonWords: defaultUser.wonWords,
+        dailyWin: defaultUser.dailyWin,
     };
 
     if(!req.cookies.theme) {
@@ -177,6 +222,13 @@ const getUser = (req, res) => {
     }
     else {
         user.wonWords = req.cookies.wonWords;
+    }
+
+    if(!req.cookies.dailyWin) {
+        res.cookie('dailyWin', defaultUser.dailyWin)
+    }
+    else {
+        user.dailyWin = req.cookies.dailyWin;
     }
 
     return res.status(200).json(user);
@@ -212,12 +264,16 @@ const addUserWin = (req, res) => {
     let userWords = req.cookies.wonWords.split(',');
     userWords.push(req.body.word);
 
+    while(userWords.indexOf('') != -1) {
+        userWords.splice(userWords.indexOf(''), 1);
+    }
+
     if (userWords.length === wordJson.words.length) {
         userWords = [];
     }
 
     res.cookie('wonWords', userWords.join(','));
-    res.status(204);
+    return res.status(204).json({message: 'word saved'});
 
     // let user = `${req.headers['x-forwarded-for']}`;
     // if(process.env.NODE_ENV === 'production') {
@@ -245,13 +301,34 @@ const addUserWin = (req, res) => {
     // return null;
 };
 
+//update user's daily win to today's number
+const updateUserDailyWin = (req, res) => {
+    if(!req.body.number || !req.body.longShare || !req.body.shortShare || !req.body.streak || !req.body.letters) {
+        return res.status(400).json({ error: 'number, share strings, letters, and streak are required' });
+    }
+
+    let dailyWinObj = {
+        number: req.body.number,
+        longShare: req.body.longShare,
+        shortShare: req.body.shortShare,
+        letters: req.body.letters,
+        streak: req.body.streak,
+    };
+
+    res.cookie('dailyWin', dailyWinObj);
+    res.status(204).json({message: 'daily win saved'});
+};
+
 module.exports = {
     homePage,
     gamePage,
+    dailyPage,
     // addWordPage,
     getWords,
     // addWord,
     setUserPrefs,
     getUser,
     addUserWin,
+    getDaily,
+    updateUserDailyWin,
 };

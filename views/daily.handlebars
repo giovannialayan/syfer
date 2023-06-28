@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang='en'>
 <head>
-    <title>syfer</title>
+    <title>syfer daily</title>
     <link rel='icon' type='image/x-icon' href='/assets/images/favicon.ico'>
-    <link rel='stylesheet' href='/assets/style/gameStyle.css'>
-    <script src='/assets/gameBundle.js' type='module'></script>
+    <link rel='stylesheet' href='/assets/style/dailyStyle.css'>
+    <script src='/assets/dailyBundle.js' type='module'></script>
 </head>
 <body class='darkThemeBody'>
     <input id='howtoButton' type='image' src='/assets/images/questionDarkTheme.png'>
@@ -23,7 +23,16 @@
         <number-pad></number-pad>
     </div>
 
-    <button type='button' id='newWord' class='darkThemeButton'>get a new word</button>
+    <div id='shareDiv' class='shareDivDarkTheme'>
+        <div class='shareHeader'><p>share how you did</p></div>
+        <div class='shareButtonContainer'>
+            <a id='longShareTab' class='selectedShareTab'>long form</a>
+            <a id='shortShareTab' class='unSelectedShareTab'>short form</a>
+        </div>
+        <button id='copyShare' class='darkThemeButton'>copy</button>
+        <p id='shareStreak'></p>
+        <p id='shareText'></p>
+    </div>
 
     <div id='howtoDiv' class='darkThemeElement'>
         <p>how to play syfer</p>

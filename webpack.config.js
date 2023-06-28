@@ -5,7 +5,8 @@ module.exports = {
         home: ['./client/home.js'],
         challengesMenu: ['./client/challengesMenu.js'],
         game: ['./client/main.js'],
-        maker: ['./client/wordAdder.js'],
+        // maker: ['./client/wordAdder.js'],
+        daily: ['./client/dailyGame.js'],
     },
     mode: 'production',
     watchOptions: {

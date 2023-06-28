@@ -4,13 +4,15 @@ let guessWordDisplay;
 let letterGuessOutput;
 let keyboard;
 let numberPad;
-let newWordButton;
 let toggleThemeButton;
-// let addWordPageButton;
 let howtoButton;
 let howtoDiv;
 let howtoCover;
+let shareDiv;
+let longShareTab;
+let shortShareTab;
 let homeLink;
+let copyShareButton;
 
 const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
@@ -21,10 +23,16 @@ let guessWord;
 
 let lastGuess;
 
-let userWonWords;
-
 let darkThemeOn;
 let howtoOn;
+
+let longShare = [];
+let shortShare = [];
+
+let dailyNumber;
+let streak;
+
+let usedLetters = [];
 
 import './numberTile.js';
 import './keyboard.js';
@@ -33,8 +41,6 @@ import './numpad.js';
 //set up page and buttons
 window.onload = () => {
     wordDisplay = document.querySelector("#targetWord");
-
-    getUser(setUpTargetWord);
 
     keyboard = document.querySelector('letter-keyboard');
     keyboard.addEventListener('letterSubmitted', (e) => {checkGuess(e.detail.output);})
@@ -46,12 +52,20 @@ window.onload = () => {
     numberPad = document.querySelector('number-pad');
     numberPad.addEventListener('numberSubmitted', (e) => {guessNumber(e.detail.output);});
 
-    newWordButton = document.querySelector('#newWord');
-    newWordButton.addEventListener('click', setUpTargetWord);
+    shareDiv = document.querySelector('#shareDiv');
 
-    // addWordPageButton = document.querySelector('#gotoAddWordInput');
+    longShareTab = document.querySelector('#longShareTab');
+    longShareTab.addEventListener('click', () => {displayShareText('long')});
+
+    shortShareTab = document.querySelector('#shortShareTab');
+    shortShareTab.addEventListener('click', () => {displayShareText('short')});
 
     homeLink = document.querySelector('#homeLink');
+
+    copyShareButton = document.querySelector('#copyShare');
+    copyShareButton.addEventListener('click', copyShareText);
+
+    getUser(setUpTargetWord);
 
     howtoOn = false;
     howtoDiv = document.querySelector('#howtoDiv');
@@ -63,7 +77,7 @@ window.onload = () => {
     darkThemeOn = true;
     toggleThemeButton = document.querySelector('#toggleThemeButton');
     toggleThemeButton.addEventListener('click', () => {
-        toggleTheme([howtoDiv], [newWordButton], [keyboard, numberPad], [wordDisplay, guessWordDisplay], [homeLink], true);
+        toggleTheme([howtoDiv], [copyShareButton], [keyboard, numberPad], [wordDisplay, guessWordDisplay], [homeLink], shareDiv, true);
     });
 
     //keypresses for keyboards
@@ -110,11 +124,30 @@ const checkGuess = (guess) => {
     else {
         letterGuessOutput.textContent = `that letter is not in the word`;
         keyboard.dataset.wrong = guess;
+        usedLetters.push(guess);
+
+        if(longShare.length > 0 && longShare[longShare.length - 1] == '🟥') {
+            longShare[longShare.length - 1] = `🟥 x2`;
+            shortShare[shortShare.length - 1] = ['🟥', ' x2'];
+        }
+        else if(longShare.length > 0 && longShare[longShare.length - 1].includes('x')) {
+            let numWrong = longShare[longShare.length - 1].substr(longShare[longShare.length - 1].indexOf('x') + 1, 1);
+            numWrong++;
+            longShare[longShare.length - 1] = `🟥 x${numWrong}`;
+            shortShare[shortShare.length - 1] = ['🟥', ` x${numWrong}`];
+        }
+        else {
+            longShare.push('🟥');
+            shortShare.push(['🟥']);
+        }
     }
 };
 
 //check if number guess correlates correctly to letter guess
 const guessNumber = (guess) => {
+    let longShareString = '';
+    let shortShareArr = [];
+
     //guess was not a number
     if(!Array.from(targetWordNums.values()).includes(guess - 0)) {
         letterGuessOutput.textContent = `${guess} is not a number`;
@@ -135,17 +168,54 @@ const guessNumber = (guess) => {
                 guessWord[i] = lastGuess;
                 guessWordDisplay.children[i].dataset.text = lastGuess;
                 guessWordDisplay.children[i].dataset.color = 'correct';
+                longShareString += '🟩';
+                shortShareArr.push('🟩');
+            }
+            else if(targetWord[i] == guessWord[i]) {
+                longShareString += '🟩';
+                shortShareArr.push('🟩');
+            }
+            else {
+                longShareString += guessWord[i] == '_' ? '⬜' : '🟨';
+                shortShareArr.push(guessWord[i] == '_' ? '⬜' : '🟨');
             }
         }
         letterGuessOutput.textContent = `correct, ${lastGuess} is ${guess}`;
         keyboard.dataset.correct = lastGuess;
+        usedLetters.push(lastGuess);
 
         keyboard.style.display = 'block';
         numberPad.style.display = 'none';
 
         if(targetWord === guessWord.join('')) {
             letterGuessOutput.textContent = `congrats, you win`;
-            addUserWinWord(targetWord);
+            shareDiv.style.display = 'flex';
+            longShare.push(longShareString);
+            longShareString = '';
+            shortShare.push(shortShareArr);
+            if(shortShare.length > 1 && shortShare[shortShare.length - 1][0] != '🟥' && shortShare[shortShare.length - 2][0] != '🟥') {
+                let shouldDelete = true;
+    
+                for(let i = 0; i < shortShare[shortShare.length - 1].length; i++) {
+                    if((shortShare[shortShare.length - 1][i] == '⬜' && shortShare[shortShare.length - 2][i] == '🟨') || shortShare[shortShare.length - 1][i] == '🟩' && shortShare[shortShare.length - 2][i] == '🟨') {
+                        shouldDelete = false;
+                    }
+                }
+    
+                if(shouldDelete) {
+                    shortShare.splice(shortShare.length - 2, 1);
+                }
+            }
+            shortShareArr = [];
+
+            for(let i = 0; i < shortShare.length; i++) {
+                shortShare[i] = shortShare[i].join('');
+            }
+
+            streak++;
+            displayShareText('long');
+            
+            updateUserDailyWin();
         }
     }
     //guess was not correct
@@ -157,25 +227,48 @@ const guessNumber = (guess) => {
                 guessWordDisplay.children[i].dataset.text = lastGuess;
                 guessWordDisplay.children[i].dataset.color = 'almost';
                 keyboard.dataset.almost = lastGuess;
+                longShareString += '🟨';
+                shortShareArr.push('🟨');
+            }
+            else if(targetWord[i] == guessWord[i]) {
+                longShareString += '🟩';
+                shortShareArr.push('🟩');
+            }
+            else {
+                longShareString += guessWord[i] == '_' ? '⬜' : '🟨';
+                shortShareArr.push(guessWord[i] == '_' ? '⬜' : '🟨');                
             }
         }
 
         keyboard.style.display = 'block';
         numberPad.style.display = 'none';
     }
+
+    if(longShareString != '') {
+        longShare.push(longShareString);
+    }
+
+    if(shortShareArr.length > 0) {
+        shortShare.push(shortShareArr);
+
+        if(shortShare.length > 1 && shortShare[shortShare.length - 1][0] != '🟥' && shortShare[shortShare.length - 2][0] != '🟥') {
+            let shouldDelete = true;
+
+            for(let i = 0; i < shortShare[shortShare.length - 1].length; i++) {
+                if((shortShare[shortShare.length - 1][i] == '⬜' && shortShare[shortShare.length - 2][i] == '🟨') || (shortShare[shortShare.length - 1][i] == '🟩' && shortShare[shortShare.length - 2][i] == '🟨')) {
+                    shouldDelete = false;
+                }
+            }
+
+            if(shouldDelete) {
+                shortShare.splice(shortShare.length - 2, 1);
+            }
+        }
+    }
 };
 
 //set up the target word to guess and display it
 const setUpTargetWord = async () => {
-    //get word list from server
-    const response = await fetch('words');
-    const json = await response.json();
-    let words = json.words;
-    words = words.filter((w) => !userWonWords.includes(w));
-
-    //choose random word
-    targetWord = words[Math.floor(Math.random() * words.length)];
-
     //sort the letters of the word and initialize the map
     targetWordNums = new Map();
     let sortedLetters = targetWord.split('');
@@ -244,13 +337,10 @@ const setUpTargetWord = async () => {
     //reset keyboard and numpad display
     keyboard.style.display = 'block';
     numberPad.style.display = 'none';
-
-    //make it so enter doesnt give you a new word while you are trying to solve the word you just got
-    newWordButton.blur();
 };
 
 //toggle dark theme and light theme
-const toggleTheme = (elements, buttons, keyboards, tileContainers, links, setPref) => {
+const toggleTheme = (elements, buttons, keyboards, tileContainers, links, share, setPref) => {
     if(darkThemeOn) {
         document.body.classList.replace('darkThemeBody', 'lightThemeBody');
 
@@ -276,6 +366,8 @@ const toggleTheme = (elements, buttons, keyboards, tileContainers, links, setPre
         for(const l of links) {
             l.classList.replace('darkThemeLink', 'lightThemeLink');
         }
+
+        share.classList.replace('shareDivDarkTheme', 'shareDivLightTheme');
 
         toggleThemeButton.src = '/assets/images/lightBulbLightTheme.png';
         howtoButton.src = '/assets/images/questionLightTheme.png';
@@ -306,6 +398,8 @@ const toggleTheme = (elements, buttons, keyboards, tileContainers, links, setPre
             l.classList.replace('lightThemeLink', 'darkThemeLink');
         }
 
+        share.classList.replace('shareDivLightTheme', 'shareDivDarkTheme');
+
         toggleThemeButton.src = '/assets/images/lightBulbDarkTheme.png';
         howtoButton.src = '/assets/images/questionDarkTheme.png';
     }
@@ -319,19 +413,63 @@ const toggleTheme = (elements, buttons, keyboards, tileContainers, links, setPre
 
 //get user preferences from the server and change the page to match them
 const getUser = async (callback) => {
+    const wordResponse = await fetch('dailyWord');
+    const wordJson = await wordResponse.json();
+
+    targetWord = wordJson.word;
+    dailyNumber = wordJson.number;
+    document.title = `syfer daily #${dailyNumber}`;
+
     const response = await fetch('getUser');
     const json = await response.json();
 
     if(json.theme === 'light') {
-        toggleTheme([howtoDiv], [newWordButton], [keyboard, numberPad], [wordDisplay, guessWordDisplay], [homeLink], false);
+        toggleTheme([howtoDiv], [copyShareButton], [keyboard, numberPad], [wordDisplay, guessWordDisplay], [homeLink], shareDiv, false);
     }
 
     if(json.howto === 'true') {
         toggleHowToPlay(true);
     }
 
-    userWonWords = json.wonWords.split(',');
     callback();
+
+    if(dailyNumber - json.dailyWin.number > 1) {
+        streak = 0;
+    }
+    else {
+        streak = json.dailyWin.streak;
+    }
+
+    if(json.dailyWin.number == dailyNumber) {
+        longShare = json.dailyWin.longShare.split(',');
+        shortShare = json.dailyWin.shortShare.split(',');
+        let usedLetters = json.dailyWin.letters.split(',');
+
+        shareDiv.style.display = 'flex';
+        displayShareText('long');
+        guessWord = targetWord;
+
+        for(let i = 0; i < usedLetters.length; i++) {
+            if(targetWord.includes(usedLetters[i])) {
+                keyboard.dataset.correct = usedLetters[i];
+                if(targetWord.indexOf(usedLetters[i]) != targetWord.lastIndexOf(usedLetters[i])) {
+                    for(let j = 0; j < targetWord.length; j++) {
+                        if(targetWord[j] == usedLetters[i]) {
+                            guessWordDisplay.children[j].dataset.text = usedLetters[i];
+                            guessWordDisplay.children[j].dataset.color = 'correct';
+                        }
+                    }
+                }
+                else {
+                    guessWordDisplay.children[targetWord.indexOf(usedLetters[i])].dataset.text = usedLetters[i];
+                    guessWordDisplay.children[targetWord.indexOf(usedLetters[i])].dataset.color = 'correct';
+                }
+            }
+            else {
+                keyboard.dataset.wrong = usedLetters[i];
+            }
+        }
+    }
 };
 
 //send user preferences to the server
@@ -407,11 +545,10 @@ const toggleHowToPlay = (setPref) => {
     }
 };
 
-const addUserWinWord = async (word) => {
-    userWonWords.push(word);
-    const formData = `word=${word}`;
+const updateUserDailyWin = async () => {
+    const formData = `number=${dailyNumber}&longShare=${longShare}&shortShare=${shortShare}&letters=${usedLetters}&streak=${streak}`;
 
-    const response = await fetch('/addUserWin', {
+    const response = await fetch('/updateUserDailyWin', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -421,4 +558,22 @@ const addUserWinWord = async (word) => {
     });
   
     handleResponse(response);
+};
+
+const displayShareText = (type) => {
+    shareDiv.children[3].textContent = `syfer #${dailyNumber} 🔥${streak}`;
+    if(type == 'long') {
+        shareDiv.children[4].textContent = longShare.join('\n');
+        longShareTab.classList.replace('unSelectedShareTab', 'selectedShareTab');
+        shortShareTab.classList.replace('selectedShareTab', 'unSelectedShareTab');
+    }
+    else {
+        shareDiv.children[4].textContent = shortShare.join('\n');
+        shortShareTab.classList.replace('unSelectedShareTab', 'selectedShareTab');
+        longShareTab.classList.replace('selectedShareTab', 'unSelectedShareTab');
+    }
+};
+
+const copyShareText = () => {
+    navigator.clipboard.writeText(`${shareDiv.children[3].textContent}\n${shareDiv.children[4].textContent}`);
 };
