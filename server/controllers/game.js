@@ -5,6 +5,8 @@ const dailyWordJson = require('../../hosted/dailyWords.json');
 let dayCounter = -1;
 let today;
 
+const cookieOptions = {maxAge: 1000 * 60 * 60 * 24 * 365, httpOnly: true, sameSite: 'strict'};
+
 // const wordJson = {};
 
 // const letterWhitelist = /^[a-z]*$/;
@@ -167,11 +169,11 @@ const setUserPrefs = (req, res) => {
     }
 
     if(req.body.theme) {
-        res.cookie('theme', req.body.theme);
+        res.cookie('theme', req.body.theme, cookieOptions);
     }
 
     if(req.body.howto) {
-        res.cookie('howto', req.body.howto);
+        res.cookie('howto', req.body.howto, cookieOptions);
     }
 
     return res.status(204).json({message: 'preferences saved'});
@@ -204,28 +206,28 @@ const getUser = (req, res) => {
     };
 
     if(!req.cookies.theme) {
-        res.cookie('theme', defaultUser.theme);
+        res.cookie('theme', defaultUser.theme, cookieOptions);
     }
     else {
         user.theme = req.cookies.theme;
     }
 
     if(!req.cookies.howto) {
-        res.cookie('howto', defaultUser.howto);
+        res.cookie('howto', defaultUser.howto, cookieOptions);
     }
     else {
         user.howto = req.cookies.howto;
     }
 
     if(!req.cookies.wonWords) {
-        res.cookie('wonWords', defaultUser.wonWords);
+        res.cookie('wonWords', defaultUser.wonWords, cookieOptions);
     }
     else {
         user.wonWords = req.cookies.wonWords;
     }
 
     if(!req.cookies.dailyWin) {
-        res.cookie('dailyWin', defaultUser.dailyWin)
+        res.cookie('dailyWin', defaultUser.dailyWin, cookieOptions);
     }
     else {
         user.dailyWin = req.cookies.dailyWin;
@@ -272,7 +274,7 @@ const addUserWin = (req, res) => {
         userWords = [];
     }
 
-    res.cookie('wonWords', userWords.join(','));
+    res.cookie('wonWords', userWords.join(','), cookieOptions);
     return res.status(204).json({message: 'word saved'});
 
     // let user = `${req.headers['x-forwarded-for']}`;
@@ -315,7 +317,7 @@ const updateUserDailyWin = (req, res) => {
         streak: req.body.streak,
     };
 
-    res.cookie('dailyWin', dailyWinObj);
+    res.cookie('dailyWin', dailyWinObj, cookieOptions);
     res.status(204).json({message: 'daily win saved'});
 };
 
