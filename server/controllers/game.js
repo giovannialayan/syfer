@@ -61,7 +61,7 @@ const getDaily = async (req, res) => {
         });
     }
 
-    let todayDate = dateToString(new Date());
+    let todayDate = dateToString(new Date(new Date().toLocaleString("en-US", {timeZone: "America/New_York"})));
 
     if(todayDate != today) {
         dayCounter++;
