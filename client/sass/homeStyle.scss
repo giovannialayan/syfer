@@ -1,0 +1,20 @@
+@use 'themeButtonStyle';
+@use 'generalThemeStyle';
+
+body {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    margin-bottom: 1em;
+}
+
+#title {
+    font-size: 2em;
+}

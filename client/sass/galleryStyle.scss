@@ -1,0 +1,79 @@
+@use 'shareStyle';
+@use 'themeButtonStyle';
+@use 'generalThemeStyle';
+
+body {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#wordList {
+    width: 100%;
+}
+
+.galleryContainer {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    width: 100%;
+}
+
+.percentDarkTheme {
+    color: #0a0
+}
+
+.percentLightTheme {
+    color: #0f0
+}
+
+.galleryContainer > div {
+    display: grid;
+    grid-template-columns: repeat(6, 16.25vw);
+
+    width: 100%;
+}
+
+.galleryContainer > div > div {
+    margin: 1rem .25rem;
+}
+
+.shareDivOff {
+    display: none;
+}
+
+.galleryWord {
+    border-width: 2px;
+    border-style: solid;
+
+    min-width: 8rem;
+}
+
+.galleryWord.galleryDarkTheme {
+    background-color: #0a0;
+    color: #eee;
+    border-color: #bbb;
+}
+
+.galleryWord.galleryLightTheme {
+    background-color: #0f0;
+    color: #222;
+    border-color: #555;
+}
+
+.shareDiv {
+    border-top: none;
+}
+
+@media screen and (max-width: 768px) {
+    .galleryContainer > div {
+        grid-template-columns: repeat(3, 16.25vw);
+    }
+}

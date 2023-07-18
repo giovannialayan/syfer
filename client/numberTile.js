@@ -14,6 +14,10 @@ div {
     flex: 0 0 100%;
     justify-content: center;
     align-items: center;
+
+    @media all and (max-width: 768px) {
+        min-width: 2.5rem;
+    }
 }
 
 p {
@@ -39,6 +43,13 @@ p {
     border-width: 2px;
     border-style: solid;
     border-color: #555;
+}
+
+@media all and (max-width: 768px) {
+    div {
+        min-width: 2.5rem;
+
+    }
 }
 </style>
 <div class='darkTheme'>

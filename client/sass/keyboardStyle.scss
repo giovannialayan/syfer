@@ -1,0 +1,151 @@
+.keyboardContainer {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+#topRow, #midRow, #botRow {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+#topRow {
+    width: 45rem;
+}
+
+#midRow {
+    width: 40rem;
+}
+
+#botRow {
+    width: 35rem;
+}
+
+.key {
+    position: relative;
+    width: 100%;
+    min-width: 50px;
+    height: 0;
+    padding: .1rem;
+    padding-bottom: 100%;
+
+    display: flex;
+    flex-flow: column nowrap;
+    flex: 0 0 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.keyDiv {
+    width: 6rem;
+    margin: 5px 5px 5px 5px;
+}
+
+.keyDiv > button > p {
+    font-family: Arial, sans-serif;
+    font-size: 2rem;
+    margin: 100% 0 0 0;
+    text-align: center;
+}
+
+#output {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    font-size: 1rem;
+    min-height: 1.2em;
+}
+
+.darkThemeKey {
+    background-color: #333;
+    color: #eee;
+
+    border-width: 2px;
+    border-style: solid;
+    border-color: #bbb;
+}
+
+.lightThemeKey {
+    background-color: #ddd;
+    color: #222;
+
+    border-width: 2px;
+    border-style: solid;
+    border-color: #555;
+}
+
+.darkThemeText {
+    background-color: #000;
+    color: #eee;
+}
+
+.lightThemeText {
+    background-color: #fff;
+    color: #222;
+}
+
+.correctLetterDarkTheme {
+    background-color: #0a0;
+}
+
+.correctLetterLightTheme {
+    background-color: #0f0;
+}
+
+.almostLetterDarkTheme {
+    background-color: #aa0;
+}
+
+.almostLetterLightTheme {
+    background-color: #ff0;
+}
+
+.wrongLetterDarkTheme {
+    background-color: #a00;
+}
+
+.wrongLetterLightTheme {
+    background-color: #f00;
+}
+
+.noSelectedLetterDarkTheme {
+    background-color: #333;
+    color: #eee;
+}
+
+.noSelectedLetterLightTheme {
+    background-color: #ddd;
+    color: #222;
+}
+
+.mobile {
+    display: none;
+}
+
+/* @media screen and (max-width: 768px) {
+    .keyDiv {
+        width: 100%;
+    }
+
+    .key {
+        min-width: none;
+    }
+
+    #topRow {
+        width: 100%;
+    }
+
+    #midRow {
+        width: 100%;
+    }
+
+    #botRow {
+        width: 100%;
+    }
+
+    .keyDiv > button > p {
+        font-size: 4vw;
+    }
+} */

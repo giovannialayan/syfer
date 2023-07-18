@@ -1,11 +1,3 @@
-#toggleThemeButton {
-  position: absolute;
-  right: 2px;
-  top: 2px;
-  width: 4em;
-  z-index: 3;
-}
-
 .darkThemeElement {
   background-color: #333;
   color: #eee;
@@ -95,21 +87,4 @@
 #homeLink {
   text-decoration: none;
   margin-bottom: 1em;
-}
-
-body {
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-a {
-  text-decoration: none;
-  margin-bottom: 1em;
-}
-
-#title {
-  font-size: 2em;
 }

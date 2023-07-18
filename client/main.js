@@ -1,16 +1,19 @@
-let wordDisplay;
-let guessOutput
-let guessWordDisplay;
+import React from 'react';
+import ReactDom from 'react-dom';
+
+let guessWordEl;
+let targetWordEl;
 let letterGuessOutput;
-let keyboard;
-let numberPad;
+let keyboardEl;
+let numpadEl;
 let newWordButton;
 let toggleThemeButton;
-// let addWordPageButton;
 let howtoButton;
 let howtoDiv;
 let howtoCover;
 let homeLink;
+let longShareTab;
+let shortShareTab;
 
 const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
@@ -18,59 +21,78 @@ let targetWord;
 let targetWordNums;
 let targetWordAsNumbers;
 let guessWord;
+let guessedNumbers;
 
 let lastGuess;
 
 let userWonWords;
 
-let darkThemeOn;
-let howtoOn;
+let darkThemeOn = true;
+let howtoOn = false;
 
-import './numberTile.js';
-import './keyboard.js';
-import './numpad.js';
+let longShare = [];
+let shortShare = [];
+
+let targetWordTileSet;
+let guessWordTileSet;
+
+import {TileSet} from './tileSet.jsx';
+import * as keyboard from './keyboard.jsx';
+import * as numpad from './numpad.jsx';
+import * as utils from './utils.js';
 
 //set up page and buttons
 window.onload = () => {
-    wordDisplay = document.querySelector("#targetWord");
+    guessWordEl = document.querySelector('#guessWord');
+    guessWordTileSet = ReactDom.render(<TileSet darkThemeOn={darkThemeOn} />, guessWordEl)
 
-    getUser(setUpTargetWord);
+    targetWordEl = document.querySelector('#targetWord');
+    targetWordTileSet = ReactDom.render(<TileSet darkThemeOn={darkThemeOn} />, targetWordEl);
 
-    keyboard = document.querySelector('letter-keyboard');
-    keyboard.addEventListener('letterSubmitted', (e) => {checkGuess(e.detail.output);})
-
-    guessOutput = document.querySelector('#letterGuessOutput');
-    guessWordDisplay = document.querySelector('#guessWord');
-    letterGuessOutput = document.querySelector('#letterGuessOutput');
-
-    numberPad = document.querySelector('number-pad');
-    numberPad.addEventListener('numberSubmitted', (e) => {guessNumber(e.detail.output);});
-
-    newWordButton = document.querySelector('#newWord');
-    newWordButton.addEventListener('click', setUpTargetWord);
-
-    // addWordPageButton = document.querySelector('#gotoAddWordInput');
-
-    homeLink = document.querySelector('#homeLink');
-
-    howtoOn = false;
     howtoDiv = document.querySelector('#howtoDiv');
     howtoCover = document.querySelector('.cover');
+
+    keyboardEl = document.querySelector('#keyboard');
+    keyboard.init(keyboardEl, darkThemeOn);
+
+    numpadEl = document.querySelector('#numpad');
+    numpad.init(numpadEl, darkThemeOn);
+    
+    homeLink = document.querySelector('#homeLink');
+    newWordButton = document.querySelector('#newWord');
+    
     howtoButton = document.querySelector('#howtoButton');
+    toggleThemeButton = document.querySelector('#toggleThemeButton');
+
+    getUser();
+    setUpTargetWord();
+
+    keyboardEl.addEventListener('letterSubmitted', (e) => {checkGuess(e.detail.output);});
+
+    letterGuessOutput = document.querySelector('#letterGuessOutput');
+
+    numpadEl.addEventListener('numberSubmitted', (e) => {guessNumber(e.detail.output);});
+
+    newWordButton.addEventListener('click', setUpTargetWord);
+
+    longShareTab = document.querySelector('#longShareTab');
+    longShareTab.addEventListener('click', () => {displayShareText('long')});
+
+    shortShareTab = document.querySelector('#shortShareTab');
+    shortShareTab.addEventListener('click', () => {displayShareText('short')});
+
     howtoButton.addEventListener('click', () => {toggleHowToPlay(true)});
     howtoCover.addEventListener('click', () => {toggleHowToPlay(true)});
 
-    darkThemeOn = true;
-    toggleThemeButton = document.querySelector('#toggleThemeButton');
     toggleThemeButton.addEventListener('click', () => {
-        toggleTheme([howtoDiv], [newWordButton], [keyboard, numberPad], [wordDisplay, guessWordDisplay], [homeLink], true);
+        toggleTheme([howtoDiv], [keyboard, numpad], [targetWordTileSet, guessWordTileSet], [homeLink, newWordButton], shareDiv, true);
     });
 
     //keypresses for keyboards
     window.addEventListener('keydown', (e) => {
         const key = e.key.toLowerCase();
         //add if keyboard is displayed or numpad is displayed do that one
-        if(keyboard.style.display !== 'none' && guessWord.includes('_')) {
+        if(keyboardEl.style.display !== 'none' && guessWord.includes('_')) {
             if(letters.includes(key)) {
                 keyboard.modifyOutput(key);
             }
@@ -78,16 +100,20 @@ window.onload = () => {
                 keyboard.submit();
             }
         }
-        else if(numberPad.style.display !== 'none') {
+        else if(numpadEl.style.display !== 'none') {
             if(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(key)) {
-                numberPad.modifyOutput(key);
+                numpad.modifyOutput(key);
             }
             else if(key === 'enter') {
-                numberPad.submit();
+                numpad.submit();
             }
             else if(key === 'backspace') {
-                numberPad.modifyOutput('x');
+                numpad.modifyOutput('x');
             }
+        }
+
+        if(key === 'control') {
+            setUpTargetWord();
         }
     });
 };
@@ -104,47 +130,105 @@ const checkGuess = (guess) => {
     if(targetWord.includes(guess)) {
         letterGuessOutput.textContent = `${guess} is in the word, guess what number it is`;
         lastGuess = guess;
-        keyboard.style.display = 'none';
-        numberPad.style.display = 'block';
+        keyboardEl.style.display = 'none';
+        numpadEl.style.display = 'block';
     }
     else {
         letterGuessOutput.textContent = `that letter is not in the word`;
-        keyboard.dataset.wrong = guess;
+        keyboard.setLetter(guess, 'wrong');
+
+        if(longShare.length > 0 && longShare[longShare.length - 1] == 'r') {
+            longShare[longShare.length - 1] = `r x2`;
+            shortShare[shortShare.length - 1] = ['r', ' x2'];
+        }
+        else if(longShare.length > 0 && longShare[longShare.length - 1].includes('x')) {
+            let numWrong = longShare[longShare.length - 1].substr(longShare[longShare.length - 1].indexOf('x') + 1, 1);
+            numWrong++;
+            longShare[longShare.length - 1] = `r x${numWrong}`;
+            shortShare[shortShare.length - 1] = ['r', ` x${numWrong}`];
+        }
+        else {
+            longShare.push('r');
+            shortShare.push(['r']);
+        }
     }
 };
 
 //check if number guess correlates correctly to letter guess
 const guessNumber = (guess) => {
+    let longShareString = '';
+    let shortShareArr = [];
+
     //guess was not a number
     if(!Array.from(targetWordNums.values()).includes(guess - 0)) {
         letterGuessOutput.textContent = `${guess} is not a number`;
     }
+    //check if number was already guessed correctly
+    else if(guessedNumbers.includes(guess)) {
+        letterGuessOutput.textContent = `${guess} was already guessed correctly`;
+    }
     //guess was correct
     else if(targetWordNums.get(lastGuess) == guess) {
-
         for(let i = 0; i < guessWord.length; i++) {
             //if the correct guess is already there as an almost guess, remove it
-            if(guessWordDisplay.children[i].dataset.text == lastGuess) {
+            if(guessWord[i] == lastGuess) {
                 guessWord[i] = '_';
-                guessWordDisplay.children[i].dataset.text = '_';
-                guessWordDisplay.children[i].dataset.color = 'default';
             }
 
             //add letter to guess word and display it
             if(targetWord[i] == lastGuess) {
                 guessWord[i] = lastGuess;
-                guessWordDisplay.children[i].dataset.text = lastGuess;
-                guessWordDisplay.children[i].dataset.color = 'correct';
+                longShareString += 'g';
+                shortShareArr.push('g');
+            }
+            else if(targetWord[i] == guessWord[i]) {
+                longShareString += 'g';
+                shortShareArr.push('g');
+            }
+            else {
+                longShareString += guessWord[i] == '_' ? 'w' : 'y';
+                shortShareArr.push(guessWord[i] == '_' ? 'w' : 'y');
             }
         }
-        letterGuessOutput.textContent = `correct, ${lastGuess} is ${guess}`;
-        keyboard.dataset.correct = lastGuess;
 
-        keyboard.style.display = 'block';
-        numberPad.style.display = 'none';
+        guessWordTileSet.setTiles(guessWord);
+        guessWordTileSet.setTileTypes(targetWord);
+
+        letterGuessOutput.textContent = `correct, ${lastGuess} is ${guess}`;
+        keyboard.setLetter(lastGuess, 'correct');
+
+        keyboardEl.style.display = 'block';
+        numpadEl.style.display = 'none';
+
+        guessedNumbers.push(guess);
 
         if(targetWord === guessWord.join('')) {
             letterGuessOutput.textContent = `congrats, you win`;
+            shareDiv.style.display = 'flex';
+            longShare.push(longShareString);
+            longShareString = '';
+            shortShare.push(shortShareArr);
+            if(shortShare.length > 1 && shortShare[shortShare.length - 1][0] != 'r' && shortShare[shortShare.length - 2][0] != 'r') {
+                let shouldDelete = true;
+    
+                for(let i = 0; i < shortShare[shortShare.length - 1].length; i++) {
+                    if((shortShare[shortShare.length - 1][i] == 'w' && shortShare[shortShare.length - 2][i] == 'y') || shortShare[shortShare.length - 1][i] == 'g' && shortShare[shortShare.length - 2][i] == 'y') {
+                        shouldDelete = false;
+                    }
+                }
+    
+                if(shouldDelete) {
+                    shortShare.splice(shortShare.length - 2, 1);
+                }
+            }
+            shortShareArr = [];
+
+            for(let i = 0; i < shortShare.length; i++) {
+                shortShare[i] = shortShare[i].join('');
+            }
+
+            displayShareText('long');
+
             addUserWinWord(targetWord);
         }
     }
@@ -154,14 +238,47 @@ const guessNumber = (guess) => {
         for(let i = 0; i < targetWordAsNumbers.length; i++) {
             if(targetWordAsNumbers[i] == guess) {
                 guessWord[i] = lastGuess;
-                guessWordDisplay.children[i].dataset.text = lastGuess;
-                guessWordDisplay.children[i].dataset.color = 'almost';
-                keyboard.dataset.almost = lastGuess;
+                keyboard.setLetter(lastGuess, 'almost');
+                longShareString += 'y';
+                shortShareArr.push('y');
+            }
+            else if(targetWord[i] == guessWord[i]) {
+                longShareString += 'g';
+                shortShareArr.push('g');
+            }
+            else {
+                longShareString += guessWord[i] == '_' ? 'w' : 'y';
+                shortShareArr.push(guessWord[i] == '_' ? 'w' : 'y');                
             }
         }
 
-        keyboard.style.display = 'block';
-        numberPad.style.display = 'none';
+        guessWordTileSet.setTiles(guessWord);
+        guessWordTileSet.setTileTypes(targetWord);
+
+        keyboardEl.style.display = 'block';
+        numpadEl.style.display = 'none';        
+    }
+
+    if(longShareString != '') {
+        longShare.push(longShareString);
+    }
+
+    if(shortShareArr.length > 0) {
+        shortShare.push(shortShareArr);
+
+        if(shortShare.length > 1 && shortShare[shortShare.length - 1][0] != 'r' && shortShare[shortShare.length - 2][0] != 'r') {
+            let shouldDelete = true;
+
+            for(let i = 0; i < shortShare[shortShare.length - 1].length; i++) {
+                if((shortShare[shortShare.length - 1][i] == 'w' && shortShare[shortShare.length - 2][i] == 'y') || (shortShare[shortShare.length - 1][i] == 'g' && shortShare[shortShare.length - 2][i] == 'y')) {
+                    shouldDelete = false;
+                }
+            }
+
+            if(shouldDelete) {
+                shortShare.splice(shortShare.length - 2, 1);
+            }
+        }
     }
 };
 
@@ -202,38 +319,18 @@ const setUpTargetWord = async () => {
         targetWordAsNumbers.push(targetWordNums.get(targetWord[i]));
     }
 
-    //remove tiles for target word display if there are any
-    while(wordDisplay.lastChild) {
-        wordDisplay.removeChild(wordDisplay.lastChild);
-    }
-
     //create tiles for target word display
-    for(let i = 0; i < targetWord.length; i++) {
-        const tile = document.createElement('number-tile');
-        tile.dataset.text = targetWordNums.get(targetWord[i]);
-        tile.dataset.theme = darkThemeOn ? 'dark' : 'light';
-        wordDisplay.appendChild(tile);
-    }
-
-    //remove tiles for guess word display if there are any
-    while(guessWordDisplay.lastChild) {
-        guessWordDisplay.removeChild(guessWordDisplay.lastChild);
-    }
+    targetWordTileSet.setTiles(targetWordAsNumbers);
 
     //create and fill array for guess word with placeholder and create tiles for guess word display
-    guessWord = new Array();
+    guessWord = new Array(targetWord.length).fill('_');
 
-    for(let i = 0; i < targetWord.length; i++) {
-        guessWord.push('_');
+    guessWordTileSet.setTiles(guessWord);
 
-        const tile = document.createElement('number-tile');
-        tile.dataset.text = guessWord[i];
-        tile.dataset.theme = darkThemeOn ? 'dark' : 'light';
-        guessWordDisplay.appendChild(tile);
-    }
+    guessWordTileSet.setTileTypes(targetWord);
 
     //reset keyboard
-    keyboard.dataset.reset = true;
+    keyboard.reset();
     
     //remove output text
     letterGuessOutput.textContent = '';
@@ -241,16 +338,23 @@ const setUpTargetWord = async () => {
     //remove last guess
     lastGuess = '';
 
+    //reset share display
+    shareDiv.style.display = 'none';
+    shortShare = [];
+    longShare = [];
+
+    guessedNumbers = [];
+
     //reset keyboard and numpad display
-    keyboard.style.display = 'block';
-    numberPad.style.display = 'none';
+    keyboardEl.style.display = 'block';
+    numpadEl.style.display = 'none';
 
     //make it so enter doesnt give you a new word while you are trying to solve the word you just got
     newWordButton.blur();
 };
 
 //toggle dark theme and light theme
-const toggleTheme = (elements, buttons, keyboards, tileContainers, links, setPref) => {
+const toggleTheme = (elements, keyboards, tileSets, links, share, setPref) => {
     if(darkThemeOn) {
         document.body.classList.replace('darkThemeBody', 'lightThemeBody');
 
@@ -258,24 +362,19 @@ const toggleTheme = (elements, buttons, keyboards, tileContainers, links, setPre
             e.classList.replace('darkThemeElement', 'lightThemeElement');
         }
 
-        for(const b of buttons) {
-            b.classList.replace('darkThemeButton', 'lightThemeButton');
-        }
-
         for(const k of keyboards) {
-            k.dataset.theme = 'light';
+            k.render(!darkThemeOn);
         }
 
-        for(const div of tileContainers) {
-            const tiles = div.children;
-            for(const tile of tiles) {
-                tile.dataset.theme = 'light';
-            }
+        for(const ts of tileSets) {
+            ts.setTheme(!darkThemeOn);
         }
 
         for(const l of links) {
             l.classList.replace('darkThemeLink', 'lightThemeLink');
         }
+
+        share.classList.replace('shareDivDarkTheme', 'shareDivLightTheme');
 
         toggleThemeButton.src = '/assets/images/lightBulbLightTheme.png';
         howtoButton.src = '/assets/images/questionLightTheme.png';
@@ -287,24 +386,19 @@ const toggleTheme = (elements, buttons, keyboards, tileContainers, links, setPre
             e.classList.replace('lightThemeElement', 'darkThemeElement');
         }
 
-        for(const b of buttons) {
-            b.classList.replace('lightThemeButton', 'darkThemeButton');
-        }
-
         for(const k of keyboards) {
-            k.dataset.theme = 'dark';
+            k.render(!darkThemeOn);
         }
 
-        for(const div of tileContainers) {
-            const tiles = div.children;
-            for(const tile of tiles) {
-                tile.dataset.theme = 'dark';
-            }
+        for(const ts of tileSets) {
+            ts.setTheme(!darkThemeOn);
         }
 
         for(const l of links) {
             l.classList.replace('lightThemeLink', 'darkThemeLink');
         }
+
+        share.classList.replace('shareDivLightTheme', 'shareDivDarkTheme');
 
         toggleThemeButton.src = '/assets/images/lightBulbDarkTheme.png';
         howtoButton.src = '/assets/images/questionDarkTheme.png';
@@ -313,81 +407,26 @@ const toggleTheme = (elements, buttons, keyboards, tileContainers, links, setPre
     darkThemeOn = !darkThemeOn;
 
     if(setPref) {
-        setUserPrefs(darkThemeOn ? 'dark' : 'light', howtoOn);
+        utils.setUserPrefs(darkThemeOn ? 'dark' : 'light', howtoOn);
     }
 };
 
 //get user preferences from the server and change the page to match them
-const getUser = async (callback) => {
-    const response = await fetch('getUser');
-    const json = await response.json();
+const getUser = () => {
+    // const response = await fetch('getUser');
+    // const json = await response.json();
+
+    const json = utils.getUser();
 
     if(json.theme === 'light') {
-        toggleTheme([howtoDiv], [newWordButton], [keyboard, numberPad], [wordDisplay, guessWordDisplay], [homeLink], false);
+        toggleTheme([howtoDiv], [keyboard, numpad], [targetWordTileSet, guessWordTileSet], [homeLink, newWordButton], shareDiv, false);
     }
 
-    if(json.howto === 'true') {
-        toggleHowToPlay(true);
+    if(json.howto) {
+        toggleHowToPlay(false);
     }
 
-    userWonWords = json.wonWords.split(',');
-    callback();
-};
-
-//send user preferences to the server
-const setUserPrefs = async (theme, howto) => {
-    const formData = `theme=${theme}&howto=${howto}`;
-
-    const response = await fetch('/setUserPrefs', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Accept': 'application/json',
-      },
-      body: formData,
-    });
-  
-    handleResponse(response);
-};
-
-//handle response from set user prefs post request
-const handleResponse = async (response) => {
-    let statusText = '';
-    switch(response.status){
-        case 200:
-            statusText += 'success';
-            break;
-        
-        case 201:
-            statusText += 'user added';
-            break;
-        
-        case 204:
-            statusText += 'user updated';
-            break;
-        
-        case 400:
-            statusText += 'bad request';
-            break;
-        
-        case 404:
-            statusText += 'not found';
-            break;
-        
-        default:
-            statusText += 'response code not implemented by the server';
-            break;
-    }
-
-    const resText = await response.text();
-
-    if(resText) {
-        const parsedJson = JSON.parse(resText);
-        statusText += parsedJson.message ? `/n${parsedJson.message}` : '';
-        statusText += parsedJson.id ? `/n${parsedJson.id}` : '';
-    }
-    
-    console.log(statusText);
+    userWonWords = json.wonWords;
 };
 
 const toggleHowToPlay = (setPref) => {
@@ -403,22 +442,36 @@ const toggleHowToPlay = (setPref) => {
     howtoOn = !howtoOn;
 
     if(setPref) {
-        setUserPrefs(darkThemeOn ? 'dark' : 'light', howtoOn);
+        utils.setUserPrefs(darkThemeOn ? 'dark' : 'light', howtoOn);
     }
 };
 
 const addUserWinWord = async (word) => {
     userWonWords.push(word);
-    const formData = `word=${word}`;
+    // const formData = `word=${word}&longShare=${longShare.join(',')}&shortShare=${shortShare.join(',')}`;
 
-    const response = await fetch('/addUserWin', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Accept': 'application/json',
-      },
-      body: formData,
-    });
-  
-    handleResponse(response);
+    // const response = await fetch('/addUserWin', {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/x-www-form-urlencoded',
+    //         'Accept': 'application/json',
+    //     },
+    //     body: formData,
+    // });
+
+    // utils.handleResponse(response);
+    utils.addUserWin(word, longShare, shortShare);
+};
+
+const displayShareText = (type) => {
+    if(type == 'long') {
+        shareDiv.children[2].textContent = utils.getDisplayShare(longShare).join('\n');
+        longShareTab.classList.replace('unSelectedShareTab', 'selectedShareTab');
+        shortShareTab.classList.replace('selectedShareTab', 'unSelectedShareTab');
+    }
+    else {
+        shareDiv.children[2].textContent = utils.getDisplayShare(shortShare).join('\n');
+        shortShareTab.classList.replace('unSelectedShareTab', 'selectedShareTab');
+        longShareTab.classList.replace('selectedShareTab', 'unSelectedShareTab');
+    }
 };

@@ -1,0 +1,73 @@
+.numpadContainer {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    width: 15rem;
+}
+
+.number {
+    position: relative;
+    width: 100%;
+    min-width: 50px;
+    height: 0;
+    padding: .1rem;
+    padding-bottom: 100%;
+
+    display: flex;
+    flex-flow: column nowrap;
+    flex: 0 0 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.numberDiv {
+    width: 4rem;
+    margin: 5px 5px 5px 5px;
+}
+
+.numberDiv > button > p {
+    font-family: Arial, sans-serif;
+    font-size: 2rem;
+    margin: 100% 0 0 0;
+    text-align: center;
+}
+
+#output {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    font-size: 1rem;
+    min-height: 1.2em;
+}
+
+.darkThemeNum {
+    background-color: #333;
+    color: #eee;
+
+    border-width: 2px;
+    border-style: solid;
+    border-color: #bbb;
+}
+
+.lightThemeNum {
+    background-color: #ddd;
+    color: #222;
+
+    border-width: 2px;
+    border-style: solid;
+    border-color: #555;
+}
+
+.darkThemeText {
+    background-color: #000;
+    color: #eee;
+}
+
+.lightThemeText {
+    background-color: #fff;
+    color: #222;
+}
+
+.mobile {
+    display: none;
+}

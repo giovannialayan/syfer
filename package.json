@@ -1,6 +1,6 @@
 {
   "name": "syfer",
-  "version": "1.0.0",
+  "version": "3.0.0",
   "description": "word game about solving cyphers",
   "main": "./server/app.js",
   "scripts": {
@@ -9,7 +9,10 @@
     "pretest": "eslint ./src --fix",
     "test": "echo \"tests complete\"",
     "nodemon": "nodemon -e js,html,css,json --watch ./server --watch ./hosted ./server/app.js",
-    "wps": "npm run webpack && npm start"
+    "wps": "npm run webpack && npm start",
+    "devsass": "sass ./client/sass:./hosted/style",
+    "build": "sass ./client/sass:./hosted/style --no-source-map && npm run webpack",
+    "br": "npm run build && npm start"
   },
   "repository": {
     "type": "git",
@@ -30,6 +33,9 @@
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
+    "@babel/core": "^7.22.5",
+    "@babel/preset-react": "^7.22.5",
+    "babel-loader": "^9.1.2",
     "body-parser": "^1.20.2",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
@@ -38,6 +44,8 @@
     "express-handlebars": "^7.0.7",
     "firebase": "^9.18.0",
     "helmet": "^7.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "serve-favicon": "^2.5.0"
   }
 }

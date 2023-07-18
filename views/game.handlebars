@@ -2,6 +2,7 @@
 <html lang='en'>
 <head>
     <title>syfer</title>
+    {{!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> --}}
     <link rel='icon' type='image/x-icon' href='/assets/images/favicon.ico'>
     <link rel='stylesheet' href='/assets/style/gameStyle.css'>
     <script src='/assets/gameBundle.js' type='module'></script>
@@ -11,6 +12,7 @@
     <input id='toggleThemeButton' type='image' src='/assets/images/lightBulbDarkTheme.png'>
 
     <a id='homeLink' class='darkThemeLink' href='/'>home</a>
+    <a id='newWord' class='darkThemeLink'>get a new word</a>
 
     <div id='wordGuessDiv'>
         <div id='targetWord'></div>
@@ -19,11 +21,18 @@
     </div>
 
     <div id='keyboardsDiv'>
-        <letter-keyboard></letter-keyboard>
-        <number-pad></number-pad>
+        <div id="keyboard"></div>
+        <div id="numpad"></div>
     </div>
 
-    <button type='button' id='newWord' class='darkThemeButton'>get a new word</button>
+    <div id='shareDiv' class='shareDivDarkTheme'>
+        <div class='shareHeader'><p>you win</p></div>
+        <div class='shareButtonContainer'>
+            <a id='longShareTab' class='selectedShareTab'>long form</a>
+            <a id='shortShareTab' class='unSelectedShareTab'>short form</a>
+        </div>
+        <p id='shareText'></p>
+    </div>
 
     <div id='howtoDiv' class='darkThemeElement'>
         <p>how to play syfer</p>

@@ -1,0 +1,263 @@
+#shareDiv {
+  display: none;
+  flex-flow: column nowrap;
+  margin-top: 1em;
+  border-radius: 1em;
+  align-items: center;
+  width: fit-content;
+}
+
+.shareDivDarkTheme {
+  background-color: #111;
+  border: 2px solid #bbb;
+}
+
+.shareDivLightTheme {
+  background-color: #fff;
+  border: 2px solid #555;
+}
+
+.shareDivDarkTheme > .shareHeader {
+  background-color: #333;
+  border-bottom: 1px solid #bbb;
+}
+
+.shareDivLightTheme > .shareHeader {
+  background-color: #eee;
+  border-bottom: 1px solid #555;
+}
+
+#shareText {
+  text-align: left;
+  white-space: pre-wrap;
+  margin: 0em 0.5em 0.5em 0.5em;
+}
+
+.shareHeader {
+  width: 100%;
+  flex: 1;
+  border-top-left-radius: 0.9em;
+  border-top-right-radius: 0.9em;
+}
+
+.shareDivDarkTheme > .shareButtonContainer {
+  background-color: #333;
+}
+
+.shareDivDarkTheme > .shareButtonContainer {
+  background-color: #eee;
+}
+
+.shareButtonContainer {
+  display: flex;
+  flex-flow: row nowrap;
+  width: 100%;
+}
+
+.shareButtonContainer > * {
+  flex-grow: 1;
+}
+
+.shareDivDarkTheme > .shareButtonContainer > .selectedShareTab {
+  background-color: #111;
+}
+
+.shareDivLightTheme > .shareButtonContainer > .selectedShareTab {
+  background-color: #fff;
+}
+
+.shareDivDarkTheme > .shareButtonContainer > .unSelectedShareTab {
+  background-color: #333;
+}
+
+.shareDivLightTheme > .shareButtonContainer > .unSelectedShareTab {
+  background-color: #eee;
+}
+
+.shareButtonContainer > a {
+  padding: 10px;
+}
+
+.shareButtonContainer > a:hover {
+  cursor: pointer;
+}
+
+#shareStreak {
+  text-align: center;
+  margin: 0.5em;
+}
+
+#copyShare {
+  margin-top: 0.75em;
+}
+
+#toggleThemeButton {
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  width: 4em;
+  z-index: 3;
+}
+
+.darkThemeElement {
+  background-color: #333;
+  color: #eee;
+}
+
+.darkThemeButton {
+  background-color: #333;
+  color: #eee;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #bbb;
+}
+
+.darkThemeButton:hover {
+  background-color: #0b0;
+  cursor: pointer;
+}
+
+.darkThemeButton:active {
+  background-color: #bb0;
+}
+
+.darkThemeBody {
+  background-color: #000;
+  color: #eee;
+}
+
+.lightThemeElement {
+  background-color: #ddd;
+  color: #222;
+}
+
+.lightThemeButton {
+  background-color: #ddd;
+  color: #222;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #555;
+}
+
+.lightThemeButton:hover {
+  background-color: #0f0;
+  cursor: pointer;
+}
+
+.lightThemeButton:active {
+  background-color: #ff0;
+}
+
+.lightThemeBody {
+  background-color: #fff;
+  color: #000;
+}
+
+.darkThemeLink {
+  background-color: #333;
+  color: #eee;
+  border: 2px solid #bbb;
+  padding: 0.5em;
+}
+
+.darkThemeLink:hover {
+  background-color: #0a0;
+  cursor: pointer;
+}
+
+.darkThemeLink:active {
+  background-color: #aa0;
+}
+
+.lightThemeLink {
+  background-color: #ddd;
+  color: #222;
+  border: 2px solid #555;
+  padding: 0.5em;
+}
+
+.lightThemeLink:hover {
+  background-color: #0f0;
+  cursor: pointer;
+}
+
+.lightThemeLink:active {
+  background-color: #ff0;
+}
+
+#homeLink {
+  text-decoration: none;
+  margin-bottom: 1em;
+}
+
+body {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#wordList {
+  width: 100%;
+}
+
+.galleryContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+.percentDarkTheme {
+  color: #0a0;
+}
+
+.percentLightTheme {
+  color: #0f0;
+}
+
+.galleryContainer > div {
+  display: grid;
+  grid-template-columns: repeat(6, 16.25vw);
+  width: 100%;
+}
+
+.galleryContainer > div > div {
+  margin: 1rem 0.25rem;
+}
+
+.shareDivOff {
+  display: none;
+}
+
+.galleryWord {
+  border-width: 2px;
+  border-style: solid;
+  min-width: 8rem;
+}
+
+.galleryWord.galleryDarkTheme {
+  background-color: #0a0;
+  color: #eee;
+  border-color: #bbb;
+}
+
+.galleryWord.galleryLightTheme {
+  background-color: #0f0;
+  color: #222;
+  border-color: #555;
+}
+
+.shareDiv {
+  border-top: none;
+}
+
+@media screen and (max-width: 768px) {
+  .galleryContainer > div {
+    grid-template-columns: repeat(3, 16.25vw);
+  }
+}

@@ -11,11 +11,12 @@ const cookieOptions = {maxAge: 1000 * 60 * 60 * 24 * 365, httpOnly: true, sameSi
 
 // const letterWhitelist = /^[a-z]*$/;
 
-const defaultUser = { theme: 'dark', howto: 'true', wonWords: '', dailyWin: {number: -1, longShare: '', shortShare: '', letters: '', streak: 0} };
+const defaultUser = { theme: 'dark', howto: 'true', wonWords: '', dailyWin: {number: -1, longShare: '', shortShare: '', letters: '', streak: 0}, freePlayShares: [], dailyWinHistory: [] };
 
 const homePage = (req, res) => res.render('home');
 const gamePage = (req, res) => res.render('game');
 const dailyPage = (req, res) => res.render('daily');
+const galleryPage = (req, res) => res.render('gallery');
 // const addWordPage = (req, res) => res.render('addWord');
 
 // Import the functions you need from the SDKs you need
@@ -162,175 +163,227 @@ const getWords = (req, res) => {
 //     return res.status(201).json(responseJson);
 // };
 
-// set user preferences in the server
-const setUserPrefs = (req, res) => {
-    if (!req.body.theme && !req.body.howto) {
-        return res.status(400).json({ id: 'setUserPrefsMissingParams', message: 'theme or how to required' });
-    }
+// // set user preferences in the server
+// const setUserPrefs = (req, res) => {
+//     if (!req.body.theme && !req.body.howto) {
+//         return res.status(400).json({ id: 'setUserPrefsMissingParams', message: 'theme or how to required' });
+//     }
 
-    if(req.body.theme) {
-        res.cookie('theme', req.body.theme, cookieOptions);
-    }
+//     if(req.body.theme) {
+//         res.cookie('theme', req.body.theme, cookieOptions);
+//     }
 
-    if(req.body.howto) {
-        res.cookie('howto', req.body.howto, cookieOptions);
-    }
+//     if(req.body.howto) {
+//         res.cookie('howto', req.body.howto, cookieOptions);
+//     }
 
-    return res.status(204).json({message: 'preferences saved'});
+//     return res.status(204).json({message: 'preferences saved'});
 
-    // let user = `${req.headers['x-forwarded-for']}`;
-    // if(process.env.NODE_ENV === 'production') {
-    //     user = `${req.headers['fly-client-ip']}`;
-    // }
-    // user = user.replace(/\./g, '&');
-    // const userRef = ref(database, `users/${user}`);
-    // get(userRef).then((snapshot) => {
-    //     if (snapshot.exists()) {
-    //         saveUserToDatabase(user, body.theme, body.howto, snapshot.val().wonWords);
-    //         return res.status(204);
-    //     }
-    //     saveUserToDatabase(user, defaultUser.theme, defaultUser.howto, defaultUser.wonWords);
-    //     return res.status(201).json({message: 'user added successfully'});
-    // });
+//     // let user = `${req.headers['x-forwarded-for']}`;
+//     // if(process.env.NODE_ENV === 'production') {
+//     //     user = `${req.headers['fly-client-ip']}`;
+//     // }
+//     // user = user.replace(/\./g, '&');
+//     // const userRef = ref(database, `users/${user}`);
+//     // get(userRef).then((snapshot) => {
+//     //     if (snapshot.exists()) {
+//     //         saveUserToDatabase(user, body.theme, body.howto, snapshot.val().wonWords);
+//     //         return res.status(204);
+//     //     }
+//     //     saveUserToDatabase(user, defaultUser.theme, defaultUser.howto, defaultUser.wonWords);
+//     //     return res.status(201).json({message: 'user added successfully'});
+//     // });
 
-    // return null;
-};
+//     // return null;
+// };
 
-// respond with user's preferences
-const getUser = (req, res) => {
-    let user = {
-        theme: defaultUser.theme,
-        howto: defaultUser.howto,
-        wonWords: defaultUser.wonWords,
-        dailyWin: defaultUser.dailyWin,
-    };
+// // respond with user's preferences
+// const getUser = (req, res) => {
+//     let user = {
+//         theme: defaultUser.theme,
+//         howto: defaultUser.howto,
+//         wonWords: defaultUser.wonWords,
+//         dailyWin: defaultUser.dailyWin,
+//         freePlayShares: defaultUser.freePlayShares,
+//         dailyWinHistory: defaultUser.dailyWinHistory,
+//     };
 
-    if(!req.cookies.theme) {
-        res.cookie('theme', defaultUser.theme, cookieOptions);
-    }
-    else {
-        user.theme = req.cookies.theme;
-    }
+//     if(!req.cookies.theme) {
+//         res.cookie('theme', defaultUser.theme, cookieOptions);
+//     }
+//     else {
+//         user.theme = req.cookies.theme;
+//     }
 
-    if(!req.cookies.howto) {
-        res.cookie('howto', defaultUser.howto, cookieOptions);
-    }
-    else {
-        user.howto = req.cookies.howto;
-    }
+//     if(!req.cookies.howto) {
+//         res.cookie('howto', defaultUser.howto, cookieOptions);
+//     }
+//     else {
+//         user.howto = req.cookies.howto;
+//     }
 
-    if(!req.cookies.wonWords) {
-        res.cookie('wonWords', defaultUser.wonWords, cookieOptions);
-    }
-    else {
-        user.wonWords = req.cookies.wonWords;
-    }
+//     if(!req.cookies.wonWords) {
+//         res.cookie('wonWords', defaultUser.wonWords, cookieOptions);
+//     }
+//     else {
+//         user.wonWords = req.cookies.wonWords;
+//     }
 
-    if(!req.cookies.dailyWin) {
-        res.cookie('dailyWin', defaultUser.dailyWin, cookieOptions);
-    }
-    else {
-        user.dailyWin = req.cookies.dailyWin;
-    }
+//     if(!req.cookies.dailyWin) {
+//         res.cookie('dailyWin', defaultUser.dailyWin, cookieOptions);
+//     }
+//     else {
+//         user.dailyWin = req.cookies.dailyWin;
+//     }
 
-    return res.status(200).json(user);
+//     if(!req.cookies.freePlayShares) {
+//         res.cookie('freePlayShares', defaultUser.freePlayShares, cookieOptions);
+//     }
+//     else {
+//         user.freePlayShares = req.cookies.freePlayShares;
+//     }
 
-    // let user = `${req.headers['x-forwarded-for']}`;
-    // if(process.env.NODE_ENV === 'production') {
-    //     user = `${req.headers['fly-client-ip']}`;
-    // }
-    // user = user.replace(/\./g, '&');
-    // const userRef = ref(database, `users/${user}`);
-    // get(userRef).then((snapshot) => {
-    //     if (req.method === 'HEAD') {
-    //         return res.status(200);
-    //     }
+//     if(!req.cookies.dailyWinHistory) {
+//         res.cookie('dailyWinHistory', defaultUser.dailyWinHistory, cookieOptions);
+//     }
+//     else {
+//         user.dailyWinHistory = req.cookies.dailyWinHistory;
+//     }
 
-    //     if (!snapshot.exists()) {
-    //         saveUserToDatabase(user, defaultUser.theme, defaultUser.howto, defaultUser.wonWords);
-    //         return res.status(200).json(defaultUser);
-    //     }
+//     return res.status(200).json(user);
 
-    //     return res.status(200).json(snapshot.val());
-    // });
+//     // let user = `${req.headers['x-forwarded-for']}`;
+//     // if(process.env.NODE_ENV === 'production') {
+//     //     user = `${req.headers['fly-client-ip']}`;
+//     // }
+//     // user = user.replace(/\./g, '&');
+//     // const userRef = ref(database, `users/${user}`);
+//     // get(userRef).then((snapshot) => {
+//     //     if (req.method === 'HEAD') {
+//     //         return res.status(200);
+//     //     }
 
-    // return null;
-};
+//     //     if (!snapshot.exists()) {
+//     //         saveUserToDatabase(user, defaultUser.theme, defaultUser.howto, defaultUser.wonWords);
+//     //         return res.status(200).json(defaultUser);
+//     //     }
 
-// add a word a user won with to their user and update their entry in the database
-const addUserWin = (req, res) => {
-    if (!req.body.word) {
-        return res.status(400).json({ error: 'word required' });
-    }
+//     //     return res.status(200).json(snapshot.val());
+//     // });
 
-    let userWords = req.cookies.wonWords.split(',');
-    userWords.push(req.body.word);
+//     // return null;
+// };
 
-    while(userWords.indexOf('') != -1) {
-        userWords.splice(userWords.indexOf(''), 1);
-    }
+// // add a word a user won with to their user and update their entry in the database
+// const addUserWin = (req, res) => {
+//     if (!req.body.word) {
+//         return res.status(400).json({ error: 'word required' });
+//     }
 
-    if (userWords.length === wordJson.words.length) {
-        userWords = [];
-    }
+//     let userWords = req.cookies.wonWords.split(',');
+//     userWords.push(req.body.word);
 
-    res.cookie('wonWords', userWords.join(','), cookieOptions);
-    return res.status(204).json({message: 'word saved'});
+//     while(userWords.indexOf('') != -1) {
+//         userWords.splice(userWords.indexOf(''), 1);
+//     }
 
-    // let user = `${req.headers['x-forwarded-for']}`;
-    // if(process.env.NODE_ENV === 'production') {
-    //     user = `${req.headers['fly-client-ip']}`;
-    // }
-    // user = user.replace(/\./g, '&');
-    // const userRef = ref(database, `users/${user}`);
-    // get(userRef).then((snapshot) => {
-    //     if (snapshot.exists()) {
-    //         let userWords = snapshot.val().wonWords.split(',');
-    //         userWords.push(body.word);
+//     if (userWords.length === wordJson.words.length) {
+//         userWords = [];
+//     }
 
-    //         if (userWords.length === wordJson.words.length) {
-    //             userWords = [];
-    //         }
+//     userWords = userWords.join(',');
 
-    //         saveUserToDatabase(user, snapshot.val().theme, snapshot.val().howto, userWords.join(','));
+//     // res.cookie('wonWords', userWords.join(','), cookieOptions);
 
-    //         return res.status(204);
-    //     }
-    //     saveUserToDatabase(user, defaultUser.theme, defaultUser.howto, defaultUser.wonWords);
-    //     return res.status(201).json({message: 'user added successfully'});
-    // });
+//     let userShares = req.cookies.freePlayShares;
+//     if(req.body.longShare && req.body.shortShare) {
+//         // let userShares = req.cookies.freePlayShares;
+//         userShares.push({id: req.body.word, longShare: req.body.longShare, shortShare: req.body.shortShare});
+//         res.cookie('freePlayShares', userShares, cookieOptions);
+//     }
 
-    // return null;
-};
+//     return res.status(204).json({message: 'word saved', wonWords: userWords, freePlayShares: userShares});
 
-//update user's daily win to today's number
-const updateUserDailyWin = (req, res) => {
-    if(!req.body.number || !req.body.longShare || !req.body.shortShare || !req.body.streak || !req.body.letters) {
-        return res.status(400).json({ error: 'number, share strings, letters, and streak are required' });
-    }
+//     // let user = `${req.headers['x-forwarded-for']}`;
+//     // if(process.env.NODE_ENV === 'production') {
+//     //     user = `${req.headers['fly-client-ip']}`;
+//     // }
+//     // user = user.replace(/\./g, '&');
+//     // const userRef = ref(database, `users/${user}`);
+//     // get(userRef).then((snapshot) => {
+//     //     if (snapshot.exists()) {
+//     //         let userWords = snapshot.val().wonWords.split(',');
+//     //         userWords.push(body.word);
 
-    let dailyWinObj = {
-        number: req.body.number,
-        longShare: req.body.longShare,
-        shortShare: req.body.shortShare,
-        letters: req.body.letters,
-        streak: req.body.streak,
-    };
+//     //         if (userWords.length === wordJson.words.length) {
+//     //             userWords = [];
+//     //         }
 
-    res.cookie('dailyWin', dailyWinObj, cookieOptions);
-    res.status(204).json({message: 'daily win saved'});
+//     //         saveUserToDatabase(user, snapshot.val().theme, snapshot.val().howto, userWords.join(','));
+
+//     //         return res.status(204);
+//     //     }
+//     //     saveUserToDatabase(user, defaultUser.theme, defaultUser.howto, defaultUser.wonWords);
+//     //     return res.status(201).json({message: 'user added successfully'});
+//     // });
+
+//     // return null;
+// };
+
+// //update user's daily win to today's number
+// const updateUserDailyWin = (req, res) => {
+//     if(!req.body.number || !req.body.longShare || !req.body.shortShare || !req.body.streak || !req.body.letters) {
+//         return res.status(400).json({ error: 'number, share strings, letters, and streak are required' });
+//     }
+
+//     let dailyWinObj = {
+//         number: req.body.number,
+//         longShare: req.body.longShare,
+//         shortShare: req.body.shortShare,
+//         letters: req.body.letters,
+//         streak: req.body.streak,
+//     };
+
+//     // res.cookie('dailyWin', dailyWinObj, cookieOptions);
+
+//     let dailyWinHistory = req.cookies.dailyWinHistory;
+//     dailyWinHistory.push({
+//         number: dailyWinObj.number,
+//         longShare: dailyWinObj.longShare,
+//         shortShare: dailyWinObj.shortShare,
+//     });
+
+//     // res.cookie('dailyWinHistory', dailyWinHistory, cookieOptions);
+
+//     return res.status(204).json({message: 'daily win saved', dailyWin: dailyWinObj, dailyWinHistory});
+// };
+
+// //reset user's won words
+// const resetUserWinWords = (req, res) => {
+//     res.cookie('wonWords', '', cookieOptions);
+//     res.cookie('freePlayShares', '', cookieOptions);
+
+//     return res.status(204).json({message: 'won words reset'});
+// };
+
+//get number of words
+const getNumWords = (req, res) => {
+    return res.status(200).json({size: wordJson.words.length});
 };
 
 module.exports = {
     homePage,
     gamePage,
     dailyPage,
+    galleryPage,
     // addWordPage,
     getWords,
     // addWord,
-    setUserPrefs,
-    getUser,
-    addUserWin,
     getDaily,
-    updateUserDailyWin,
+    getNumWords,
+    // setUserPrefs,
+    // getUser,
+    // addUserWin,
+    // updateUserDailyWin,
+    // resetUserWinWords,
 };

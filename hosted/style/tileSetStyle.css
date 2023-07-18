@@ -1,0 +1,65 @@
+.tileSet {
+  display: inline-flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+}
+
+.tile {
+  position: relative;
+  width: 100%;
+  min-width: 50px;
+  padding: 0.25rem;
+  margin: 10px 7px 0px 7px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 1/1;
+}
+
+.darkThemeTile {
+  background-color: #333;
+  color: #eee;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #bbb;
+}
+
+.lightThemeTile {
+  background-color: #ddd;
+  color: #222;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #555;
+}
+
+.tile > p {
+  font-family: Arial, sans-serif;
+  font-size: 2rem;
+  margin: 0;
+  text-align: center;
+}
+
+.blankTile.darkThemeTile {
+  background-color: #333;
+}
+
+.blankTile.lightThemeTile {
+  background-color: #ddd;
+}
+
+.correctTile.darkThemeTile {
+  background-color: #0a0;
+}
+
+.correctTile.lightThemeTile {
+  background-color: #0f0;
+}
+
+.almostTile.darkThemeTile {
+  background-color: #aa0;
+}
+
+.almostTile.lightThemeTile {
+  background-color: #ff0;
+}

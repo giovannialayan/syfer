@@ -1,0 +1,94 @@
+.darkThemeElement {
+    background-color: #333;
+    color: #eee;
+}
+
+.darkThemeButton {
+    background-color: #333;
+    color: #eee;
+
+    border-width: 2px;
+    border-style: solid;
+    border-color: #bbb;
+}
+
+.darkThemeButton:hover {
+    background-color: #0b0;
+    cursor: pointer;
+}
+
+.darkThemeButton:active {
+    background-color: #bb0;
+}
+
+.darkThemeBody {
+    background-color: #000;
+    color: #eee;
+}
+
+.lightThemeElement {
+    background-color: #ddd;
+    color: #222;
+}
+
+.lightThemeButton {
+    background-color: #ddd;
+    color: #222;
+
+    border-width: 2px;
+    border-style: solid;
+    border-color: #555;
+}
+
+.lightThemeButton:hover {
+    background-color: #0f0;
+    cursor: pointer;
+}
+
+.lightThemeButton:active {
+    background-color: #ff0;
+}
+
+.lightThemeBody {
+    background-color: #fff;
+    color: #000;
+}
+
+.darkThemeLink {
+    background-color: #333;
+    color: #eee;
+
+    border: 2px solid #bbb;
+    padding: .5em;
+}
+
+.darkThemeLink:hover {
+    background-color: #0a0;
+    cursor: pointer;
+}
+
+.darkThemeLink:active {
+    background-color: #aa0;
+}
+
+.lightThemeLink {
+    background-color: #ddd;
+    color: #222;
+
+    border: 2px solid #555;
+    padding: .5em;
+}
+
+.lightThemeLink:hover {
+    background-color: #0f0;
+    cursor: pointer;
+}
+
+.lightThemeLink:active {
+    background-color: #ff0;
+}
+
+#homeLink {
+    text-decoration: none;
+    margin-bottom: 1em;
+}
