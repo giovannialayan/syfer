@@ -19,7 +19,7 @@ const Numpad = (props) => {
     return (
         <section>
             <p id='output' className={props.darkThemeOn ? 'darkThemeText' : 'lightThemeText'}>{output}</p>
-            <div className='numpadContainer desktop'>
+            <div className='numpadContainer'>
                 {getNumKey(1, 'one', props.darkThemeOn)}
                 {getNumKey(2, 'two', props.darkThemeOn)}
                 {getNumKey(3, 'three', props.darkThemeOn)}
@@ -36,9 +36,6 @@ const Numpad = (props) => {
                         <p>-{'>'}</p>
                     </button>
                 </div>
-            </div>
-            <div className='numpadContainer mobile'>
-
             </div>
         </section>
     );

@@ -23,7 +23,7 @@ const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'
 let targetWord;
 let targetWordNums;
 let targetWordAsNumbers;
-let guessWord;
+let guessWord = [];
 let guessedNumbers;
 
 let lastGuess;
@@ -89,14 +89,14 @@ window.onload = () => {
 
     toggleThemeButton = document.querySelector('#toggleThemeButton');
     toggleThemeButton.addEventListener('click', () => {
-        toggleTheme([howtoDiv], [copyShareButton], [keyboard, numpad], [targetWordTileSet, guessWordTileSet], [homeLink], shareDiv, true);
+        toggleTheme([howtoDiv], [copyShareButton], [keyboard, numpad], [targetWordTileSet, guessWordTileSet], [homeLink], [keyboardEl, numpadEl], shareDiv, true);
     });
 
     //keypresses for keyboards
     window.addEventListener('keydown', (e) => {
         const key = e.key.toLowerCase();
         //add if keyboard is displayed or numpad is displayed do that one
-        if(keyboardEl.style.display !== 'none' && guessWord.includes('_')) {
+        if(keyboardEl.style.display !== 'none' && targetWord !== guessWord.join('')) {
             if(letters.includes(key)) {
                 keyboard.modifyOutput(key);
             }
@@ -334,7 +334,7 @@ const setUpTargetWord = () => {
 };
 
 //toggle dark theme and light theme
-const toggleTheme = (elements, buttons, keyboards, tileSets, links, share, setPref) => {
+const toggleTheme = (elements, buttons, keyboards, tileSets, links, keyboardBackgrounds, share, setPref) => {
     if(darkThemeOn) {
         document.body.classList.replace('darkThemeBody', 'lightThemeBody');
 
@@ -356,6 +356,10 @@ const toggleTheme = (elements, buttons, keyboards, tileSets, links, share, setPr
 
         for(const l of links) {
             l.classList.replace('darkThemeLink', 'lightThemeLink');
+        }
+
+        for(const kb of keyboardBackgrounds) {
+            kb.classList.replace('darkThemeBackground', 'lightThemeBackground');
         }
 
         share.classList.replace('shareDivDarkTheme', 'shareDivLightTheme');
@@ -386,6 +390,10 @@ const toggleTheme = (elements, buttons, keyboards, tileSets, links, share, setPr
             l.classList.replace('lightThemeLink', 'darkThemeLink');
         }
 
+        for(const kb of keyboardBackgrounds) {
+            kb.classList.replace('lightThemeBackground', 'darkThemeBackground');
+        }
+
         share.classList.replace('shareDivLightTheme', 'shareDivDarkTheme');
 
         toggleThemeButton.src = '/assets/images/lightBulbDarkTheme.png';
@@ -414,7 +422,7 @@ const getUser = async (callback) => {
     const json = utils.getUser();
 
     if(json.theme === 'light') {
-        toggleTheme([howtoDiv], [copyShareButton], [keyboard, numpad], [targetWordTileSet, guessWordTileSet], [homeLink], shareDiv, false);
+        toggleTheme([howtoDiv], [copyShareButton], [keyboard, numpad], [targetWordTileSet, guessWordTileSet], [homeLink], [keyboardEl, numpadEl], shareDiv, false);
     }
 
     if(json.howto) {

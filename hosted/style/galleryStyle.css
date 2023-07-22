@@ -223,6 +223,7 @@ body {
 .galleryContainer > div {
   display: grid;
   grid-template-columns: repeat(6, 16.25vw);
+  justify-content: center;
   width: 100%;
 }
 
@@ -256,8 +257,17 @@ body {
   border-top: none;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 700px) {
   .galleryContainer > div {
-    grid-template-columns: repeat(3, 16.25vw);
+    grid-template-columns: repeat(3, 30vw);
+  }
+  .galleryWord {
+    min-width: auto;
+  }
+  .shareButtonContainer {
+    font-size: 0.5rem;
+  }
+  #shareText {
+    font-size: 0.45rem;
   }
 }

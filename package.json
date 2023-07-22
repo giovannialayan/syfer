@@ -1,6 +1,6 @@
 {
   "name": "syfer",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "word game about solving cyphers",
   "main": "./server/app.js",
   "scripts": {
@@ -11,6 +11,7 @@
     "nodemon": "nodemon -e js,html,css,json --watch ./server --watch ./hosted ./server/app.js",
     "wps": "npm run webpack && npm start",
     "devsass": "sass ./client/sass:./hosted/style",
+    "sasswatch": "sass --no-source-map --watch ./client/sass:./hosted/style",
     "build": "sass ./client/sass:./hosted/style --no-source-map && npm run webpack",
     "br": "npm run build && npm start"
   },

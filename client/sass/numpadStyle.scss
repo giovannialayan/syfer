@@ -68,6 +68,12 @@
     color: #222;
 }
 
-.mobile {
-    display: none;
+@media screen and (max-width: 700px) {
+    .numpadContainer {
+        width: 12rem;
+    }
+
+    .numberDiv {
+        width: 3rem;
+    }
 }
