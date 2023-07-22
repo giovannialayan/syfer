@@ -33,7 +33,6 @@
   padding-bottom: 100%;
   display: flex;
   flex-flow: column nowrap;
-  flex: 0 0 100%;
   justify-content: center;
   align-items: center;
 }
@@ -43,7 +42,7 @@
   margin: 5px 5px 5px 5px;
 }
 
-.keyDiv > button > p {
+.key > p {
   font-family: Arial, sans-serif;
   font-size: 2rem;
   margin: 100% 0 0 0;
@@ -117,32 +116,15 @@
   color: #222;
 }
 
-.mobile {
-  display: none;
+@media screen and (max-width: 700px) {
+  .key > p {
+    font-size: 1.25rem;
+  }
+  .key {
+    min-width: 1.75rem;
+  }
+  .keyDiv {
+    width: 8.75vw;
+    margin: 2px;
+  }
 }
-
-/* @media screen and (max-width: 768px) {
-    .keyDiv {
-        width: 100%;
-    }
-
-    .key {
-        min-width: none;
-    }
-
-    #topRow {
-        width: 100%;
-    }
-
-    #midRow {
-        width: 100%;
-    }
-
-    #botRow {
-        width: 100%;
-    }
-
-    .keyDiv > button > p {
-        font-size: 4vw;
-    }
-} */

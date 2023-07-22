@@ -53,7 +53,7 @@ const Keyboard = (props) => {
     return(
         <section>
             <p id='output' className={props.darkThemeOn ? 'darkThemeText' : 'lightThemeText'}>{output}</p>
-            <div className='keyboardContainer desktop'>
+            <div className='keyboardContainer'>
                 <div id='topRow'>
                     {getKey('q', props.darkThemeOn)}
                     {getKey('w', props.darkThemeOn)}
@@ -86,17 +86,6 @@ const Keyboard = (props) => {
                     {getKey('n', props.darkThemeOn)}
                     {getKey('m', props.darkThemeOn)}
                     <div className='keyDiv'><button className={'key ' + (props.darkThemeOn ? 'darkThemeKey' : 'lightThemeKey')} id='enterButton' onClick={submit}><p>-{'>'}</p></button></div>
-                </div>
-            </div>
-            <div className='keyboardContainer mobile'>
-                <div id='topRow'>
-                    
-                </div>
-                <div id='midRow'>
-
-                </div>
-                <div id='botRow'>
-
                 </div>
             </div>
         </section>

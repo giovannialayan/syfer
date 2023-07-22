@@ -23,7 +23,15 @@ body {
 }
 
 #wordGuessDiv > #guessWord > * {
-    margin: 10px 10px 0px 10px;
+    margin: 10px 0px 0px 0px;
+}
+
+#keyboard.darkThemeBackground, #numpad.darkThemeBackground {
+    background-color: #000;
+}
+
+#keyboard.lightThemeBackground, #numpad.lightThemeBackground {
+    background-color: #fff;
 }
 
 #numpad {
@@ -69,28 +77,23 @@ body {
     display: none;
 }
 
-// @media only screen and (max-width: 768px) {
-//     body {
-//         width: 100%;
-//     }
+@media only screen and (max-width: 700px) {
+    #keyboard {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding-bottom: 20px;
+    }
 
-//     #homeLink {
-//         font-size: 2rem;
-//     }
+    #numpad {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
 
-//     #howtoButton {
-//         width: 5rem;
-//     }
-
-//     #toggleThemeButton {
-//         width: 5rem;
-//     }
-
-//     #wordGuessDiv {
-//         width: 100%;
-//     }
-
-//     #keyboardsDiv {
-//         width: 100%;
-//     }
-// }
+    body {
+        margin-bottom: 28vh;
+    }
+}

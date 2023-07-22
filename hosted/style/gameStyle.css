@@ -126,7 +126,6 @@
   padding-bottom: 100%;
   display: flex;
   flex-flow: column nowrap;
-  flex: 0 0 100%;
   justify-content: center;
   align-items: center;
 }
@@ -136,7 +135,7 @@
   margin: 5px 5px 5px 5px;
 }
 
-.keyDiv > button > p {
+.key > p {
   font-family: Arial, sans-serif;
   font-size: 2rem;
   margin: 100% 0 0 0;
@@ -210,35 +209,18 @@
   color: #222;
 }
 
-.mobile {
-  display: none;
+@media screen and (max-width: 700px) {
+  .key > p {
+    font-size: 1.25rem;
+  }
+  .key {
+    min-width: 1.75rem;
+  }
+  .keyDiv {
+    width: 8.75vw;
+    margin: 2px;
+  }
 }
-
-/* @media screen and (max-width: 768px) {
-    .keyDiv {
-        width: 100%;
-    }
-
-    .key {
-        min-width: none;
-    }
-
-    #topRow {
-        width: 100%;
-    }
-
-    #midRow {
-        width: 100%;
-    }
-
-    #botRow {
-        width: 100%;
-    }
-
-    .keyDiv > button > p {
-        font-size: 4vw;
-    }
-} */
 .numpadContainer {
   display: flex;
   flex-flow: row wrap;
@@ -306,10 +288,14 @@
   color: #222;
 }
 
-.mobile {
-  display: none;
+@media screen and (max-width: 700px) {
+  .numpadContainer {
+    width: 12rem;
+  }
+  .numberDiv {
+    width: 3rem;
+  }
 }
-
 .tileSet {
   display: inline-flex;
   flex-flow: row nowrap;
@@ -376,6 +362,24 @@
   background-color: #ff0;
 }
 
+@media screen and (max-width: 700px) {
+  .tile > p {
+    font-size: 1.25rem;
+  }
+  .tile {
+    min-width: 5.75vw;
+    margin: 5px 2px 0px 2px;
+  }
+}
+@media screen and (max-width: 400px) {
+  .tile > p {
+    font-size: 1rem;
+  }
+  .tile {
+    min-width: 5vw;
+    margin: 5px 2px 0px 2px;
+  }
+}
 #toggleThemeButton {
   position: absolute;
   right: 2px;
@@ -492,7 +496,15 @@ body {
 }
 
 #wordGuessDiv > #guessWord > * {
-  margin: 10px 10px 0px 10px;
+  margin: 10px 0px 0px 0px;
+}
+
+#keyboard.darkThemeBackground, #numpad.darkThemeBackground {
+  background-color: #000;
+}
+
+#keyboard.lightThemeBackground, #numpad.lightThemeBackground {
+  background-color: #fff;
 }
 
 #numpad {
@@ -535,4 +547,23 @@ body {
 
 #letterGuessOutput {
   display: none;
+}
+
+@media only screen and (max-width: 700px) {
+  #keyboard {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding-bottom: 20px;
+  }
+  #numpad {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  body {
+    margin-bottom: 28vh;
+  }
 }

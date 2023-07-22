@@ -67,3 +67,25 @@
 .almostTile.lightThemeTile {
     background-color: #ff0;
 }
+
+@media screen and (max-width: 700px) {
+    .tile > p {
+        font-size: 1.25rem;
+    }
+
+    .tile {
+        min-width: 5.75vw;
+        margin: 5px 2px 0px 2px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .tile > p {
+        font-size: 1rem;
+    }
+
+    .tile {
+        min-width: 5vw;
+        margin: 5px 2px 0px 2px;
+    }
+}
