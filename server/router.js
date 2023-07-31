@@ -3,7 +3,7 @@ const mid = require('./middleware');
 
 const router = (app) => {
     // app.get('/', controllers.game.gamePage);
-    app.get('/', mid.requiresSecure, controllers.game.homePage);
+    app.get('/', controllers.game.homePage);
     app.get('/daily', controllers.game.dailyPage);
     app.get('/play', controllers.game.gamePage);
     app.get('/freePlayStats', controllers.game.galleryPage);
@@ -20,7 +20,7 @@ const router = (app) => {
     // app.post('/updateUserDailyWin', controllers.game.updateUserDailyWin);
     // app.delete('/resetUserWinWords', controllers.game.resetUserWinWords);
 
-    app.get('*', mid.requiresSecure, controllers.game.homePage);
+    app.get('*', controllers.game.homePage);
 };
 
 module.exports = router;
